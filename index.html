@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title> x-keyboard </title>
+  <style>
+    html {
+      height: 100%;
+      width: 100%;
+      display: table;
+    }
+    body {
+      display: table-cell;
+      vertical-align: middle;
+      width: 680px;
+      margin: auto;
+      text-align: center;
+    }
+    #txtInput {
+      width: 680px;
+      text-align: center;
+      font-size: 1.3em;
+    }
+    #keys {
+      width: 6em;
+      text-align: center;
+    }
+  </style>
+  <script src="x-keyboard.js" type="module"></script>
+  <script src="demo.js"></script>
+</head>
+<body>
+
+  <input id="txtInput" spellcheck="false">
+
+  <x-keyboard id="keyboard" shape="pc104" theme="reach"></x-keyboard>
+
+  <form>
+    <select id="layout">
+      <option></option>
+      <option selected>qwerty</option>
+      <option>qwerty-alt</option>
+      <option>dvorak</option>
+    </select>
+    <select id="shape">
+      <option value="pc105"> pc105 / ISO </option>
+      <option value="pc104"> pc104 / ANSI </option>
+      <option value="tmx"> ergonomic </option>
+    </select>
+    <select id="theme">
+      <option></option>
+      <option>reach</option>
+      <option>hints</option>
+    </select>
+    <input id="keys">
+  </form>
+
+</body>
+</html>
