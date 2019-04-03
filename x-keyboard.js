@@ -237,27 +237,21 @@ const css = `
    * color theme
    */
 
-  [theme="reach"] .pinkyKey  { background-color: #fbb; }
-  [theme="reach"] .numberKey { background-color: #fe7; }
-  [theme="reach"] .letterKey { background-color: #bfb; }
-  [theme="reach"] .homeKey   { background-color: #8e8; }
+  [theme="reach"] .pinkyKey  { background-color: hsl(  0, 100%, 90%); }
+  [theme="reach"] .numberKey { background-color: hsl( 42, 100%, 90%); }
+  [theme="reach"] .letterKey { background-color: hsl(122, 100%, 90%); }
+  [theme="reach"] .homeKey   { background-color: hsl(122, 100%, 75%); }
 
-  [theme="hints"] [finger="l2"] { background-color: #db0; }
-  [theme="hints"] [finger="r2"] { background-color: #ee0; }
+  [theme="hints"] [finger="m1"] { background-color: hsl(  0, 100%, 95%); }
+  [theme="hints"] [finger="l2"] { background-color: hsl( 42, 100%, 85%); }
+  [theme="hints"] [finger="r2"] { background-color: hsl( 61, 100%, 85%); }
   [theme="hints"] [finger="l3"],
-  [theme="hints"] [finger="r3"] { background-color: #ac0; }
+  [theme="hints"] [finger="r3"] { background-color: hsl(136, 100%, 85%); }
   [theme="hints"] [finger="l4"],
-  [theme="hints"] [finger="r4"] { background-color: #3bb; }
+  [theme="hints"] [finger="r4"] { background-color: hsl(200, 100%, 85%); }
   [theme="hints"] [finger="l5"],
-  [theme="hints"] [finger="r5"] { background-color: #88f; }
+  [theme="hints"] [finger="r5"] { background-color: hsl(230, 100%, 85%); }
 
-  /*
-  [theme="hints"] .homeKey {
-    background-image: url(images/grid4.gif);
-    font-weight: bold;
-    color: white;
-  }
-  */
   [theme="hints"] .hint {
     font-weight: bold;
     background-color: brown;
