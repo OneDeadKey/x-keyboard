@@ -330,7 +330,7 @@ const html = `
     </li>
     <li id="row_AB">
       <ul>
-        <li id="key_LFSH" class="specialKey">
+        <li id="key_LFSH" finger="l5" class="specialKey">
           <em> &#x21e7; </em>
         </li>
         <li id="key_LSGT" finger="l5" class="pinkyKey"> </li>
@@ -344,7 +344,7 @@ const html = `
         <li id="key_AB08" finger="r3" class="letterKey"></li>
         <li id="key_AB09" finger="r4" class="letterKey"></li>
         <li id="key_AB10" finger="r5" class="letterKey"></li>
-        <li id="key_RTSH" class="specialKey">
+        <li id="key_RTSH" finger="r5" class="specialKey">
           <em> &#x21e7; </em>
         </li>
       </ul>
@@ -589,45 +589,6 @@ class Keyboard extends HTMLElement {
       });
   }
 
-  setKey(keyName, base, shift, altgr) {
-    let element = getKey(this.root, keyName);
-    if (!element) {
-      return null;
-    }
-
-    // fill <li> element
-    element.innerHTML = '';
-    // create <strong> for 'shift'
-    let strong = document.createElement('strong');
-    strong.appendChild(document.createTextNode(shift));
-    element.appendChild(strong);
-    // append <em> for 'base' if necessary (not a letter)
-    if (shift.toLowerCase() != base) {
-      let em = document.createElement('em');
-      em.appendChild(document.createTextNode(base));
-      element.appendChild(em);
-    }
-    // append <em class="altgr"> if necessary
-    if (altgr) {
-      let em = document.createElement('em');
-      em.className = 'altgr';
-      em.appendChild(document.createTextNode(altgr));
-      element.appendChild(em);
-      this._state.keymap[altgr] = element;
-      this._state.keymod[altgr] = getKey(this.root, 'RALT');
-    }
-
-    // store current key in the main hash table
-    this._state.keymap[base] = element;
-    this._state.keymap[shift] = element;
-    if (base != shift) {
-      this._state.keymod[shift] = getKey(this.root,
-        element.getAttribute('finger')[0] == 'l' ? 'RTSH' : 'LFSH');
-    }
-
-    return element;
-  }
-
   setKeyStyle(keyName, style) {
     const element = getKey(this.root, keyName);
     if (element) {
@@ -648,7 +609,7 @@ class Keyboard extends HTMLElement {
       getKeys(this.root, char[0], this._state.keymap, this._state.keymod);
     this._state.hintedKeys.forEach(li => {
       li.classList.add('hint');
-      hintClass += `.${li.getAttribute('finger')} `;
+      hintClass += li.getAttribute('finger') + ' ';
       // hintBox.classList.add(li.getAttribute('finger'));
     });
     return hintClass;
