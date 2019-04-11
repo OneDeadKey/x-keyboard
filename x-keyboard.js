@@ -72,15 +72,19 @@ const css = `
     bottom: 2px;
     left: 3px;
   }
-  li em.altgr {
+  li .dk,
+  li .altgr {
     left: auto;
     right: 5px;
     color: blue;
     opacity: 0.5;
   }
+  li .dk {
+    color: red;
+  }
 
   li .deadKey {
-    font-size: larger;
+    font-weight: bold;
     color: red;
   }
 
@@ -257,6 +261,12 @@ const css = `
     background-color: brown;
     color: white;
   }
+
+  .alt em, .alt strong,
+  .dk em, .dk strong { opacity: 0.25; }
+  .alt .altgr,
+  .dk .dk { opacity: 1; }
+  .dk .altgr { display: none; }
 `;
 
 const html = `
@@ -321,7 +331,7 @@ const html = `
         <li id="key_AC10" finger="r5" class="letterKey homeKey"></li>
         <li id="key_AC11" finger="r5" class="pinkyKey"> </li>
         <li id="key_RTRN" class="specialKey">
-          <em> &#x21b2; </em>
+          <em> &#x21b5; </em>
         </li>
         <li id="key_RTRN105" class="specialKey hiddenKey">
           &nbsp;
@@ -503,6 +513,8 @@ class Keyboard extends HTMLElement {
       keymap: {},
       keymod: {},
       layout: {},
+      deadKeys: [],
+      modifiers: {}
     };
     this.shape = this._state.shape;
     this.theme = this._state.theme;
@@ -566,15 +578,32 @@ class Keyboard extends HTMLElement {
     this._state.layout = value;
     this._state.keymap = {};
     this._state.keymod = {};
+    const createLabel = (type, label, className) => {
+      let element = document.createElement(type);
+      if (label && label.length > 1 && label[0] === '*') {
+        element.classList.add('deadKey');
+        element.textContent = label[1];
+      } else {
+        element.textContent = label || '';
+      }
+      if (className) {
+        element.classList.add(className);
+      }
+      return element;
+    };
     Array.from(this.root.querySelectorAll('li li'))
       .filter(key => !key.classList.contains('specialKey'))
       .forEach(key => {
         const [ base, shift, alt ] = value[key.id.slice(4)] || [''];
-        key.innerHTML = `
-          <strong>${shift || ''}</strong>
-          <em>${base.toUpperCase() !== shift ? base : ''}</em>
-          <em class="altgr">${alt || ''}</em>
-        `;
+        key.innerHTML = '';
+        key.appendChild(createLabel('strong', shift));
+        if (base.toUpperCase() !== shift) {
+          key.appendChild(createLabel('em', base));
+        }
+        key.appendChild(createLabel('em', alt, 'altgr'));
+        key.appendChild(createLabel('em', '', 'dk'));
+        key.appendChild(createLabel('strong', '', 'dk'));
+
         // store current key in the main hash tables
         this._state.keymap[base] = key;
         this._state.keymap[shift] = key;
@@ -589,6 +618,14 @@ class Keyboard extends HTMLElement {
       });
   }
 
+  get deadKeys() {
+    return this._state.deadKeys;
+  }
+
+  set deadKeys(value) {
+    this._state.deadKeys = value;
+  }
+
   setKeyStyle(keyName, style) {
     const element = getKey(this.root, keyName);
     if (element) {
@@ -600,6 +637,102 @@ class Keyboard extends HTMLElement {
     Array.from(this.root.querySelectorAll('li[style]')).forEach(element => {
       element.style.cssText = '';
     });
+  }
+
+  keyDown(keyCode) {
+    const element = getKey(this.root, keyCode);
+    if (!element) {
+      return '';
+    }
+    element.style.cssText = defaultKeyPressStyle;
+    switch(keyCode) {
+      case 'AltRight':
+      case 'RALT':
+        this._state.modifiers.AltGr = true;
+        this.root.getElementById('keyboard').classList.add('alt');
+        break;
+      case 'ShiftLeft':
+      case 'LFSH':
+        this._state.modifiers.ShiftLeft = true;
+        break;
+      case 'ShiftRight':
+      case 'RTSH':
+        this._state.modifiers.ShiftRight = true;
+        break;
+    }
+
+    const key = this._state.layout[element.id.slice(4)];
+    if (!key) {
+      return '';
+    }
+    const m = this._state.modifiers;
+    const level = (m.AltGr ? 2 : 0) + (m.ShiftLeft || m.ShiftRight ? 1 : 0);
+    const value = key[level];
+    if (value && value.length === 2 && value[0] === '*') { // dead key
+      this.latchDeadKey(value);
+      return '';
+    } else if (this._state.modifiers.DeadKey) {
+      return this.unlatchDeadKey(value);
+    } else {
+      return value || '';
+    }
+  }
+
+  keyUp(keyCode) {
+    const element = getKey(this.root, keyCode);
+    if (!element) {
+      return;
+    }
+    element.style.cssText = '';
+    switch(keyCode) {
+      case 'AltRight':
+      case 'RALT':
+        this._state.modifiers.AltGr = false;
+        this.root.getElementById('keyboard').classList.remove('alt');
+        break;
+      case 'ShiftLeft':
+      case 'LFSH':
+        this._state.modifiers.ShiftLeft = false;
+        break;
+      case 'ShiftRight':
+      case 'RTSH':
+        this._state.modifiers.ShiftRight = false;
+        break;
+    }
+  }
+
+  latchDeadKey(dkID) {
+    const dk = this._state.deadKeys.find(i => ('*' + i.alt_self) === dkID);
+    if (!dk) {
+      return;
+    }
+    Array.from(this.root.querySelectorAll('li li')).forEach(element => {
+      // display dead keys in the virtual keyboard
+      const key = this._state.layout[element.id.slice(4)];
+      if (!key || element.classList.contains('specialKey')) {
+        return;
+      }
+      const alt0 = dk.alt[dk.base.indexOf(key[0])];
+      const alt1 = dk.alt[dk.base.indexOf(key[1])];
+      if (alt0) {
+        element.querySelector('em.dk').textContent = alt0;
+      }
+      // if (alt1 && alt0.toUpperCase() !== alt1) { // better
+      if (alt1 && key[0].toUpperCase() !== key[1]) { // nicer, lighter
+        element.querySelector('strong.dk').textContent = alt1;
+      }
+    });
+    this.root.getElementById('keyboard').classList.add('dk');
+    this._state.modifiers.DeadKey = dk;
+  }
+
+  unlatchDeadKey(baseChar) {
+    const dk = this._state.modifiers.DeadKey;
+    this._state.modifiers.DeadKey = undefined;
+    this.root.getElementById('keyboard').classList.remove('dk')
+    Array.from(this.root.querySelectorAll('.dk'))
+      .forEach(span => span.textContent = '');
+    return dk.alt[dk.base.indexOf(baseChar)] || baseChar;
   }
 
   showHint(char) {

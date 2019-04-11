@@ -16,10 +16,18 @@ window.addEventListener('DOMContentLoaded', () => {
     if (layout.value) {
       fetch(`layouts/${layout.value}.json`)
         .then(response => response.json())
-        .then(data => keyboard.layout = data.layout)
+        .then(data => {
+          keyboard.layout = data.layout;
+          let deadKeys = [];
+          for (let dk in data.dead_keys) {
+            deadKeys.push(data.dead_keys[dk]);
+          }
+          keyboard.deadKeys = deadKeys;
+        })
         .then(showKeys);
     } else { // blank layout
       keyboard.layout = {};
+      keyboard.deadKeys = [];
       showKeys();
     }
   };
@@ -31,13 +39,13 @@ window.addEventListener('DOMContentLoaded', () => {
   setTheme();
 
   // highlight keyboard keys
-  const kps = 'background-color: #aaf;';
-  input.addEventListener('keydown', e => keyboard.setKeyStyle(e.code, kps));
-  input.addEventListener('keyup',   e => keyboard.setKeyStyle(e.code, ''));
+  input.addEventListener('keyup',   event => keyboard.keyUp(event.code));
+  input.addEventListener('keydown', event => keyboard.keyDown(event.code));
   window.addEventListener('focusout', () => {
     keyboard.clearStyle();
     keyboard.showKeys(keys.value);
   });
   keys.addEventListener('input', e => keyboard.showKeys(e.target.value, kps));
+  input.value = '';
   input.focus();
 });
