@@ -97,8 +97,8 @@ const css = `
     font-style: italic;
   }
   #row_AA   .specialKey { width: 56px; }
-  #row_AA    #key_SPCE  { width: 240px;}
   #row_AA    #key_MENU  { width: 40px; }
+  #key_SPCE             { width: 240px;}
   #key_TAB,  #key_BKSP  { width: 60px; }
   #key_CAPS, #key_RTRN  { width: 73px; }
   #key_LFSH, #key_RTSH  { width: 96px; }
@@ -114,11 +114,11 @@ const css = `
    */
 
   [shape="pc105"] #key_LFSH {
-    width: 50px !important;
+    width: 50px;
   }
   [shape="pc105"] #key_RTRN {
-    width: 27px !important;
-    height: 86px !important;
+    width: 27px;
+    height: 86px;
     margin-top: -44px;
     margin-left: 48px;
   }
@@ -132,11 +132,11 @@ const css = `
   /* visual tweaks for CapsLock and Return */
   [shape="pc105"] #key_CAPS105,
   [shape="pc105"] #key_RTRN105 {
-    background-color: #e8e8e8 !important;
+    background-color: #e8e8e8;
     display: block;
   }
   [shape="pc105"] #key_CAPS {
-    width: 60px !important;
+    width: 60px;
   }
   [shape="pc105"] #key_CAPS,
   [shape="pc105"] #key_RTRN {
@@ -144,12 +144,12 @@ const css = `
   }
   [shape="pc105"] #key_CAPS105 {
     margin-left: -64px;
-    width: 73px !important;
+    width: 73px;
   }
   [shape="pc105"] #key_RTRN105 {
     margin-top: -44px;
     margin-left: -44px;
-    width: 40px !important;
+    width: 40px;
   }
 
 
@@ -174,13 +174,13 @@ const css = `
   [shape="tmx"] #key_RCTL,
   [shape="tmx"] #key_BKSP,
   [shape="tmx"] #key_RTRN {
-    width: 46px !important;
+    width: 46px;
   }
   [shape="tmx"] #key_LWIN,
   [shape="tmx"] #key_LALT,
   [shape="tmx"] #key_RWIN,
   [shape="tmx"] #key_RALT {
-    width: 63px !important;
+    width: 63px;
   }
   [shape="tmx"] #key_TLDE,
   [shape="tmx"] #key_TAB,
@@ -199,22 +199,22 @@ const css = `
   }
   [shape="tmx"] #key_BKSP {
     margin-left: -378px;
-    height: 86px !important;
+    height: 86px;
   }
   [shape="tmx"] #key_RTRN {
     margin-left: -326px;
-    height: 86px !important;
+    height: 86px;
   }
   [shape="tmx"] #key_LFSH,
   [shape="tmx"] #key_RTSH {
-    height: 86px !important;
+    height: 86px;
     margin-top: -44px;
   }
   [shape="tmx"] #key_RTSH {
     margin-left: 48px;
   }
   [shape="tmx"] #key_SPCE {
-    width: 230px !important;
+    width: 230px;
   }
 
 
