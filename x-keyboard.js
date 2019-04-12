@@ -103,8 +103,13 @@ const css = `
   #key_CAPS, #key_RTRN  { width: 73px; }
   #key_LFSH, #key_RTSH  { width: 96px; }
 
+  #key_TAB *, #key_CAPS *, #key_LFSH *, #key_RTSH *, #key_RTRN * {
+    font-size: 1.25em;
+    font-style: normal;
+  }
+
   /* hide LSGT for pc104 (default) */
-  #key_LSGT, #key_CAPS105, #key_RTRN105 {
+  #key_LSGT, #key_CAPS105, #key_RTRN105, #key_ESC {
     display: none;
   }
 
@@ -154,32 +159,32 @@ const css = `
 
 
   /**************************************************************************
-   * Ergonomic Keyboard Geometry (TMx)
+   * Ortholinear Keyboard Geometry (TMx, OLKB)
    */
 
-  [shape="tmx"] #key_CAPS {
+  [shape="tmx"] #key_CAPS, [shape="olkb"] #key_CAPS {
     display: none;
   }
-  [shape="tmx"] #key_BKSL {
+  [shape="tmx"] #key_BKSL, [shape="olkb"] #key_BKSL {
     margin-top: 94px;
     margin-left: -96px;
   }
-  [shape="tmx"] #key_TLDE,
-  [shape="tmx"] #key_TAB,
-  [shape="tmx"] #key_LFSH,
-  [shape="tmx"] #key_LCTL,
-  [shape="tmx"] #key_AE12,
-  [shape="tmx"] #key_AD12,
-  [shape="tmx"] #key_RTSH,
-  [shape="tmx"] #key_RCTL,
-  [shape="tmx"] #key_BKSP,
-  [shape="tmx"] #key_RTRN {
+  [shape="tmx"] #key_TLDE, [shape="olkb"] #key_TLDE,
+  [shape="tmx"] #key_TAB,  [shape="olkb"] #key_TAB,
+  [shape="tmx"] #key_LFSH, [shape="olkb"] #key_LFSH,
+  [shape="tmx"] #key_LCTL, [shape="olkb"] #key_LCTL,
+  [shape="tmx"] #key_AE12, [shape="olkb"] #key_AE12,
+  [shape="tmx"] #key_AD12, [shape="olkb"] #key_AD12,
+  [shape="tmx"] #key_RTSH, [shape="olkb"] #key_RTSH,
+  [shape="tmx"] #key_RCTL, [shape="olkb"] #key_RCTL,
+  [shape="tmx"] #key_BKSP, [shape="olkb"] #key_BKSP,
+  [shape="tmx"] #key_RTRN, [shape="olkb"] #key_RTRN {
     width: 46px;
   }
-  [shape="tmx"] #key_LWIN,
-  [shape="tmx"] #key_LALT,
-  [shape="tmx"] #key_RWIN,
-  [shape="tmx"] #key_RALT {
+  [shape="tmx"] #key_LWIN, [shape="olkb"] #key_LWIN,
+  [shape="tmx"] #key_LALT, [shape="olkb"] #key_LALT,
+  [shape="tmx"] #key_RWIN, [shape="olkb"] #key_RWIN,
+  [shape="tmx"] #key_RALT, [shape="olkb"] #key_RALT {
     width: 63px;
   }
   [shape="tmx"] #key_TLDE,
@@ -189,7 +194,7 @@ const css = `
     margin-left: 3px;
   }
   [shape="tmx"] #key_AC01 {
-    margin-left: 55px;
+    margin-left: 55px; /* XXX why 55px instead of 54px? */
   }
   [shape="tmx"] #key_AE06,
   [shape="tmx"] #key_AD06,
@@ -205,8 +210,8 @@ const css = `
     margin-left: -326px;
     height: 86px;
   }
-  [shape="tmx"] #key_LFSH,
-  [shape="tmx"] #key_RTSH {
+  [shape="tmx"] #key_LFSH, [shape="olkb"] #key_LFSH,
+  [shape="tmx"] #key_RTSH, [shape="olkb"] #key_RTSH {
     height: 86px;
     margin-top: -44px;
   }
@@ -217,24 +222,14 @@ const css = `
     width: 230px;
   }
 
-
-  /**************************************************************************
-   * background images for tab, backspace, caps, return, shift
-   */
-
-  #key_TAB *, #key_BKSP *, #key_CAPS *, #key_LFSH *, #key_RTSH *, #key_RTRN * {
-    display: none;
-  }
-  .specialKey {
-    background-repeat: no-repeat;
-    background-position: bottom left;
-  }
-  #key_LFSH,
-  #key_RTSH { background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAJtJREFUSMft1DsKwlAURdFFVCwFiR+srKytBBGsrZ2cIIqtn8IpOAwrCwfgGGxSiJ8QSVIE3i7vhX3gPO4jUDWaiMqSD3DGDo2i5X2cEGOCLepFybuJvPMym2KDWl55jCN6X3YzrPOEtHFI6vnFHKu0h0/rcYEh9nhg+ba/4Y4WRrjmqeqScfZBVPbhhIAQUIGArD/iOOthBf7mCZ5YD89+RmHHAAAAAElFTkSuQmCC); }
-  #key_CAPS { background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAKJJREFUSMft1D0OQVEQhuGH3F5ySj+NQqGyBEKhtjVswV8swhKUKoUFiFqlveG6Dq5Ecd9y5pv5kjNnhpKSFAFbTFH9RfMNWhhhVqRJwBrNVGxYlEnACo2M3ADzb0wClqjnaPqvTJKc4jHaWOCMyV3+iBNq6ODwzVPtImMPVH/9t0uDlySRum7GUK9/ccAqkboL9k8WrRA+3oPYGfRiG5a8zQ3m7RUULlEIcgAAAABJRU5ErkJggg==); }
-  #key_BKSP { background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAINJREFUSMft1CEKAmEQxfGfGo1iE5NexDO4N5AtFk9g2kts9iImsZm9w4YFq6DlSxZd+L4i84dJM7wHw5shCILJl/4Wa9xLmFd4YFFCvMYTx9zCM5zwwvmHFQ5iii6JZ6vRh8kKLTa4YJcGszJGk4T3JSN8QI95qTu4piQtcYuXEfwxb1YgJTc9FfcXAAAAAElFTkSuQmCC); }
-  #key_RTRN { background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAItJREFUSMft1LEJAkEUhOEPg8NYLODCC21AOExsweySK8E+LERDQ6u4TkwMBNFkQz1h5SHi/vCyZWaHN7sUCt9mi1mkwR3N2IFJdMT/MqhRRRksccItIuUKZ3Q5LRpjjl269T63pq9ocEkC7yY7wQLHJHJIQs+m+nQHPa5YR9Z5gyH6zbSYlv/993gAlcMa2ChJWeEAAAAASUVORK5CYII=); }
-  #key_TAB  { background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAO9JREFUSMft0zFKQ0EQBuDPxEiaEATBRg2CSAI2ginFC2iRIuANPICtnY0HsMghLO0tcopYiNop0UZEYmOaLcLjSfY9XkiR/DAsO7v8PzP/DEssHMq4Qi2RP8FREQJV/GFrItfEB3ZnIdDGG27zEq6kCPzgEOe4xBCn+I7ge8JvTAWv4cwazdgW7aCL59CiRlFTlPSghnv08xKWprx/oYMRziZE11P+7qFSRJX7wcyNRD7Vg1IOgUc8hNie1cbXMcAnLrCWdYqyxst/AquJ+witiAoquAvG9nATdqcwXIcNP55mch5s4h0HMVO0xPwxBoeeRFZ6Q7hTAAAAAElFTkSuQmCC); }
+  /* OLKB-specific */
+  [shape="olkb"] .pinkyKey,
+  [shape="olkb"] #key_MENU { display: none; }
+  [shape="olkb"] #key_ESC  { display: inline-block; width: 46px; }
+  [shape="olkb"] #key_SPCE { width: 178px; }
+  [shape="olkb"] #key_RTRN { margin-top: -44px; }
+  [shape="olkb"] #key_AC01 { margin-left: 54px; }
+  [shape="olkb"] { padding-left: 100px; }
 
 
   /**************************************************************************
@@ -255,7 +250,7 @@ const css = `
   [theme="hints"] [finger="r4"] { background-color: hsl(200, 100%, 85%); }
   [theme="hints"] [finger="l5"],
   [theme="hints"] [finger="r5"] { background-color: hsl(230, 100%, 85%); }
-
+  [theme="hints"] .specialKey   { background-color: #ddd; }
   [theme="hints"] .hint {
     font-weight: bold;
     background-color: brown;
@@ -273,6 +268,9 @@ const html = `
   <ul id="keyboard">
     <li id="row_AE">
       <ul>
+        <li id="key_ESC"  class="specialKey">
+          <em> Esc </em>
+        </li>
         <li id="key_TLDE" finger="l5" class="pinkyKey"> </li>
         <li id="key_AE01" finger="l5" class="numberKey"></li>
         <li id="key_AE02" finger="l4" class="numberKey"></li>
@@ -287,7 +285,7 @@ const html = `
         <li id="key_AE11" finger="r5" class="pinkyKey"> </li>
         <li id="key_AE12" finger="r5" class="pinkyKey"> </li>
         <li id="key_BKSP" class="specialKey">
-          <em> &#x2190; </em>
+          <em> &#x232b; </em>
         </li>
       </ul>
     </li>
@@ -331,7 +329,7 @@ const html = `
         <li id="key_AC10" finger="r5" class="letterKey homeKey"></li>
         <li id="key_AC11" finger="r5" class="pinkyKey"> </li>
         <li id="key_RTRN" class="specialKey">
-          <em> &#x21b5; </em>
+          <em> &#x23ce; </em>
         </li>
         <li id="key_RTRN105" class="specialKey hiddenKey">
           &nbsp;
@@ -552,6 +550,7 @@ class Keyboard extends HTMLElement {
         break;
       case 'pc104':
       case 'tmx':
+      case 'olkb':
         setFinger('key_AE01', 'l5');
         setFinger('key_AE02', 'l4');
         setFinger('key_AE03', 'l3');
