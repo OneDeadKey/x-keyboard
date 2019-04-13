@@ -107,6 +107,9 @@ const css = `
     font-size: 1.25em;
     font-style: normal;
   }
+  #key_MENU *, #key_BKSP * {
+    font-style: normal;
+  }
 
   /* hide LSGT for pc104 (default) */
   #key_LSGT, #key_CAPS105, #key_RTRN105, #key_ESC {
@@ -360,10 +363,10 @@ const html = `
     <li id="row_AA">
       <ul>
         <li id="key_LCTL" class="specialKey">
-          <em> ctrl </em>
+          <em> Ctrl </em>
         </li>
         <li id="key_LWIN" class="specialKey">
-          <em> super </em>
+          <em> Super </em>
         </li>
         <li id="key_LALT" class="specialKey">
           <em> Alt </em>
@@ -375,13 +378,14 @@ const html = `
           <em> AltGr </em>
         </li>
         <li id="key_RWIN" class="specialKey">
-          <em> super </em>
+          <em> Super </em>
         </li>
         <li id="key_MENU" class="specialKey">
-          <em> menu </em>
+          <!-- not really a 'menu' character, but looks like one -->
+          <em> ☰ </em>
         </li>
         <li id="key_RCTL" class="specialKey">
-          <em> ctrl </em>
+          <em> Ctrl </em>
         </li>
       </ul>
     </li>
