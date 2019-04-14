@@ -493,6 +493,10 @@ function getKeys(root, str, keymap, keymod) {
   return rv;
 }
 
+function isDeadKey(value) {
+  return value && value.length === 2 && value[0] === '*';
+}
+
 const defaultKeyPressStyle = 'background-color: #aaf;';
 const defaultKeyPressDuration = 250;
 
@@ -585,7 +589,7 @@ class Keyboard extends HTMLElement {
     this._state.keymod = {};
     const createLabel = (type, label, className) => {
       let element = document.createElement(type);
-      if (label && label.length > 1 && label[0] === '*') {
+      if (isDeadKey(label)) {
         element.classList.add('deadKey');
         element.textContent = label[1];
       } else {
@@ -673,11 +677,10 @@ class Keyboard extends HTMLElement {
     const m = this._state.modifiers;
     const level = (m.AltGr ? 2 : 0) + (m.ShiftLeft || m.ShiftRight ? 1 : 0);
     const value = key[level];
-    if (value && value.length === 2 && value[0] === '*') { // dead key
-      this.latchDeadKey(value);
-      return '';
-    } else if (this._state.modifiers.DeadKey) {
+    if (this._state.modifiers.DeadKey) {
       return this.unlatchDeadKey(value);
+    } else if (isDeadKey(value)) {
+      return this.latchDeadKey(value);
     } else {
       return value || '';
     }
@@ -731,13 +734,19 @@ class Keyboard extends HTMLElement {
     this._state.modifiers.DeadKey = dk;
   }
 
-  unlatchDeadKey(baseChar) {
+  unlatchDeadKey(char) {
     const dk = this._state.modifiers.DeadKey;
     this._state.modifiers.DeadKey = undefined;
     this.root.getElementById('keyboard').classList.remove('dk')
     Array.from(this.root.querySelectorAll('.dk'))
       .forEach(span => span.textContent = '');
-    return dk.alt[dk.base.indexOf(baseChar)] || baseChar;
+    if (char === ' ' || char === '\u00a0' || char === '\u202f') {
+      return dk.alt_space;
+    } else if (char === dk.char) {
+      return dk.alt_self;
+    } else {
+      return dk.alt[dk.base.indexOf(char)] || '';
+    }
   }
 
   showHint(char) {
