@@ -39,11 +39,11 @@ window.addEventListener('DOMContentLoaded', () => {
   let previousValue = '';
   input.onkeyup = event => keyboard.keyUp(event.code);
   input.onkeydown = event => {
+    const value = keyboard.keyDown(event.code);
     if (event.code === 'Enter') {
       previousValue = input.value = '';
       return false;
     }
-    const value = keyboard.keyDown(event.code);
     if (!emulation.checked) {
       return true;
     }
