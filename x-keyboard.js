@@ -521,7 +521,7 @@ class Keyboard extends HTMLElement {
       keymap: {},
       keymod: {},
       layout: {},
-      deadKeys: [],
+      deadKeys: {},
       modifiers: {}
     };
     this.shape = this._state.shape;
@@ -579,10 +579,6 @@ class Keyboard extends HTMLElement {
     this.root.getElementById('keyboard').setAttribute('shape', value);
   }
 
-  get layout() {
-    return this._state.layout;
-  }
-
   set layout(value) {
     this._state.layout = value;
     this._state.keymap = {};
@@ -627,12 +623,22 @@ class Keyboard extends HTMLElement {
       });
   }
 
-  get deadKeys() {
-    return this._state.deadKeys;
-  }
-
   set deadKeys(value) {
-    this._state.deadKeys = value;
+    this._state.deadKeys = {};
+    value.filter(key => isDeadKey(key.char) && key.alt_self && key.alt_space
+      && key.base && key.base.length && key.alt && key.alt.length
+      && key.base.length === key.alt.length)
+    .forEach(key => {
+      let dk = {};
+      for (let i = 0; i < key.base.length; i++) {
+        dk[key.base[i]] = key.alt[i];
+      }
+      dk['\u0020'] = key.alt_space;
+      dk['\u00a0'] = key.alt_space;
+      dk['\u202f'] = key.alt_space;
+      dk[key.char] = key.alt_self;
+      this._state.deadKeys[key.char] = dk;
+    });
   }
 
   setKeyStyle(keyName, style) {
@@ -710,7 +716,7 @@ class Keyboard extends HTMLElement {
   }
 
   latchDeadKey(dkID) {
-    const dk = this._state.deadKeys.find(i => i.char === dkID);
+    const dk = this._state.deadKeys[dkID];
     if (!dk) {
       return;
     }
@@ -720,8 +726,8 @@ class Keyboard extends HTMLElement {
       if (!key || element.classList.contains('specialKey')) {
         return;
       }
-      const alt0 = dk.alt[dk.base.indexOf(key[0])];
-      const alt1 = dk.alt[dk.base.indexOf(key[1])];
+      const alt0 = dk[key[0]];
+      const alt1 = dk[key[1]];
       if (alt0) {
         element.querySelector('em.dk').textContent = alt0;
       }
@@ -740,13 +746,7 @@ class Keyboard extends HTMLElement {
     this.root.getElementById('keyboard').classList.remove('dk')
     Array.from(this.root.querySelectorAll('.dk'))
       .forEach(span => span.textContent = '');
-    if (char === ' ' || char === '\u00a0' || char === '\u202f') {
-      return dk.alt_space;
-    } else if (char === dk.char) {
-      return dk.alt_self;
-    } else {
-      return dk.alt[dk.base.indexOf(char)] || '';
-    }
+    return dk[char] || '';
   }
 
   showHint(char) {
