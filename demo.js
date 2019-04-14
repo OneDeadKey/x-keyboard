@@ -40,23 +40,27 @@ window.addEventListener('DOMContentLoaded', () => {
   setTheme();
 
   // highlight keyboard keys and emulate the keyboard
+  let previousValue = '';
   input.onkeyup = event => keyboard.keyUp(event.code);
   input.onkeydown = event => {
+    if (event.code === 'Enter') {
+      previousValue = input.value = '';
+      return false;
+    }
     const value = keyboard.keyDown(event.code);
     if (!emulation.checked) {
       return true;
     }
+    if (previousValue !== input.value) {
+      // working around a weird bug with dead keys on Firefox + Linux
+      input.value = previousValue;
+    }
     if (value) {
       input.value += value;
     } else if (event.code === 'Backspace') {
-      if (event.ctrlKey || event.altKey) {
-        input.value = '';
-      } else {
-        input.value = input.value.slice(0, -1);
-      }
-    } else if (event.code === 'Enter') {
-      input.value = '';
+      input.value = input.value.slice(0, -1);
     }
+    previousValue = input.value;
     return false;
   };
   window.addEventListener('focusout', () => {

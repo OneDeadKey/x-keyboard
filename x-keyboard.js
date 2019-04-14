@@ -454,7 +454,7 @@ const keyNames = {
   'BracketRight': 'AD12',
   'Backslash':    'BKSL',
   'Quote':        'AC11',
-  'Lesser':       'LSGT', // XXX check me!
+  'IntlBackslash':'LSGT',
   // special keys
   'Tab':          'TAB',
   'Enter':        'RTRN',
@@ -468,7 +468,8 @@ const keyNames = {
   'OSLeft':       'LWIN',
   'OSRight':      'RWIN',
   'ContextMenu':  'MENU',
-  'Esc':          'ESC', // XXX check me!
+  'CapsLock':     'CAPS',
+  'Escape':       'ESC',
 };
 
 function getKey(root, keyCode) {
