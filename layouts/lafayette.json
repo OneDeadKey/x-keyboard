@@ -11,108 +11,124 @@
     "url": "https://github.com/fabi1cazenave/qwerty-lafayette",
     "version": "0.8.0",
     "fileName": "qwerty-l",
-    "lastChange": "2019-04-11"
+    "lastChange": "2019-04-14"
   },
   "layout": {
     "AE01": [ "1", "!", "!" ],
-    "AE02": [ "2", "@", "(", "\u207d" ],
-    "AE03": [ "3", "#", ")", "\u207e" ],
+    "AE02": [ "2", "@", "(", "⁽" ],
+    "AE03": [ "3", "#", ")", "⁾" ],
     "AE04": [ "4", "$", "'" ],
     "AE05": [ "5", "%", "\"" ],
     "AE06": [ "6", "^" ],
-    "AE07": [ "7", "&", "7", "\u2077" ],
-    "AE08": [ "8", "*", "8", "\u2078" ],
-    "AE09": [ "9", "(", "9", "\u2079" ],
-    "AE10": [ "0", ")", "/", "\u00f7" ],
-    "AD01": [ "q", "Q", "=", "\u2260" ],
-    "AD02": [ "w", "W", "<", "\u2264" ],
-    "AD03": [ "e", "E", ">", "\u2265" ],
-    "AD04": [ "r", "R", "-", "\u2014" ],
-    "AD05": [ "t", "T", "+", "\u00b1" ],
+    "AE07": [ "7", "&", "7", "⁷" ],
+    "AE08": [ "8", "*", "8", "⁸" ],
+    "AE09": [ "9", "(", "9", "⁹" ],
+    "AE10": [ "0", ")", "/", "÷" ],
+    "AD01": [ "q", "Q", "=", "≠" ],
+    "AD02": [ "w", "W", "<", "≤" ],
+    "AD03": [ "e", "E", ">", "≥" ],
+    "AD04": [ "r", "R", "-", "—" ],
+    "AD05": [ "t", "T", "+", "±" ],
     "AD06": [ "y", "Y" ],
-    "AD07": [ "u", "U", "4", "\u2074" ],
-    "AD08": [ "i", "I", "5", "\u2075" ],
-    "AD09": [ "o", "O", "6", "\u2076" ],
-    "AD10": [ "p", "P", "*", "\u00d7" ],
+    "AD07": [ "u", "U", "4", "⁴" ],
+    "AD08": [ "i", "I", "5", "⁵" ],
+    "AD09": [ "o", "O", "6", "⁶" ],
+    "AD10": [ "p", "P", "*", "×" ],
     "AC01": [ "a", "A", "{" ],
     "AC02": [ "s", "S", "[" ],
     "AC03": [ "d", "D", "]" ],
     "AC04": [ "f", "F", "}" ],
     "AC05": [ "g", "G", "/" ],
     "AC06": [ "h", "H" ],
-    "AC07": [ "j", "J", "1", "\u00b9" ],
-    "AC08": [ "k", "K", "2", "\u00b2" ],
-    "AC09": [ "l", "L", "3", "\u00b3" ],
-    "AC10": [ "**", "**", "-", "\u2212" ],
+    "AC07": [ "j", "J", "1", "¹" ],
+    "AC08": [ "k", "K", "2", "²" ],
+    "AC09": [ "l", "L", "3", "³" ],
+    "AC10": [ "**", "**", "-", "−" ],
     "AB01": [ "z", "Z", "~" ],
     "AB02": [ "x", "X", "`" ],
-    "AB03": [ "c", "C", "|", "\u00a6" ],
-    "AB04": [ "v", "V", "_", "\u2013" ],
+    "AB03": [ "c", "C", "|", "¦" ],
+    "AB04": [ "v", "V", "_", "–" ],
     "AB05": [ "b", "B", "\\" ],
     "AB06": [ "n", "N" ],
-    "AB07": [ "m", "M", "0", "\u2070" ],
+    "AB07": [ "m", "M", "0", "⁰" ],
     "AB08": [ ",", ";", "," ],
     "AB09": [ ".", ":", "." ],
-    "AB10": [ "/", "?", "+", "\u00ac" ],
-    "AE11": [ "-", "_", "*\u00af" ],
+    "AB10": [ "/", "?", "+", "¬" ],
+    "AE11": [ "-", "_", "*¯" ],
     "AE12": [ "=", "+" ],
-    "AD11": [ "*^", "\u00ab" ],
-    "AD12": [ "*\u00a8", "\u00bb" ],
-    "AC11": [ "'", "\"", "*\u00b4", "*\u02d9" ],
+    "AD11": [ "*^", "«" ],
+    "AD12": [ "*¨", "»" ],
+    "AC11": [ "'", "\"", "*´", "*˙" ],
     "TLDE": [ "`", "~", "*`", "*~" ],
     "BKSL": [ "\\", "|" ],
     "LSGT": [ "<", ">" ],
-    "SPCE": [ " ", "\u202f", "\u00a0", "\u202f" ]
+    "SPCE": [ " ", " ", " ", " " ]
   },
-  "dead_keys": {
-    "1dk": {
-      "base": "123450-=qwertyuiopasdfghjkl<xcvbnm,./!@#$%_+QWERTYUIOPASDFHJKL>CVBNM;?",
-      "alt": "\u201e\u201c\u201d\u00a3\u20ac\u00b0\u2014\u2260\u00e6\u00e9\u00e8\u00ae\u00fe\u00a5\u00f9\u0133\u0153\u00a7\u00e0\u00df\u00f0\u017f\u00a9\u2190\u2193\u2191\u2192\u2264\u00d7\u00e7\u016d\u2020\u00f1\u00b5\u00b7\u2026\u00f7\u00a1\u2018\u2019\u00a2\u2030\u2013\u00b1\u00c6\u00c9\u00c8\u2122\u00de\u00a4\u00d9\u0132\u0152\u00b6\u00c0\u1e9e\u00d0\u00aa\u21d0\u21d3\u21d1\u21d2\u2265\u00c7\u016c\u2021\u00d1\u00ba\u2022\u00bf",
-      "alt_space": "*",
-      "alt_self": "*"
-    },
-    "acute": {
-      "base": "acegiklmnoprsuwyzACEGIKLMNOPRSUWYZ",
-      "alt": "\u00e1\u0107\u00e9\u01f5\u00ed\u1e31\u013a\u1e3f\u0144\u00f3\u1e55\u0155\u015b\u00fa\u1e83\u00fd\u017a\u00c1\u0106\u00c9\u01f4\u00cd\u1e30\u0139\u1e3e\u0143\u00d3\u1e54\u0154\u015a\u00da\u1e82\u00dd\u0179",
-      "alt_space": "'",
-      "alt_self": "\u00b4"
-    },
-    "grave": {
-      "base": "aeinouwyAEINOUWY",
-      "alt": "\u00e0\u00e8\u00ec\u01f9\u00f2\u00f9\u1e81\u1ef3\u00c0\u00c8\u00cc\u01f8\u00d2\u00d9\u1e80\u1ef2",
-      "alt_space": "`",
-      "alt_self": "`"
-    },
-    "circumflex": {
+  "dead_keys": [
+    {
+      "char": "*^",
+      "name": "circumflex",
       "base": "aceghijosuwyzACEGHIJOSUWYZ",
-      "alt": "\u00e2\u0109\u00ea\u011d\u0125\u00ee\u0135\u00f4\u015d\u00fb\u0175\u0177\u1e91\u00c2\u0108\u00ca\u011c\u0124\u00ce\u0134\u00d4\u015c\u00db\u0174\u0176\u1e90",
+      "alt": "âĉêĝĥîĵôŝûŵŷẑÂĈÊĜĤÎĴÔŜÛŴŶẐ",
       "alt_space": "^",
       "alt_self": "^"
     },
-    "diaeresis": {
+    {
+      "char": "*¨",
+      "name": "diaeresis",
       "base": "aehiotuwxyAEHIOUWXY",
-      "alt": "\u00e4\u00eb\u1e27\u00ef\u00f6\u1e97\u00fc\u1e85\u1e8d\u00ff\u00c4\u00cb\u1e26\u00cf\u00d6\u00dc\u1e84\u1e8c\u0178",
+      "alt": "äëḧïöẗüẅẍÿÄËḦÏÖÜẄẌŸ",
       "alt_space": "\"",
-      "alt_self": "\u00a8"
+      "alt_self": "¨"
     },
-    "tilde": {
+    {
+      "char": "**",
+      "name": "1dk",
+      "base": "50-=qweuopas<cvnm,._+QWEUOPAS>CVNM",
+      "alt": "€°—≠æéèùœ§àß≤çŭñµ·…–±ÆÉÈÙŒ¶Àẞ≥ÇŬÑΜ",
+      "alt_space": "’",
+      "alt_self": "`"
+    },
+    {
+      "char": "*`",
+      "name": "grave",
+      "base": "aeinouwyAEINOUWY",
+      "alt": "àèìǹòùẁỳÀÈÌǸÒÙẀỲ",
+      "alt_space": "`",
+      "alt_self": "`"
+    },
+    {
+      "char": "*~",
+      "name": "tilde",
       "base": "aeinouvyAEINOUVY",
-      "alt": "\u00e3\u1ebd\u0129\u00f1\u00f5\u0169\u1e7d\u1ef9\u00c3\u1ebc\u0128\u00d1\u00d5\u0168\u1e7c\u1ef8",
+      "alt": "ãẽĩñõũṽỹÃẼĨÑÕŨṼỸ",
       "alt_space": "~",
       "alt_self": "~"
     },
-    "macron": {
+    {
+      "char": "*¯",
+      "name": "macron",
       "base": "aeiouAEIOU",
-      "alt": "\u0101\u0113\u012b\u014d\u016b\u0100\u0112\u012a\u014c\u016a",
-      "alt_space": "\u00af",
-      "alt_self": "\u02c9"
+      "alt": "āēīōūĀĒĪŌŪ",
+      "alt_space": "¯",
+      "alt_self": "ˉ"
     },
-    "abovedot": {
+    {
+      "char": "*´",
+      "name": "acute",
+      "base": "acegiklmnoprsuwyzACEGIKLMNOPRSUWYZ",
+      "alt": "áćéǵíḱĺḿńóṕŕśúẃýźÁĆÉǴÍḰĹḾŃÓṔŔŚÚẂÝŹ",
+      "alt_space": "'",
+      "alt_self": "´"
+    },
+    {
+      "char": "*˙",
+      "name": "abovedot",
       "base": "abcdefghijlmnoprstwxyzABCDEFGHILMNOPRSTWXYZ",
-      "alt": "\u0227\u1e03\u010b\u1e0b\u0117\u1e1f\u0121\u1e23\u0131\u0237\u0140\u1e41\u1e45\u022f\u1e57\u1e59\u1e61\u1e6b\u1e87\u1e8b\u1e8f\u017c\u0226\u1e02\u010a\u1e0a\u0116\u1e1e\u0120\u1e22\u0130\u013f\u1e40\u1e44\u022e\u1e56\u1e58\u1e60\u1e6a\u1e86\u1e8a\u1e8e\u017b",
-      "alt_space": "\u02d9",
-      "alt_self": "\u02d9"
+      "alt": "ȧḃċḋėḟġḣıȷŀṁṅȯṗṙṡṫẇẋẏżȦḂĊḊĖḞĠḢİĿṀṄȮṖṘṠṪẆẊẎŻ",
+      "alt_space": "˙",
+      "alt_self": "˙"
     }
-  },
+  ],
   "has_altgr": true
 }

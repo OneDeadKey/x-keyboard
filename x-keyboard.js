@@ -706,7 +706,7 @@ class Keyboard extends HTMLElement {
   }
 
   latchDeadKey(dkID) {
-    const dk = this._state.deadKeys.find(i => ('*' + i.alt_self) === dkID);
+    const dk = this._state.deadKeys.find(i => i.char === dkID);
     if (!dk) {
       return;
     }

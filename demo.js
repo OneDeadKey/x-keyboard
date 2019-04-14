@@ -19,11 +19,7 @@ window.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(data => {
           keyboard.layout = data.layout;
-          let deadKeys = [];
-          for (let dk in data.dead_keys) {
-            deadKeys.push(data.dead_keys[dk]);
-          }
-          keyboard.deadKeys = deadKeys;
+          keyboard.deadKeys = data.dead_keys;
         })
         .then(showKeys);
     } else { // blank layout

@@ -63,6 +63,6 @@
     "LSGT": [ "\\", "|" ],
     "SPCE": [ " ", " " ]
   },
-  "dead_keys": {},
+  "dead_keys": [],
   "has_altgr": false
 }

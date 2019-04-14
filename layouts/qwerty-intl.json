@@ -8,7 +8,7 @@
     "description": "QWERTY layout, international variant",
     "version": "1.0.0",
     "fileName": "q-intl",
-    "lastChange": "2019-04-11"
+    "lastChange": "2019-04-14"
   },
   "layout": {
     "AE01": [ "1", "!" ],
@@ -55,43 +55,53 @@
     "AE12": [ "=", "+" ],
     "AD11": [ "[", "{" ],
     "AD12": [ "]", "}" ],
-    "AC11": [ "*\u00b4", "*\u00a8" ],
+    "AC11": [ "*´", "*¨" ],
     "TLDE": [ "*`", "*~" ],
     "BKSL": [ "\\", "|" ],
     "LSGT": [ "\\", "|" ],
     "SPCE": [ " ", " " ]
   },
-  "dead_keys": {
-    "grave": {
+  "dead_keys": [
+    {
+      "char": "*`",
+      "name": "grave",
       "base": "aeinouwyAEINOUWY",
-      "alt": "\u00e0\u00e8\u00ec\u01f9\u00f2\u00f9\u1e81\u1ef3\u00c0\u00c8\u00cc\u01f8\u00d2\u00d9\u1e80\u1ef2",
+      "alt": "àèìǹòùẁỳÀÈÌǸÒÙẀỲ",
       "alt_space": "`",
       "alt_self": "`"
     },
-    "tilde": {
+    {
+      "char": "*~",
+      "name": "tilde",
       "base": "aeinouvyAEINOUVY",
-      "alt": "\u00e3\u1ebd\u0129\u00f1\u00f5\u0169\u1e7d\u1ef9\u00c3\u1ebc\u0128\u00d1\u00d5\u0168\u1e7c\u1ef8",
+      "alt": "ãẽĩñõũṽỹÃẼĨÑÕŨṼỸ",
       "alt_space": "~",
       "alt_self": "~"
     },
-    "circumflex": {
+    {
+      "char": "*^",
+      "name": "circumflex",
       "base": "aceghijosuwyzACEGHIJOSUWYZ",
-      "alt": "\u00e2\u0109\u00ea\u011d\u0125\u00ee\u0135\u00f4\u015d\u00fb\u0175\u0177\u1e91\u00c2\u0108\u00ca\u011c\u0124\u00ce\u0134\u00d4\u015c\u00db\u0174\u0176\u1e90",
+      "alt": "âĉêĝĥîĵôŝûŵŷẑÂĈÊĜĤÎĴÔŜÛŴŶẐ",
       "alt_space": "^",
       "alt_self": "^"
     },
-    "acute": {
+    {
+      "char": "*´",
+      "name": "acute",
       "base": "acegiklmnoprsuwyzACEGIKLMNOPRSUWYZ",
-      "alt": "\u00e1\u0107\u00e9\u01f5\u00ed\u1e31\u013a\u1e3f\u0144\u00f3\u1e55\u0155\u015b\u00fa\u1e83\u00fd\u017a\u00c1\u0106\u00c9\u01f4\u00cd\u1e30\u0139\u1e3e\u0143\u00d3\u1e54\u0154\u015a\u00da\u1e82\u00dd\u0179",
+      "alt": "áćéǵíḱĺḿńóṕŕśúẃýźÁĆÉǴÍḰĹḾŃÓṔŔŚÚẂÝŹ",
       "alt_space": "'",
-      "alt_self": "\u00b4"
+      "alt_self": "´"
     },
-    "diaeresis": {
+    {
+      "char": "*¨",
+      "name": "diaeresis",
       "base": "aehiotuwxyAEHIOUWXY",
-      "alt": "\u00e4\u00eb\u1e27\u00ef\u00f6\u1e97\u00fc\u1e85\u1e8d\u00ff\u00c4\u00cb\u1e26\u00cf\u00d6\u00dc\u1e84\u1e8c\u0178",
+      "alt": "äëḧïöẗüẅẍÿÄËḦÏÖÜẄẌŸ",
       "alt_space": "\"",
-      "alt_self": "\u00a8"
+      "alt_self": "¨"
     }
-  },
+  ],
   "has_altgr": false
 }
