@@ -55,11 +55,13 @@ const css = `
     width: 40px;
     height: 40px;
     margin: 2px;
-    border: 1px solid black;
+    border: 1px solid #aaa;
     border-radius: 5px;
   }
   li li * {
     font-weight: inherit;
+    font-style: inherit;
+    color: #333;
   }
   li strong {
     position: absolute;
@@ -68,7 +70,6 @@ const css = `
   }
   li em {
     position: absolute;
-    font-style: normal;
     bottom: 2px;
     left: 3px;
   }
