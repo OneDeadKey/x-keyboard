@@ -423,22 +423,18 @@ const drawKey = (element, keyMap) => {
  * Keyboard Map
  */
 
-const getKey = (root, keyCode) => {
-  return root.getElementById(keyCode);
-};
-
 const getKeyChord = (root, key) => {
   if (!key || !key.id) {
     return [];
   }
-  const element = getKey(root, key.id);
+  const element = root.getElementById(key.id);
   let chord = [ element ];
   if (key.level > 1) { // altgr
-    chord.push(getKey(root, 'AltRight'));
+    chord.push(root.getElementById('AltRight'));
   }
   if (key.level % 2) { // shift
-    chord.push(getKey(root,
-      element.getAttribute('finger')[0] == 'l' ? 'ShiftRight' : 'ShiftLeft'));
+    chord.push(root.getElementById(element.getAttribute('finger')[0] == 'l' ?
+      'ShiftRight' : 'ShiftLeft'));
   }
   return chord;
 };
@@ -531,7 +527,7 @@ class Keyboard extends HTMLElement {
   }
 
   keyDown(keyCode) {
-    const element = getKey(this.root, keyCode);
+    const element = this.root.getElementById(keyCode);
     if (!element) {
       return '';
     }
@@ -566,7 +562,7 @@ class Keyboard extends HTMLElement {
   }
 
   keyUp(keyCode) {
-    const element = getKey(this.root, keyCode);
+    const element = this.root.getElementById(keyCode);
     if (!element) {
       return;
     }
@@ -643,9 +639,9 @@ class Keyboard extends HTMLElement {
 
   showKeys(chars, cssText) {
     this.clearStyle();
-    this.layout.getKeySequence(chars).forEach(key => {
-      getKey(this.root, key.id).style.cssText = cssText || defaultKeyPressStyle;
-    });
+    this.layout.getKeySequence(chars)
+      .forEach(key => this.root.getElementById(key.id).style.cssText =
+        cssText || defaultKeyPressStyle);
   }
 
   typeKeys(str, duration) {
