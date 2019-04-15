@@ -1,3 +1,6 @@
+import { newKeyboardLayout, isDeadKey } from './layout.js';
+
+
 /*******************************************************************************
  * Shadow DOM
  */
@@ -396,6 +399,36 @@ const html = `
 const template = document.createElement('template');
 template.innerHTML = `<style>${css}</style>${html}`;
 
+const drawKey = (element, keyMap) => {
+  element.innerHTML = '';
+  if (!keyMap) {
+    return;
+  }
+
+  const createLabel = (type, label, className) => {
+    let element = document.createElement(type);
+    if (isDeadKey(label)) {
+      element.classList.add('deadKey');
+      element.textContent = label[1];
+    } else {
+      element.textContent = label || '';
+    }
+    if (className) {
+      element.classList.add(className);
+    }
+    return element;
+  };
+
+  const [ base, shift, alt ] = keyMap[element.id.slice(4)] || [''];
+  element.appendChild(createLabel('strong', shift));
+  if (base.toUpperCase() !== shift) {
+    element.appendChild(createLabel('em', base));
+  }
+  element.appendChild(createLabel('em', alt, 'altgr'));
+  element.appendChild(createLabel('em', '', 'dk'));
+  element.appendChild(createLabel('strong', '', 'dk'));
+};
+
 
 /*******************************************************************************
  * Keyboard Map
@@ -473,29 +506,26 @@ const keyNames = {
   'Escape':       'ESC',
 };
 
-function getKey(root, keyCode) {
+const getKey = (root, keyCode) => {
   const name = keyCode in keyNames ? keyNames[keyCode] : keyCode;
   return root.getElementById('key_' + name);
-}
+};
 
-function getKeys(root, str, keymap, keymod) {
-  let rv = [];
-  if (str) {
-    for (let char of str) {
-      if (char in keymap) {
-        rv.push(keymap[char]);
-      }
-      if (char in keymod) {
-        rv.push(keymod[char]);
-      }
-    }
+const getKeyChord = (root, key) => {
+  if (!key || !key.id) {
+    return [];
   }
-  return rv;
-}
-
-function isDeadKey(value) {
-  return value && value.length === 2 && value[0] === '*';
-}
+  const element = getKey(root, key.id);
+  let chord = [ element ];
+  if (key.level > 1) { // altgr
+    chord.push(getKey(root, 'RALT'));
+  }
+  if (key.level % 2) { // shift
+    const id = element.getAttribute('finger')[0] == 'l' ? 'RTSH' : 'LFSH';
+    chord.push(getKey(root, id));
+  }
+  return chord;
+};
 
 const defaultKeyPressStyle = 'background-color: #aaf;';
 const defaultKeyPressDuration = 250;
@@ -514,14 +544,7 @@ class Keyboard extends HTMLElement {
     this._state = {
       shape: this.getAttribute('shape') || 'pc104',
       theme: this.getAttribute('theme') || '',
-      activeKey: null,
-      activeMod: null,
-      hintedKeys: [],
-      styledKeys: [],
-      keymap: {},
-      keymod: {},
       layout: {},
-      deadKeys: {},
       modifiers: {}
     };
     this.shape = this._state.shape;
@@ -579,79 +602,11 @@ class Keyboard extends HTMLElement {
     this.root.getElementById('keyboard').setAttribute('shape', value);
   }
 
-  set layout(value) {
-    this._state.layout = value;
-    this._state.keymap = {};
-    this._state.keymod = {};
-    const createLabel = (type, label, className) => {
-      let element = document.createElement(type);
-      if (isDeadKey(label)) {
-        element.classList.add('deadKey');
-        element.textContent = label[1];
-      } else {
-        element.textContent = label || '';
-      }
-      if (className) {
-        element.classList.add(className);
-      }
-      return element;
-    };
+  setLayout(keyMap, deadKeys) {
+    this.layout = newKeyboardLayout(keyMap || {}, deadKeys || []);
     Array.from(this.root.querySelectorAll('li li'))
       .filter(key => !key.classList.contains('specialKey'))
-      .forEach(key => {
-        const [ base, shift, alt ] = value[key.id.slice(4)] || [''];
-        key.innerHTML = '';
-        key.appendChild(createLabel('strong', shift));
-        if (base.toUpperCase() !== shift) {
-          key.appendChild(createLabel('em', base));
-        }
-        key.appendChild(createLabel('em', alt, 'altgr'));
-        key.appendChild(createLabel('em', '', 'dk'));
-        key.appendChild(createLabel('strong', '', 'dk'));
-
-        // store current key in the main hash tables
-        this._state.keymap[base] = key;
-        this._state.keymap[shift] = key;
-        if (base != shift) {
-          this._state.keymod[shift] = getKey(this.root,
-            key.getAttribute('finger')[0] == 'l' ? 'RTSH' : 'LFSH');
-        }
-        if (alt) {
-          this._state.keymap[alt] = key;
-          this._state.keymod[alt] = getKey(this.root, 'RALT');
-        }
-      });
-  }
-
-  set deadKeys(value) {
-    this._state.deadKeys = {};
-    value.filter(key => isDeadKey(key.char) && key.alt_self && key.alt_space
-      && key.base && key.base.length && key.alt && key.alt.length
-      && key.base.length === key.alt.length)
-    .forEach(key => {
-      let dk = {};
-      for (let i = 0; i < key.base.length; i++) {
-        dk[key.base[i]] = key.alt[i];
-      }
-      dk['\u0020'] = key.alt_space;
-      dk['\u00a0'] = key.alt_space;
-      dk['\u202f'] = key.alt_space;
-      dk[key.char] = key.alt_self;
-      this._state.deadKeys[key.char] = dk;
-    });
-  }
-
-  setKeyStyle(keyName, style) {
-    const element = getKey(this.root, keyName);
-    if (element) {
-      element.style.cssText = style;
-    }
-  }
-
-  clearStyle() {
-    Array.from(this.root.querySelectorAll('li[style]')).forEach(element => {
-      element.style.cssText = '';
-    });
+      .forEach(key => drawKey(key, keyMap));
   }
 
   keyDown(keyCode) {
@@ -676,7 +631,7 @@ class Keyboard extends HTMLElement {
         break;
     }
 
-    const key = this._state.layout[element.id.slice(4)];
+    const key = this.layout.keyMap[element.id.slice(4)];
     if (!key) {
       return '';
     }
@@ -716,13 +671,13 @@ class Keyboard extends HTMLElement {
   }
 
   latchDeadKey(dkID) {
-    const dk = this._state.deadKeys[dkID];
+    const dk = this.layout.deadKeys[dkID];
     if (!dk) {
       return;
     }
     Array.from(this.root.querySelectorAll('li li')).forEach(element => {
       // display dead keys in the virtual keyboard
-      const key = this._state.layout[element.id.slice(4)];
+      const key = this.layout.keyMap[element.id.slice(4)];
       if (!key || element.classList.contains('specialKey')) {
         return;
       }
@@ -749,43 +704,48 @@ class Keyboard extends HTMLElement {
     return dk[char] || '';
   }
 
-  showHint(char) {
+  clearStyle() {
+    Array.from(this.root.querySelectorAll('li[style]'))
+      .forEach(element => element.removeAttribute('style'));
+  }
+
+  showHint(key) {
     let hintClass = '';
-    this._state.hintedKeys.forEach(li => li.classList.remove('hint'));
-    this._state.hintedKeys =
-      getKeys(this.root, char[0], this._state.keymap, this._state.keymod);
-    this._state.hintedKeys.forEach(li => {
+    Array.from(this.root.querySelectorAll('li.hint'))
+      .forEach(li => li.classList.remove('hint'));
+    getKeyChord(this.root, key).forEach(li => {
       li.classList.add('hint');
       hintClass += li.getAttribute('finger') + ' ';
-      // hintBox.classList.add(li.getAttribute('finger'));
     });
     return hintClass;
   }
 
+  showKey(key, cssText) {
+    this.clearStyle();
+    getKeyChord(this.root, key)
+      .forEach(li => li.style.cssText = cssText || defaultKeyPressStyle);
+  }
+
   showKeys(chars, cssText) {
-    this._state.styledKeys.forEach(li => li.style.cssText = '');
-    this._state.styledKeys =
-      getKeys(this.root, chars, this._state.keymap, this._state.keymod);
-    this._state.styledKeys.forEach(li => {
-      li.style.cssText = cssText || defaultKeyPressStyle;
+    this.clearStyle();
+    this.layout.getKeySequence(chars).forEach(key => {
+      getKey(this.root, key.id).style.cssText = cssText || defaultKeyPressStyle;
     });
   }
 
-  typeKeys(str, style, duration) {
-    function *pressKeys(str) {
-      for (let char of str) {
-        yield char;
+  typeKeys(str, duration) {
+    function *pressKeys(keys) {
+      for (let key of keys) {
+        yield key;
       }
     }
-    let it = pressKeys(str);
+    let it = pressKeys(this.layout.getKeySequence(str));
     const send = setInterval(() => {
       const { value, done } = it.next();
+      // this.showHint(value);
+      this.showKey(value);
       if (done) {
         clearInterval(send);
-        this.showKeys();
-      } else {
-        this.showKeys(value, style || defaultKeyPressStyle);
-        // setTimeout(this.showKeys, duration - 50);
       }
     }, duration || defaultKeyPressDuration);
   }
