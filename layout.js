@@ -1,5 +1,71 @@
 export { newKeyboardLayout, isDeadKey };
 
+const keyNames = {
+  'SPCE': 'Space',
+  // numbers
+  'AE01': 'Digit1',
+  'AE02': 'Digit2',
+  'AE03': 'Digit3',
+  'AE04': 'Digit4',
+  'AE05': 'Digit5',
+  'AE06': 'Digit6',
+  'AE07': 'Digit7',
+  'AE08': 'Digit8',
+  'AE09': 'Digit9',
+  'AE10': 'Digit0',
+  // letters: 1st row
+  'AD01': 'KeyQ',
+  'AD02': 'KeyW',
+  'AD03': 'KeyE',
+  'AD04': 'KeyR',
+  'AD05': 'KeyT',
+  'AD06': 'KeyY',
+  'AD07': 'KeyU',
+  'AD08': 'KeyI',
+  'AD09': 'KeyO',
+  'AD10': 'KeyP',
+  // letters: 2nd row
+  'AC01': 'KeyA',
+  'AC02': 'KeyS',
+  'AC03': 'KeyD',
+  'AC04': 'KeyF',
+  'AC05': 'KeyG',
+  'AC06': 'KeyH',
+  'AC07': 'KeyJ',
+  'AC08': 'KeyK',
+  'AC09': 'KeyL',
+  'AC10': 'Semicolon',
+  // letters: 3rd row
+  'AB01': 'KeyZ',
+  'AB02': 'KeyX',
+  'AB03': 'KeyC',
+  'AB04': 'KeyV',
+  'AB05': 'KeyB',
+  'AB06': 'KeyN',
+  'AB07': 'KeyM',
+  'AB08': 'Comma',
+  'AB09': 'Period',
+  'AB10': 'Slash',
+  // pinky keys
+  'TLDE': 'Backquote',
+  'AE11': 'Minus',
+  'AE12': 'Equal',
+  'AD11': 'BracketLeft',
+  'AD12': 'BracketRight',
+  'BKSL': 'Backslash',
+  'AC11': 'Quote',
+  'LSGT': 'IntlBackslash',
+};
+
+// turn Kalamine IDs (xkb) into DOM IDs
+function parseKalamineLayout(keyMap) {
+  let rv = {};
+  for (let xkb in keyMap) {
+    rv[keyNames[xkb]] = keyMap[xkb];
+  }
+  return rv;
+}
+
 // Kalamine dead keys are identified with a `*` prefix + the diacritic sign
 function isDeadKey(value) {
   return value && value.length === 2 && value[0] === '*';
@@ -69,11 +135,12 @@ function getKeySequence(keyMap, deadKeys, str) {
 
 // public API
 function newKeyboardLayout(keyMap, deadKeys) {
+  const kMap = parseKalamineLayout(keyMap);
   const dkMap = parseKalamineDeadKeys(deadKeys);
   return {
-    get keyMap() { return keyMap; },
+    get keyMap() { return kMap; },
     get deadKeys() { return dkMap; },
-    getKey: char => getKeyList(keyMap, char)[0],
-    getKeySequence: str => getKeySequence(keyMap, dkMap, str)
+    getKey: char => getKeyList(kMap, char)[0],
+    getKeySequence: str => getKeySequence(kMap, dkMap, str)
   };
 }

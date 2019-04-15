@@ -51,7 +51,7 @@ const css = `
   }
 
   /* keys */
-  li li {
+  key {
     position: relative;
     float: left;
     clear: none;
@@ -61,33 +61,32 @@ const css = `
     border: 1px solid #aaa;
     border-radius: 5px;
   }
-  li li * {
+  key * {
     font-weight: inherit;
     font-style: inherit;
     color: #333;
   }
-  li strong {
+  key strong {
     position: absolute;
     top: 2px;
     left: 3px;
   }
-  li em {
+  key em {
     position: absolute;
     bottom: 2px;
     left: 3px;
   }
-  li .dk,
-  li .altgr {
+  key .dk,
+  key .altgr {
     left: auto;
     right: 5px;
     color: blue;
     opacity: 0.5;
   }
-  li .dk {
+  key .dk {
     color: red;
   }
-
-  li .deadKey {
+  key .deadKey {
     font-weight: bold;
     color: red;
   }
@@ -100,23 +99,23 @@ const css = `
     font-size: 13px;
     font-style: italic;
   }
-  #row_AA   .specialKey { width: 56px; }
-  #row_AA    #key_MENU  { width: 40px; }
-  #key_SPCE             { width: 240px;}
-  #key_TAB,  #key_BKSP  { width: 60px; }
-  #key_CAPS, #key_RTRN  { width: 73px; }
-  #key_LFSH, #key_RTSH  { width: 96px; }
+  #row_AA    .specialKey   { width: 56px; }
+  #row_AA     #ContextMenu { width: 40px; }
+  #Space                   { width: 240px;}
+  #Tab,       #Backspace   { width: 60px; }
+  #CapsLock,  #Enter       { width: 73px; }
+  #ShiftLeft, #ShiftRight  { width: 96px; }
 
-  #key_TAB *, #key_CAPS *, #key_LFSH *, #key_RTSH *, #key_RTRN * {
+  #Tab *, #CapsLock *, #ShiftLeft *, #ShiftRight *, #Enter * {
     font-size: 1.25em;
     font-style: normal;
   }
-  #key_MENU *, #key_BKSP * {
+  #ContextMenu *, #Backspace * {
     font-style: normal;
   }
 
   /* hide LSGT for pc104 (default) */
-  #key_LSGT, #key_CAPS105, #key_RTRN105, #key_ESC {
+  #IntlBackslash, #CapsLockISO, #EnterISO, #Escape {
     display: none;
   }
 
@@ -125,40 +124,40 @@ const css = `
    * European Keyboard Geometry (pc105)
    */
 
-  [shape="pc105"] #key_LFSH {
+  [shape="pc105"] #ShiftLeft {
     width: 50px;
   }
-  [shape="pc105"] #key_RTRN {
+  [shape="pc105"] #Enter {
     width: 27px;
     height: 86px;
     margin-top: -44px;
     margin-left: 48px;
   }
-  [shape="pc105"] #key_BKSL {
+  [shape="pc105"] #Backslash {
     margin-top: 48px;
     margin-left: -31px;
   }
-  [shape="pc105"] #key_LSGT {
+  [shape="pc105"] #IntlBackslash {
     display: block;
   }
   /* visual tweaks for CapsLock and Return */
-  [shape="pc105"] #key_CAPS105,
-  [shape="pc105"] #key_RTRN105 {
+  [shape="pc105"] #CapsLockISO,
+  [shape="pc105"] #EnterISO {
     background-color: #e8e8e8;
     display: block;
   }
-  [shape="pc105"] #key_CAPS {
+  [shape="pc105"] #CapsLock {
     width: 60px;
   }
-  [shape="pc105"] #key_CAPS,
-  [shape="pc105"] #key_RTRN {
+  [shape="pc105"] #CapsLock,
+  [shape="pc105"] #Enter {
     z-index: 1;
   }
-  [shape="pc105"] #key_CAPS105 {
+  [shape="pc105"] #CapsLockISO {
     margin-left: -64px;
     width: 73px;
   }
-  [shape="pc105"] #key_RTRN105 {
+  [shape="pc105"] #EnterISO {
     margin-top: -44px;
     margin-left: -44px;
     width: 40px;
@@ -169,73 +168,73 @@ const css = `
    * Ortholinear Keyboard Geometry (TMx, OLKB)
    */
 
-  [shape="tmx"] #key_CAPS, [shape="olkb"] #key_CAPS {
+  [shape="tmx"] #CapsLock, [shape="olkb"] #CapsLock {
     display: none;
   }
-  [shape="tmx"] #key_BKSL, [shape="olkb"] #key_BKSL {
+  [shape="tmx"] #Backslash, [shape="olkb"] #Backslash {
     margin-top: 94px;
     margin-left: -96px;
   }
-  [shape="tmx"] #key_TLDE, [shape="olkb"] #key_TLDE,
-  [shape="tmx"] #key_TAB,  [shape="olkb"] #key_TAB,
-  [shape="tmx"] #key_LFSH, [shape="olkb"] #key_LFSH,
-  [shape="tmx"] #key_LCTL, [shape="olkb"] #key_LCTL,
-  [shape="tmx"] #key_AE12, [shape="olkb"] #key_AE12,
-  [shape="tmx"] #key_AD12, [shape="olkb"] #key_AD12,
-  [shape="tmx"] #key_RTSH, [shape="olkb"] #key_RTSH,
-  [shape="tmx"] #key_RCTL, [shape="olkb"] #key_RCTL,
-  [shape="tmx"] #key_BKSP, [shape="olkb"] #key_BKSP,
-  [shape="tmx"] #key_RTRN, [shape="olkb"] #key_RTRN {
+  [shape="tmx"] #Backquote,    [shape="olkb"] #Backquote,
+  [shape="tmx"] #Tab,          [shape="olkb"] #Tab,
+  [shape="tmx"] #ShiftLeft,    [shape="olkb"] #ShiftLeft,
+  [shape="tmx"] #ControlLeft,  [shape="olkb"] #ControlLeft,
+  [shape="tmx"] #Equal,        [shape="olkb"] #Equal,
+  [shape="tmx"] #BracketRight, [shape="olkb"] #BracketRight,
+  [shape="tmx"] #ShiftRight,   [shape="olkb"] #ShiftRight,
+  [shape="tmx"] #ControlRight, [shape="olkb"] #ControlRight,
+  [shape="tmx"] #Backspace,    [shape="olkb"] #Backspace,
+  [shape="tmx"] #Enter,        [shape="olkb"] #Enter {
     width: 46px;
   }
-  [shape="tmx"] #key_LWIN, [shape="olkb"] #key_LWIN,
-  [shape="tmx"] #key_LALT, [shape="olkb"] #key_LALT,
-  [shape="tmx"] #key_RWIN, [shape="olkb"] #key_RWIN,
-  [shape="tmx"] #key_RALT, [shape="olkb"] #key_RALT {
+  [shape="tmx"] #OSLeft,   [shape="olkb"] #OSLeft,
+  [shape="tmx"] #AltLeft,  [shape="olkb"] #AltLeft,
+  [shape="tmx"] #OSRight,  [shape="olkb"] #OSRight,
+  [shape="tmx"] #AltRight, [shape="olkb"] #AltRight {
     width: 63px;
   }
-  [shape="tmx"] #key_TLDE,
-  [shape="tmx"] #key_TAB,
-  [shape="tmx"] #key_LFSH,
-  [shape="tmx"] #key_LCTL {
+  [shape="tmx"] #Backquote,
+  [shape="tmx"] #Tab,
+  [shape="tmx"] #ShiftLeft,
+  [shape="tmx"] #ControlLeft {
     margin-left: 3px;
   }
-  [shape="tmx"] #key_AC01 {
+  [shape="tmx"] #KeyA {
     margin-left: 55px; /* XXX why 55px instead of 54px? */
   }
-  [shape="tmx"] #key_AE06,
-  [shape="tmx"] #key_AD06,
-  [shape="tmx"] #key_AC06,
-  [shape="tmx"] #key_AB06 {
+  [shape="tmx"] #Digit6,
+  [shape="tmx"] #KeyY,
+  [shape="tmx"] #KeyH,
+  [shape="tmx"] #KeyN {
     margin-left: 54px;
   }
-  [shape="tmx"] #key_BKSP {
+  [shape="tmx"] #Backspace {
     margin-left: -378px;
     height: 86px;
   }
-  [shape="tmx"] #key_RTRN {
+  [shape="tmx"] #Enter {
     margin-left: -326px;
     height: 86px;
   }
-  [shape="tmx"] #key_LFSH, [shape="olkb"] #key_LFSH,
-  [shape="tmx"] #key_RTSH, [shape="olkb"] #key_RTSH {
+  [shape="tmx"] #ShiftLeft,  [shape="olkb"] #ShiftLeft,
+  [shape="tmx"] #ShiftRight, [shape="olkb"] #ShiftRight {
     height: 86px;
     margin-top: -44px;
   }
-  [shape="tmx"] #key_RTSH {
+  [shape="tmx"] #ShiftRight {
     margin-left: 48px;
   }
-  [shape="tmx"] #key_SPCE {
+  [shape="tmx"] #Space {
     width: 230px;
   }
 
   /* OLKB-specific */
   [shape="olkb"] .pinkyKey,
-  [shape="olkb"] #key_MENU { display: none; }
-  [shape="olkb"] #key_ESC  { display: inline-block; width: 46px; }
-  [shape="olkb"] #key_SPCE { width: 178px; }
-  [shape="olkb"] #key_RTRN { margin-top: -44px; }
-  [shape="olkb"] #key_AC01 { margin-left: 54px; }
+  [shape="olkb"] #ContextMenu { display: none; }
+  [shape="olkb"] #Escape      { display: inline-block; width: 46px; }
+  [shape="olkb"] #Space       { width: 178px; }
+  [shape="olkb"] #Enter       { margin-top: -44px; }
+  [shape="olkb"] #KeyA        { margin-left: 54px; }
   [shape="olkb"] { padding-left: 100px; }
 
 
@@ -274,124 +273,114 @@ const css = `
 const html = `
   <ul id="keyboard">
     <li id="row_AE">
-      <ul>
-        <li id="key_ESC"  class="specialKey">
-          <em> Esc </em>
-        </li>
-        <li id="key_TLDE" finger="l5" class="pinkyKey"> </li>
-        <li id="key_AE01" finger="l5" class="numberKey"></li>
-        <li id="key_AE02" finger="l4" class="numberKey"></li>
-        <li id="key_AE03" finger="l3" class="numberKey"></li>
-        <li id="key_AE04" finger="l2" class="numberKey"></li>
-        <li id="key_AE05" finger="l2" class="numberKey"></li>
-        <li id="key_AE06" finger="r2" class="numberKey"></li>
-        <li id="key_AE07" finger="r2" class="numberKey"></li>
-        <li id="key_AE08" finger="r3" class="numberKey"></li>
-        <li id="key_AE09" finger="r4" class="numberKey"></li>
-        <li id="key_AE10" finger="r5" class="numberKey"></li>
-        <li id="key_AE11" finger="r5" class="pinkyKey"> </li>
-        <li id="key_AE12" finger="r5" class="pinkyKey"> </li>
-        <li id="key_BKSP" class="specialKey">
-          <em> &#x232b; </em>
-        </li>
-      </ul>
+      <key id="Escape" class="specialKey">
+        <em> Esc </em>
+      </key>
+      <key id="Backquote" finger="l5" class="pinkyKey"> </key>
+      <key id="Digit1"    finger="l5" class="numberKey"></key>
+      <key id="Digit2"    finger="l4" class="numberKey"></key>
+      <key id="Digit3"    finger="l3" class="numberKey"></key>
+      <key id="Digit4"    finger="l2" class="numberKey"></key>
+      <key id="Digit5"    finger="l2" class="numberKey"></key>
+      <key id="Digit6"    finger="r2" class="numberKey"></key>
+      <key id="Digit7"    finger="r2" class="numberKey"></key>
+      <key id="Digit8"    finger="r3" class="numberKey"></key>
+      <key id="Digit9"    finger="r4" class="numberKey"></key>
+      <key id="Digit0"    finger="r5" class="numberKey"></key>
+      <key id="Minus"     finger="r5" class="pinkyKey"> </key>
+      <key id="Equal"     finger="r5" class="pinkyKey"> </key>
+      <key id="Backspace" class="specialKey">
+        <em> &#x232b; </em>
+      </key>
     </li>
     <li id="row_AD">
-      <ul>
-        <li id="key_TAB" class="specialKey">
-          <em> &#x21b9; </em>
-        </li>
-        <li id="key_AD01" finger="l5" class="letterKey"></li>
-        <li id="key_AD02" finger="l4" class="letterKey"></li>
-        <li id="key_AD03" finger="l3" class="letterKey"></li>
-        <li id="key_AD04" finger="l2" class="letterKey"></li>
-        <li id="key_AD05" finger="l2" class="letterKey"></li>
-        <li id="key_AD06" finger="r2" class="letterKey"></li>
-        <li id="key_AD07" finger="r2" class="letterKey"></li>
-        <li id="key_AD08" finger="r3" class="letterKey"></li>
-        <li id="key_AD09" finger="r4" class="letterKey"></li>
-        <li id="key_AD10" finger="r5" class="letterKey"></li>
-        <li id="key_AD11" finger="r5" class="pinkyKey"> </li>
-        <li id="key_AD12" finger="r5" class="pinkyKey"> </li>
-        <li id="key_BKSL" finger="r5" class="pinkyKey"> </li>
-      </ul>
+      <key id="Tab" class="specialKey">
+        <em> &#x21b9; </em>
+      </key>
+      <key id="KeyQ"         finger="l5" class="letterKey"></key>
+      <key id="KeyW"         finger="l4" class="letterKey"></key>
+      <key id="KeyE"         finger="l3" class="letterKey"></key>
+      <key id="KeyR"         finger="l2" class="letterKey"></key>
+      <key id="KeyT"         finger="l2" class="letterKey"></key>
+      <key id="KeyY"         finger="r2" class="letterKey"></key>
+      <key id="KeyU"         finger="r2" class="letterKey"></key>
+      <key id="KeyI"         finger="r3" class="letterKey"></key>
+      <key id="KeyO"         finger="r4" class="letterKey"></key>
+      <key id="KeyP"         finger="r5" class="letterKey"></key>
+      <key id="BracketLeft"  finger="r5" class="pinkyKey"> </key>
+      <key id="BracketRight" finger="r5" class="pinkyKey"> </key>
+      <key id="Backslash"    finger="r5" class="pinkyKey"> </key>
     </li>
     <li id="row_AC">
-      <ul>
-        <li id="key_CAPS" class="specialKey">
-          <em> &#x21ea; </em>
-        </li>
-        <li id="key_CAPS105" class="specialKey hiddenKey">
-          &nbsp;
-        </li>
-        <li id="key_AC01" finger="l5" class="letterKey homeKey"></li>
-        <li id="key_AC02" finger="l4" class="letterKey homeKey"></li>
-        <li id="key_AC03" finger="l3" class="letterKey homeKey"></li>
-        <li id="key_AC04" finger="l2" class="letterKey homeKey"></li>
-        <li id="key_AC05" finger="l2" class="letterKey"> </li>
-        <li id="key_AC06" finger="r2" class="letterKey"> </li>
-        <li id="key_AC07" finger="r2" class="letterKey homeKey"></li>
-        <li id="key_AC08" finger="r3" class="letterKey homeKey"></li>
-        <li id="key_AC09" finger="r4" class="letterKey homeKey"></li>
-        <li id="key_AC10" finger="r5" class="letterKey homeKey"></li>
-        <li id="key_AC11" finger="r5" class="pinkyKey"> </li>
-        <li id="key_RTRN" class="specialKey">
-          <em> &#x23ce; </em>
-        </li>
-        <li id="key_RTRN105" class="specialKey hiddenKey">
-          &nbsp;
-        </li>
-      </ul>
+      <key id="CapsLock" class="specialKey">
+        <em> &#x21ea; </em>
+      </key>
+      <key id="CapsLockISO" class="specialKey hiddenKey">
+        &nbsp;
+      </key>
+      <key id="KeyA"      finger="l5" class="letterKey homeKey"></key>
+      <key id="KeyS"      finger="l4" class="letterKey homeKey"></key>
+      <key id="KeyD"      finger="l3" class="letterKey homeKey"></key>
+      <key id="KeyF"      finger="l2" class="letterKey homeKey"></key>
+      <key id="KeyG"      finger="l2" class="letterKey"> </key>
+      <key id="KeyH"      finger="r2" class="letterKey"> </key>
+      <key id="KeyJ"      finger="r2" class="letterKey homeKey"></key>
+      <key id="KeyK"      finger="r3" class="letterKey homeKey"></key>
+      <key id="KeyL"      finger="r4" class="letterKey homeKey"></key>
+      <key id="Semicolon" finger="r5" class="letterKey homeKey"></key>
+      <key id="Quote"     finger="r5" class="pinkyKey"> </key>
+      <key id="Enter" class="specialKey">
+        <em> &#x23ce; </em>
+      </key>
+      <key id="EnterISO" class="specialKey hiddenKey">
+        &nbsp;
+      </key>
     </li>
     <li id="row_AB">
-      <ul>
-        <li id="key_LFSH" finger="l5" class="specialKey">
-          <em> &#x21e7; </em>
-        </li>
-        <li id="key_LSGT" finger="l5" class="pinkyKey"> </li>
-        <li id="key_AB01" finger="l5" class="letterKey"></li>
-        <li id="key_AB02" finger="l4" class="letterKey"></li>
-        <li id="key_AB03" finger="l3" class="letterKey"></li>
-        <li id="key_AB04" finger="l2" class="letterKey"></li>
-        <li id="key_AB05" finger="l2" class="letterKey"></li>
-        <li id="key_AB06" finger="r2" class="letterKey"></li>
-        <li id="key_AB07" finger="r2" class="letterKey"></li>
-        <li id="key_AB08" finger="r3" class="letterKey"></li>
-        <li id="key_AB09" finger="r4" class="letterKey"></li>
-        <li id="key_AB10" finger="r5" class="letterKey"></li>
-        <li id="key_RTSH" finger="r5" class="specialKey">
-          <em> &#x21e7; </em>
-        </li>
-      </ul>
+      <key id="ShiftLeft"     finger="l5" class="specialKey">
+        <em> &#x21e7; </em>
+      </key>
+      <key id="IntlBackslash" finger="l5" class="pinkyKey"> </key>
+      <key id="KeyZ"          finger="l5" class="letterKey"></key>
+      <key id="KeyX"          finger="l4" class="letterKey"></key>
+      <key id="KeyC"          finger="l3" class="letterKey"></key>
+      <key id="KeyV"          finger="l2" class="letterKey"></key>
+      <key id="KeyB"          finger="l2" class="letterKey"></key>
+      <key id="KeyN"          finger="r2" class="letterKey"></key>
+      <key id="KeyM"          finger="r2" class="letterKey"></key>
+      <key id="Comma"         finger="r3" class="letterKey"></key>
+      <key id="Period"        finger="r4" class="letterKey"></key>
+      <key id="Slash"         finger="r5" class="letterKey"></key>
+      <key id="ShiftRight"    finger="r5" class="specialKey">
+        <em> &#x21e7; </em>
+      </key>
     </li>
     <li id="row_AA">
-      <ul>
-        <li id="key_LCTL" class="specialKey">
-          <em> Ctrl </em>
-        </li>
-        <li id="key_LWIN" class="specialKey">
-          <em> Super </em>
-        </li>
-        <li id="key_LALT" class="specialKey">
-          <em> Alt </em>
-        </li>
-        <li id="key_SPCE" finger="m1" class="homeKey">
-          <em> </em>
-        </li>
-        <li id="key_RALT" class="specialKey">
-          <em> AltGr </em>
-        </li>
-        <li id="key_RWIN" class="specialKey">
-          <em> Super </em>
-        </li>
-        <li id="key_MENU" class="specialKey">
-          <!-- not really a 'menu' character, but looks like one -->
-          <em> ☰ </em>
-        </li>
-        <li id="key_RCTL" class="specialKey">
-          <em> Ctrl </em>
-        </li>
-      </ul>
+      <key id="ControlLeft" class="specialKey">
+        <em> Ctrl </em>
+      </key>
+      <key id="OSLeft" class="specialKey">
+        <em> Super </em>
+      </key>
+      <key id="AltLeft" class="specialKey">
+        <em> Alt </em>
+      </key>
+      <key id="Space" finger="m1" class="homeKey">
+        <em> </em>
+      </key>
+      <key id="AltRight" class="specialKey">
+        <em> AltGr </em>
+      </key>
+      <key id="OSRight" class="specialKey">
+        <em> Super </em>
+      </key>
+      <key id="ContextMenu" class="specialKey">
+        <!-- not really a 'menu' character, but looks like one -->
+        <em> &#x2630; </em>
+      </key>
+      <key id="ControlRight" class="specialKey">
+        <em> Ctrl </em>
+      </key>
     </li>
   </ul>
 `;
@@ -419,7 +408,7 @@ const drawKey = (element, keyMap) => {
     return element;
   };
 
-  const [ base, shift, alt ] = keyMap[element.id.slice(4)] || [''];
+  const [ base, shift, alt ] = keyMap[element.id] || [''];
   element.appendChild(createLabel('strong', shift));
   if (base.toUpperCase() !== shift) {
     element.appendChild(createLabel('em', base));
@@ -434,81 +423,8 @@ const drawKey = (element, keyMap) => {
  * Keyboard Map
  */
 
-const keyNames = {
-  'Space':        'SPCE',
-  // numbers
-  'Digit1':       'AE01',
-  'Digit2':       'AE02',
-  'Digit3':       'AE03',
-  'Digit4':       'AE04',
-  'Digit5':       'AE05',
-  'Digit6':       'AE06',
-  'Digit7':       'AE07',
-  'Digit8':       'AE08',
-  'Digit9':       'AE09',
-  'Digit0':       'AE10',
-  // letters, 1st row
-  'KeyQ':         'AD01',
-  'KeyW':         'AD02',
-  'KeyE':         'AD03',
-  'KeyR':         'AD04',
-  'KeyT':         'AD05',
-  'KeyY':         'AD06',
-  'KeyU':         'AD07',
-  'KeyI':         'AD08',
-  'KeyO':         'AD09',
-  'KeyP':         'AD10',
-  // letters, 2nd row
-  'KeyA':         'AC01',
-  'KeyS':         'AC02',
-  'KeyD':         'AC03',
-  'KeyF':         'AC04',
-  'KeyG':         'AC05',
-  'KeyH':         'AC06',
-  'KeyJ':         'AC07',
-  'KeyK':         'AC08',
-  'KeyL':         'AC09',
-  'Semicolon':    'AC10',
-  // letters, 3rd row
-  'KeyZ':         'AB01',
-  'KeyX':         'AB02',
-  'KeyC':         'AB03',
-  'KeyV':         'AB04',
-  'KeyB':         'AB05',
-  'KeyN':         'AB06',
-  'KeyM':         'AB07',
-  'Comma':        'AB08',
-  'Period':       'AB09',
-  'Slash':        'AB10',
-  // pinky keys
-  'Backquote':    'TLDE',
-  'Minus':        'AE11',
-  'Equal':        'AE12',
-  'BracketLeft':  'AD11',
-  'BracketRight': 'AD12',
-  'Backslash':    'BKSL',
-  'Quote':        'AC11',
-  'IntlBackslash':'LSGT',
-  // special keys
-  'Tab':          'TAB',
-  'Enter':        'RTRN',
-  'Backspace':    'BKSP',
-  'ShiftLeft':    'LFSH',
-  'ShiftRight':   'RTSH',
-  'AltLeft':      'LALT',
-  'AltRight':     'RALT',
-  'ControlLeft':  'LCTL',
-  'ControlRight': 'RCTL',
-  'OSLeft':       'LWIN',
-  'OSRight':      'RWIN',
-  'ContextMenu':  'MENU',
-  'CapsLock':     'CAPS',
-  'Escape':       'ESC',
-};
-
 const getKey = (root, keyCode) => {
-  const name = keyCode in keyNames ? keyNames[keyCode] : keyCode;
-  return root.getElementById('key_' + name);
+  return root.getElementById(keyCode);
 };
 
 const getKeyChord = (root, key) => {
@@ -518,11 +434,11 @@ const getKeyChord = (root, key) => {
   const element = getKey(root, key.id);
   let chord = [ element ];
   if (key.level > 1) { // altgr
-    chord.push(getKey(root, 'RALT'));
+    chord.push(getKey(root, 'AltRight'));
   }
   if (key.level % 2) { // shift
-    const id = element.getAttribute('finger')[0] == 'l' ? 'RTSH' : 'LFSH';
-    chord.push(getKey(root, id));
+    chord.push(getKey(root,
+      element.getAttribute('finger')[0] == 'l' ? 'ShiftRight' : 'ShiftLeft'));
   }
   return chord;
 };
@@ -570,30 +486,30 @@ class Keyboard extends HTMLElement {
     };
     switch (value.toLowerCase()) {
       case 'pc105':
-        setFinger('key_AE01', 'l5');
-        setFinger('key_AE02', 'l5');
-        setFinger('key_AE03', 'l4');
-        setFinger('key_AE04', 'l3');
-        setFinger('key_AE05', 'l2');
-        setFinger('key_AE06', 'l2');
-        setFinger('key_AE07', 'r2');
-        setFinger('key_AE08', 'r2');
-        setFinger('key_AE09', 'r3');
-        setFinger('key_AE10', 'r4');
+        setFinger('Digit1', 'l5');
+        setFinger('Digit2', 'l5');
+        setFinger('Digit3', 'l4');
+        setFinger('Digit4', 'l3');
+        setFinger('Digit5', 'l2');
+        setFinger('Digit6', 'l2');
+        setFinger('Digit7', 'r2');
+        setFinger('Digit8', 'r2');
+        setFinger('Digit9', 'r3');
+        setFinger('Digit0', 'r4');
         break;
       case 'pc104':
       case 'tmx':
       case 'olkb':
-        setFinger('key_AE01', 'l5');
-        setFinger('key_AE02', 'l4');
-        setFinger('key_AE03', 'l3');
-        setFinger('key_AE04', 'l2');
-        setFinger('key_AE05', 'l2');
-        setFinger('key_AE06', 'r2');
-        setFinger('key_AE07', 'r2');
-        setFinger('key_AE08', 'r3');
-        setFinger('key_AE09', 'r4');
-        setFinger('key_AE10', 'r5');
+        setFinger('Digit1', 'l5');
+        setFinger('Digit2', 'l4');
+        setFinger('Digit3', 'l3');
+        setFinger('Digit4', 'l2');
+        setFinger('Digit5', 'l2');
+        setFinger('Digit6', 'r2');
+        setFinger('Digit7', 'r2');
+        setFinger('Digit8', 'r3');
+        setFinger('Digit9', 'r4');
+        setFinger('Digit0', 'r5');
         break;
       default:
         return;
@@ -602,11 +518,16 @@ class Keyboard extends HTMLElement {
     this.root.getElementById('keyboard').setAttribute('shape', value);
   }
 
+  get layout() {
+    return this._state.layout;
+  }
+
   setLayout(keyMap, deadKeys) {
-    this.layout = newKeyboardLayout(keyMap || {}, deadKeys || []);
-    Array.from(this.root.querySelectorAll('li li'))
+    const layout = newKeyboardLayout(keyMap || {}, deadKeys || []);
+    Array.from(this.root.querySelectorAll('key'))
       .filter(key => !key.classList.contains('specialKey'))
-      .forEach(key => drawKey(key, keyMap));
+      .forEach(key => drawKey(key, layout.keyMap));
+    this._state.layout = layout;
   }
 
   keyDown(keyCode) {
@@ -617,21 +538,18 @@ class Keyboard extends HTMLElement {
     element.style.cssText = defaultKeyPressStyle;
     switch(keyCode) {
       case 'AltRight':
-      case 'RALT':
         this._state.modifiers.AltGr = true;
         this.root.getElementById('keyboard').classList.add('alt');
         break;
       case 'ShiftLeft':
-      case 'LFSH':
         this._state.modifiers.ShiftLeft = true;
         break;
       case 'ShiftRight':
-      case 'RTSH':
         this._state.modifiers.ShiftRight = true;
         break;
     }
 
-    const key = this.layout.keyMap[element.id.slice(4)];
+    const key = this.layout.keyMap[element.id];
     if (!key) {
       return '';
     }
@@ -655,16 +573,13 @@ class Keyboard extends HTMLElement {
     element.style.cssText = '';
     switch(keyCode) {
       case 'AltRight':
-      case 'RALT':
         this._state.modifiers.AltGr = false;
         this.root.getElementById('keyboard').classList.remove('alt');
         break;
       case 'ShiftLeft':
-      case 'LFSH':
         this._state.modifiers.ShiftLeft = false;
         break;
       case 'ShiftRight':
-      case 'RTSH':
         this._state.modifiers.ShiftRight = false;
         break;
     }
@@ -675,9 +590,9 @@ class Keyboard extends HTMLElement {
     if (!dk) {
       return;
     }
-    Array.from(this.root.querySelectorAll('li li')).forEach(element => {
+    Array.from(this.root.querySelectorAll('key')).forEach(element => {
       // display dead keys in the virtual keyboard
-      const key = this.layout.keyMap[element.id.slice(4)];
+      const key = this.layout.keyMap[element.id];
       if (!key || element.classList.contains('specialKey')) {
         return;
       }
