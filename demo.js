@@ -17,7 +17,7 @@ window.addEventListener('DOMContentLoaded', () => {
     if (layout.value) {
       fetch(`layouts/${layout.value}.json`)
         .then(response => response.json())
-        .then(data => keyboard.setLayout(data.layout, data.dead_keys))
+        .then(data => keyboard.setKalamineLayout(data.layout, data.dead_keys))
         .then(showKeys);
     } else { // blank layout
       keyboard.setLayout();

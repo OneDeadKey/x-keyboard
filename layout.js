@@ -1,5 +1,26 @@
-export { newKeyboardLayout, isDeadKey };
+export { newKeyboardLayout, newKalamineLayout, isDeadKey };
 
+
+/******************************************************************************
+ * Parse Kalamine data:
+ * these layouts are designed to create keyboard drivers but are not opmitized
+ * for our use case. Here's what we need:
+ *
+ *   keyMap: {
+ *     'KeyQ': [ 'q', 'Q' ],
+ *     'KeyP': [ 'p', 'P' ],
+ *     'Quote': [ '*´', '*¨' ], // dead keys (acute, diaeresis)
+ *     ...
+ *   }
+ *
+ *   deadKeys: {
+ *     '*´': { 'a': 'á', 'A': 'Á', ...  },
+ *     '*¨': { 'a': 'ä', 'A': 'Ä', ...  },
+ *     ...
+ *   }
+ */
+
+// map XKB names to DOM/KeyboardEvent names
 const keyNames = {
   'SPCE': 'Space',
   // numbers
@@ -66,12 +87,7 @@ function parseKalamineLayout(keyMap) {
   return rv;
 }
 
-// Kalamine dead keys are identified with a `*` prefix + the diacritic sign
-function isDeadKey(value) {
-  return value && value.length === 2 && value[0] === '*';
-}
-
-// return true if the deadKey object has all expected properties
+// return true if the Kalamine deadKey object has all expected properties
 function checkKalamineDeadKey(key) {
   return isDeadKey(key.char) && key.alt_self && key.alt_space && key.name
     && key.base && key.base.length && key.alt && key.alt.length
@@ -96,6 +112,12 @@ function parseKalamineDeadKeys(deadKeys) {
     });
   return rv;
 }
+
+
+/******************************************************************************
+ * Keyboard hints:
+ * suggest the most efficient way to type a character or a string.
+ */
 
 // return the list of all keys that can output the requested char
 function getKeyList(keyMap, char) {
@@ -133,14 +155,32 @@ function getKeySequence(keyMap, deadKeys, str) {
   return rv;
 }
 
-// public API
-function newKeyboardLayout(keyMap, deadKeys) {
-  const kMap = parseKalamineLayout(keyMap);
-  const dkMap = parseKalamineDeadKeys(deadKeys);
+
+/******************************************************************************
+ * Public API
+ */
+
+// all dead keys are identified with a `*` prefix + the diacritic sign
+function isDeadKey(value) {
+  return value && value.length === 2 && value[0] === '*';
+}
+
+function newKalamineLayout(kalamineKeyMap, kalamineDeadKeys) {
+  const keyMap = parseKalamineLayout(kalamineKeyMap);
+  const deadKeys = parseKalamineDeadKeys(kalamineDeadKeys);
   return {
-    get keyMap() { return kMap; },
-    get deadKeys() { return dkMap; },
-    getKey: char => getKeyList(kMap, char)[0],
-    getKeySequence: str => getKeySequence(kMap, dkMap, str)
+    get keyMap() { return keyMap; },
+    get deadKeys() { return deadKeys; },
+    getKey: char => getKeyList(keyMap, char)[0],
+    getKeySequence: str => getKeySequence(keyMap, deadKeys, str)
+  };
+}
+
+function newKeyboardLayout(keyMap, deadKeys) {
+  return {
+    get keyMap() { return keyMap; },
+    get deadKeys() { return deadKeys; },
+    getKey: char => getKeyList(keyMap, char)[0],
+    getKeySequence: str => getKeySequence(keyMap, deadKeys, str)
   };
 }

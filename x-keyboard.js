@@ -1,4 +1,4 @@
-import { newKeyboardLayout, isDeadKey } from './layout.js';
+import { newKalamineLayout, isDeadKey } from './layout.js';
 
 
 /*******************************************************************************
@@ -388,6 +388,11 @@ const html = `
 const template = document.createElement('template');
 template.innerHTML = `<style>${css}</style>${html}`;
 
+
+/*******************************************************************************
+ * Keyboard Layout
+ */
+
 const drawKey = (element, keyMap) => {
   element.innerHTML = '';
   if (!keyMap) {
@@ -418,10 +423,14 @@ const drawKey = (element, keyMap) => {
   element.appendChild(createLabel('strong', '', 'dk'));
 };
 
-
-/*******************************************************************************
- * Keyboard Map
- */
+const setFingerAssignment = (root, ansiStyle) => {
+  let i = 1;
+  (ansiStyle ?
+    [ 'l5', 'l5', 'l4', 'l3', 'l2', 'l2', 'r2', 'r2', 'r3', 'r4' ] :
+    [ 'l5', 'l4', 'l3', 'l2', 'l2', 'r2', 'r2', 'r3', 'r4', 'r5' ])
+    .forEach(finger =>
+      root.getElementById('Digit' + (i++ % 10)).setAttribute('finger', finger));
+};
 
 const getKeyChord = (root, key) => {
   if (!key || !key.id) {
@@ -463,6 +472,10 @@ class Keyboard extends HTMLElement {
     this.theme = this._state.theme;
   }
 
+  /**
+   * User Interface: color theme, shape, layout.
+   */
+
   get theme() {
     return this._state.theme;
   }
@@ -477,35 +490,14 @@ class Keyboard extends HTMLElement {
   }
 
   set shape(value) {
-    const setFinger = (id, finger) => {
-      this.root.getElementById(id).setAttribute('finger', finger);
-    };
     switch (value.toLowerCase()) {
       case 'pc105':
-        setFinger('Digit1', 'l5');
-        setFinger('Digit2', 'l5');
-        setFinger('Digit3', 'l4');
-        setFinger('Digit4', 'l3');
-        setFinger('Digit5', 'l2');
-        setFinger('Digit6', 'l2');
-        setFinger('Digit7', 'r2');
-        setFinger('Digit8', 'r2');
-        setFinger('Digit9', 'r3');
-        setFinger('Digit0', 'r4');
+        setFingerAssignment(this.root, false);
         break;
       case 'pc104':
       case 'tmx':
       case 'olkb':
-        setFinger('Digit1', 'l5');
-        setFinger('Digit2', 'l4');
-        setFinger('Digit3', 'l3');
-        setFinger('Digit4', 'l2');
-        setFinger('Digit5', 'l2');
-        setFinger('Digit6', 'r2');
-        setFinger('Digit7', 'r2');
-        setFinger('Digit8', 'r3');
-        setFinger('Digit9', 'r4');
-        setFinger('Digit0', 'r5');
+        setFingerAssignment(this.root, true);
         break;
       default:
         return;
@@ -518,13 +510,24 @@ class Keyboard extends HTMLElement {
     return this._state.layout;
   }
 
-  setLayout(keyMap, deadKeys) {
-    const layout = newKeyboardLayout(keyMap || {}, deadKeys || []);
+  set layout(value) {
+    this._state.layout = value;
     Array.from(this.root.querySelectorAll('key'))
       .filter(key => !key.classList.contains('specialKey'))
-      .forEach(key => drawKey(key, layout.keyMap));
-    this._state.layout = layout;
+      .forEach(key => drawKey(key, value.keyMap));
   }
+
+  setKalamineLayout(keyMap, deadKeys) {
+    this.layout = newKalamineLayout(keyMap || {}, deadKeys || []);
+  }
+
+  setKeyboardLayout(keyMap, deadKeys) {
+    this.layout = newKeyboardLayout(keyMap || {}, deadKeys || {});
+  }
+
+  /**
+   * KeyboardEvent helpers
+   */
 
   keyDown(keyCode) {
     const element = this.root.getElementById(keyCode);
@@ -614,6 +617,10 @@ class Keyboard extends HTMLElement {
       .forEach(span => span.textContent = '');
     return dk[char] || '';
   }
+
+  /**
+   * Keyboard hints
+   */
 
   clearStyle() {
     Array.from(this.root.querySelectorAll('li[style]'))
