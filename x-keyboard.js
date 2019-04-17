@@ -486,6 +486,19 @@ const getKeyChord = (root, key) => {
   return chord;
 };
 
+const guessPlatform = () => {
+  const p = navigator.platform.toLowerCase();
+  if (p.startsWith('win')) {
+    return 'win';
+  } else if (p.startsWith('mac')) {
+    return 'mac';
+  } else if (p.startsWith('linux')) {
+    return 'linux';
+  } else {
+    return '';
+  }
+};
+
 const defaultKeyPressStyle = 'background-color: #aaf;';
 const defaultKeyPressDuration = 250;
 
@@ -503,12 +516,13 @@ class Keyboard extends HTMLElement {
     this._state = {
       shape:     this.getAttribute('shape')    || 'ansi',
       theme:     this.getAttribute('theme')    || '',
-      platform:  this.getAttribute('platform') || '',
+      platform:  this.getAttribute('platform') || guessPlatform() || 'mac',
       layout:    {},
       modifiers: {}
     };
-    this.shape = this._state.shape;
-    this.theme = this._state.theme;
+    this.shape    = this._state.shape;
+    this.theme    = this._state.theme;
+    this.platform = this._state.platform;
   }
 
   /**
