@@ -1,4 +1,4 @@
-import { newKalamineLayout, isDeadKey } from './layout.js';
+import { newKeyboardLayout, newKalamineLayout, isDeadKey } from './layout.js';
 
 
 /*******************************************************************************
@@ -514,11 +514,10 @@ class Keyboard extends HTMLElement {
     this.root = this.attachShadow({ mode: 'open' });
     this.root.appendChild(template.content.cloneNode(true));
     this._state = {
-      shape:     this.getAttribute('shape')    || 'ansi',
-      theme:     this.getAttribute('theme')    || '',
-      platform:  this.getAttribute('platform') || guessPlatform() || 'mac',
-      layout:    {},
-      modifiers: {}
+      shape:    this.getAttribute('shape')    || 'ansi',
+      theme:    this.getAttribute('theme')    || '',
+      platform: this.getAttribute('platform') || guessPlatform(),
+      layout:   {},
     };
     this.shape    = this._state.shape;
     this.theme    = this._state.theme;
@@ -543,7 +542,8 @@ class Keyboard extends HTMLElement {
   }
 
   set shape(value) {
-    switch (value.toLowerCase()) {
+    shape = value.toLowerCase();
+    switch (shape) {
       case 'iso':
         setFingerAssignment(this.root, false);
         break;
@@ -556,8 +556,8 @@ class Keyboard extends HTMLElement {
       default:
         return;
     }
-    this._state.shape = value.toLowerCase();
-    this.root.getElementById('keyboard').setAttribute('shape', value);
+    this._state.shape = shape;
+    this.root.getElementById('keyboard').setAttribute('shape', shape);
   }
 
   get platform() {
@@ -565,7 +565,8 @@ class Keyboard extends HTMLElement {
   }
 
   set platform(value) {
-    switch (value.toLowerCase()) {
+    const platform = value.toLowerCase();
+    switch (platform) {
       case 'win':
       case 'mac':
       case 'linux':
@@ -573,8 +574,9 @@ class Keyboard extends HTMLElement {
       default:
         return;
     }
-    this._state.platform = value.toLowerCase();
-    this.root.getElementById('keyboard').setAttribute('platform', value);
+    this._state.platform = platform;
+    this.layout.platform = platform;
+    this.root.getElementById('keyboard').setAttribute('platform', platform);
   }
 
   get layout() {
@@ -606,33 +608,19 @@ class Keyboard extends HTMLElement {
       return '';
     }
     element.style.cssText = defaultKeyPressStyle;
-    switch(keyCode) {
-      case 'AltRight':
-        this._state.modifiers.AltGr = true;
-        this.root.getElementById('keyboard').classList.add('alt');
-        break;
-      case 'ShiftLeft':
-        this._state.modifiers.ShiftLeft = true;
-        break;
-      case 'ShiftRight':
-        this._state.modifiers.ShiftRight = true;
-        break;
-    }
 
-    const key = this.layout.keyMap[element.id];
-    if (!key) {
-      return '';
+    const dk = this.layout.pendingDK;
+    const rv = this.layout.keyDown(keyCode);
+    if (this.layout.modifiers.altgr) {
+      this.root.getElementById('keyboard').classList.add('alt');
     }
-    const m = this._state.modifiers;
-    const level = (m.AltGr ? 2 : 0) + (m.ShiftLeft || m.ShiftRight ? 1 : 0);
-    const value = key[level];
-    if (this._state.modifiers.DeadKey) {
-      return this.unlatchDeadKey(value);
-    } else if (isDeadKey(value)) {
-      return this.latchDeadKey(value);
-    } else {
-      return value || '';
+    if (dk) {
+      this.unlatchDeadKey();
     }
+    if (this.layout.pendingDK) {
+      this.latchDeadKey(this.layout.pendingDK);
+    }
+    return rv;
   }
 
   keyUp(keyCode) {
@@ -641,22 +629,14 @@ class Keyboard extends HTMLElement {
       return;
     }
     element.style.cssText = '';
-    switch(keyCode) {
-      case 'AltRight':
-        this._state.modifiers.AltGr = false;
-        this.root.getElementById('keyboard').classList.remove('alt');
-        break;
-      case 'ShiftLeft':
-        this._state.modifiers.ShiftLeft = false;
-        break;
-      case 'ShiftRight':
-        this._state.modifiers.ShiftRight = false;
-        break;
+
+    const rv = this.layout.keyUp(keyCode);
+    if (!this.layout.modifiers.altgr) {
+      this.root.getElementById('keyboard').classList.remove('alt');
     }
   }
 
-  latchDeadKey(dkID) {
-    const dk = this.layout.deadKeys[dkID];
+  latchDeadKey(dk) {
     if (!dk) {
       return;
     }
@@ -677,16 +657,12 @@ class Keyboard extends HTMLElement {
       }
     });
     this.root.getElementById('keyboard').classList.add('dk');
-    this._state.modifiers.DeadKey = dk;
   }
 
-  unlatchDeadKey(char) {
-    const dk = this._state.modifiers.DeadKey;
-    this._state.modifiers.DeadKey = undefined;
+  unlatchDeadKey() {
     this.root.getElementById('keyboard').classList.remove('dk')
     Array.from(this.root.querySelectorAll('.dk'))
       .forEach(span => span.textContent = '');
-    return dk[char] || '';
   }
 
   /**

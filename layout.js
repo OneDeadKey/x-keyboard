@@ -21,7 +21,7 @@ export { newKeyboardLayout, newKalamineLayout, isDeadKey };
  */
 
 // map XKB names to DOM/KeyboardEvent names
-const keyNames = {
+const KEYNAMES = {
   'SPCE': 'Space',
   // numbers
   'AE01': 'Digit1',
@@ -82,7 +82,7 @@ const keyNames = {
 function parseKalamineLayout(keyMap) {
   let rv = {};
   for (let xkb in keyMap) {
-    rv[keyNames[xkb]] = keyMap[xkb];
+    rv[KEYNAMES[xkb]] = keyMap[xkb];
   }
   return rv;
 }
@@ -157,6 +157,41 @@ function getKeySequence(keyMap, deadKeys, str) {
 
 
 /******************************************************************************
+ * Modifiers
+ */
+
+const MODIFIERS = {
+  ShiftLeft:    false,
+  ShiftRight:   false,
+  ControlLeft:  false,
+  ControlRight: false,
+  AltLeft:      false,
+  AltRight:     false,
+  OSLeft:       false,
+  OSRight:      false,
+};
+
+function getShiftState(modifiers) {
+  return modifiers.ShiftRight || modifiers.ShiftLeft;
+}
+
+function getAltGrState(modifiers, platform) {
+  if (platform === 'win') {
+    return modifiers.AltRight || (modifiers.ControlLeft && modifiers.AltLeft);
+  } else if (platform === 'mac') {
+    return modifiers.AltRight || modifiers.AltLeft;
+  } else {
+    return modifiers.AltRight;
+  }
+}
+
+function getModifierLevel(modifiers, platform) {
+  return (getShiftState(modifiers) ? 1 : 0)
+    + (getAltGrState(modifiers, platform) ? 2 : 0);
+}
+
+
+/******************************************************************************
  * Public API
  */
 
@@ -165,22 +200,60 @@ function isDeadKey(value) {
   return value && value.length === 2 && value[0] === '*';
 }
 
-function newKalamineLayout(kalamineKeyMap, kalamineDeadKeys) {
-  const keyMap = parseKalamineLayout(kalamineKeyMap);
-  const deadKeys = parseKalamineDeadKeys(kalamineDeadKeys);
+function newKeyboardLayout(keyMap, deadKeys) {
+  let modifiers = Object.assign({}, MODIFIERS);
+  let pendingDK = undefined;
+  let platform = '';
+
   return {
-    get keyMap() { return keyMap; },
-    get deadKeys() { return deadKeys; },
+    get keyMap()    { return keyMap;    },
+    get deadKeys()  { return deadKeys;  },
+    get pendingDK() { return pendingDK; },
+    get platform()  { return platform;  },
+    set platform(value) { platform = value; },
+
+    // modifier state
+    get modifiers() { return {
+      get shift() { return getShiftState(modifiers); },
+      get altgr() { return getAltGrState(modifiers, platform); },
+      get level() { return getModifierLevel(modifiers, platform); },
+    }},
+
+    // keyboard hints
     getKey: char => getKeyList(keyMap, char)[0],
-    getKeySequence: str => getKeySequence(keyMap, deadKeys, str)
+    getKeySequence: str => getKeySequence(keyMap, deadKeys, str),
+
+    // keyboard emulation
+    keyUp: keyCode => {
+      if (keyCode in modifiers) {
+        modifiers[keyCode] = false;
+      }
+    },
+    keyDown: keyCode => {
+      if (keyCode in modifiers) {
+        modifiers[keyCode] = true;
+      }
+      const key = keyMap[keyCode];
+      if (!key) {
+        return '';
+      }
+      const value = key[getModifierLevel(modifiers, platform)];
+      if (pendingDK) {
+        const dk = pendingDK;
+        pendingDK = undefined;
+        return dk[value] || '';
+      } else if (isDeadKey(value)) {
+        pendingDK = deadKeys[value];
+        return '';
+      } else {
+        return value || '';
+      }
+    }
   };
 }
 
-function newKeyboardLayout(keyMap, deadKeys) {
-  return {
-    get keyMap() { return keyMap; },
-    get deadKeys() { return deadKeys; },
-    getKey: char => getKeyList(keyMap, char)[0],
-    getKeySequence: str => getKeySequence(keyMap, deadKeys, str)
-  };
+function newKalamineLayout(kalamineKeyMap, kalamineDeadKeys) {
+  const keyMap   = parseKalamineLayout(kalamineKeyMap);
+  const deadKeys = parseKalamineDeadKeys(kalamineDeadKeys);
+  return newKeyboardLayout(keyMap, deadKeys);
 }
