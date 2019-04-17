@@ -1,15 +1,17 @@
 window.addEventListener('DOMContentLoaded', () => {
   'use strict';
 
-  const keyboard = document.querySelector('x-keyboard');
+  const keyboard  = document.querySelector('x-keyboard');
   const emulation = document.getElementById('emulation');
-  const layout = document.getElementById('layout');
-  const input  = document.getElementById('txtInput');
-  const shape  = document.getElementById('shape');
-  const theme  = document.getElementById('theme');
-  const keys   = document.getElementById('keys');
+  const layout    = document.getElementById('layout');
+  const input     = document.getElementById('txtInput');
+  const shape     = document.getElementById('shape');
+  const platform  = document.getElementById('platform');
+  const theme     = document.getElementById('theme');
+  const keys      = document.getElementById('keys');
 
   // keyboard selector: layout, shape, color theme
+  const setPlatform = () => keyboard.platform = platform.value;
   const setShape = () => keyboard.shape = shape.value;
   const setTheme = () => keyboard.theme = theme.value;
   const showKeys = () => keyboard.showKeys(keys.value);
@@ -25,10 +27,12 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   };
   shape.addEventListener('change', setShape);
+  platform.addEventListener('change', setPlatform);
   theme.addEventListener('change', setTheme);
   layout.addEventListener('change', setLayout);
   setLayout();
   setShape();
+  setPlatform();
   setTheme();
 
   // highlight keyboard keys and emulate the keyboard

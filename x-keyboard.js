@@ -103,7 +103,7 @@ const css = `
   #CapsLock,  #Enter       { width: 73px; }
   #ShiftLeft, #ShiftRight  { width: 96px; }
 
-  #Tab *, #CapsLock *, #ShiftLeft *, #ShiftRight *, #Enter * {
+  #Escape *, #Tab *, #CapsLock *, #ShiftLeft *, #ShiftRight *, #Enter * {
     font-size: 1.25em;
     font-style: normal;
   }
@@ -254,7 +254,47 @@ const css = `
 
 
   /**************************************************************************
-   * color theme
+   * Platform
+   */
+
+  /* text labels on PC (win/linux) */
+  #ControlLeft  em::before,
+  #ControlRight em::before { content: 'Ctrl'; }
+  #AltLeft      em::before { content: 'Alt';  }
+  #AltRight     em::before { content: 'AltGr';}
+  [platform="win"]   #OSLeft  em::before,
+  [platform="win"]   #OSRight em::before { content: 'Win'; }
+  [platform="linux"] #OSLeft  em::before,
+  [platform="linux"] #OSRight em::before { content: 'Super'; }
+
+  /* icon labels on Mac */
+  [platform="mac"] #ControlLeft  em::before,
+  [platform="mac"] #ControlRight em::before { content: '\u2303'; }
+  [platform="mac"] #AltLeft      em::before,
+  [platform="mac"] #AltRight     em::before { content: '\u2325'; }
+  [platform="mac"] #OSLeft       em::before,
+  [platform="mac"] #OSRight      em::before { content: '\u2318'; }
+  [platform="mac"] #row_AA       em::before {
+    font-size: 1.25em;
+    font-style: normal;
+  }
+
+  /* swap the Command and Option keys on Mac */
+  [platform="mac"] #OSLeft,
+  [platform="mac"] #AltRight { margin-left: 64px; }
+  [platform="mac"] #OSRight,
+  [platform="mac"] #AltLeft { margin-left: -122px; }
+  [shape^="ol"][platform="mac"] #OSLeft,
+  [shape^="ol"][platform="mac"] #AltRight { margin-left: 71px; }
+  [shape^="ol"][platform="mac"] #OSRight,
+  [shape^="ol"][platform="mac"] #AltLeft { margin-left: -136px; }
+
+  /* not really a 'menu' character, but looks like one */
+  #ContextMenu em::before { content: '\u2630'; }
+
+
+  /**************************************************************************
+   * Color Theme
    */
 
   [theme="reach"] .pinkyKey  { background-color: hsl(  0, 100%, 90%); }
@@ -289,7 +329,7 @@ const html = `
   <ul id="keyboard">
     <li id="row_AE">
       <key id="Escape" class="specialKey">
-        <em> Esc </em>
+        <em> &#x238b; </em>
       </key>
       <key id="Backquote" finger="l5" class="pinkyKey"> </key>
       <key id="Digit1"    finger="l5" class="numberKey"></key>
@@ -371,31 +411,14 @@ const html = `
       </key>
     </li>
     <li id="row_AA">
-      <key id="ControlLeft" class="specialKey">
-        <em> Ctrl </em>
-      </key>
-      <key id="OSLeft" class="specialKey">
-        <em> Super </em>
-      </key>
-      <key id="AltLeft" class="specialKey">
-        <em> Alt </em>
-      </key>
-      <key id="Space" finger="m1" class="homeKey">
-        <em> </em>
-      </key>
-      <key id="AltRight" class="specialKey">
-        <em> AltGr </em>
-      </key>
-      <key id="OSRight" class="specialKey">
-        <em> Super </em>
-      </key>
-      <key id="ContextMenu" class="specialKey">
-        <!-- not really a 'menu' character, but looks like one -->
-        <em> &#x2630; </em>
-      </key>
-      <key id="ControlRight" class="specialKey">
-        <em> Ctrl </em>
-      </key>
+      <key class="specialKey" id="ControlLeft">       <em></em> </key>
+      <key class="specialKey" id="OSLeft">            <em></em> </key>
+      <key class="specialKey" id="AltLeft">           <em></em> </key>
+      <key class="homeKey"    id="Space" finger="m1"> <em></em> </key>
+      <key class="specialKey" id="AltRight">          <em></em> </key>
+      <key class="specialKey" id="OSRight">           <em></em> </key>
+      <key class="specialKey" id="ContextMenu">       <em></em> </key>
+      <key class="specialKey" id="ControlRight">      <em></em> </key>
     </li>
   </ul>
 `;
@@ -478,9 +501,10 @@ class Keyboard extends HTMLElement {
     this.root = this.attachShadow({ mode: 'open' });
     this.root.appendChild(template.content.cloneNode(true));
     this._state = {
-      shape: this.getAttribute('shape') || 'ansi',
-      theme: this.getAttribute('theme') || '',
-      layout: {},
+      shape:     this.getAttribute('shape')    || 'ansi',
+      theme:     this.getAttribute('theme')    || '',
+      platform:  this.getAttribute('platform') || '',
+      layout:    {},
       modifiers: {}
     };
     this.shape = this._state.shape;
@@ -520,6 +544,23 @@ class Keyboard extends HTMLElement {
     }
     this._state.shape = value.toLowerCase();
     this.root.getElementById('keyboard').setAttribute('shape', value);
+  }
+
+  get platform() {
+    return this._state.platform;
+  }
+
+  set platform(value) {
+    switch (value.toLowerCase()) {
+      case 'win':
+      case 'mac':
+      case 'linux':
+        break;
+      default:
+        return;
+    }
+    this._state.platform = value.toLowerCase();
+    this.root.getElementById('keyboard').setAttribute('platform', value);
   }
 
   get layout() {
