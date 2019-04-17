@@ -11,19 +11,16 @@ const css = `
    */
 
   ul {
-    margin: 0;
-    padding: 0;
     width: 664px;
-  }
-  #keyboard {
+    height: 230px;
+    padding: 0;
     margin: 20px auto;
     position: relative;
-    height: 230px;
   }
 
 
   /**************************************************************************
-   * Default Keyboard Geometry (pc104)
+   * Default Keyboard Geometry (ANSI/pc104)
    */
 
   /* rows */
@@ -114,50 +111,50 @@ const css = `
     font-style: normal;
   }
 
-  /* hide LSGT for pc104 (default) */
+  /* hide LSGT for ANSI (default) */
   #IntlBackslash, #CapsLockISO, #EnterISO, #Escape {
     display: none;
   }
 
 
   /**************************************************************************
-   * European Keyboard Geometry (pc105)
+   * European Keyboard Geometry (ISO/pc105)
    */
 
-  [shape="pc105"] #ShiftLeft {
+  [shape="iso"] #ShiftLeft {
     width: 50px;
   }
-  [shape="pc105"] #Enter {
+  [shape="iso"] #Enter {
     width: 27px;
     height: 86px;
     margin-top: -44px;
     margin-left: 48px;
   }
-  [shape="pc105"] #Backslash {
+  [shape="iso"] #Backslash {
     margin-top: 48px;
     margin-left: -31px;
   }
-  [shape="pc105"] #IntlBackslash {
+  [shape="iso"] #IntlBackslash {
     display: block;
   }
   /* visual tweaks for CapsLock and Return */
-  [shape="pc105"] #CapsLockISO,
-  [shape="pc105"] #EnterISO {
+  [shape="iso"] #CapsLockISO,
+  [shape="iso"] #EnterISO {
     background-color: #e8e8e8;
     display: block;
   }
-  [shape="pc105"] #CapsLock {
+  [shape="iso"] #CapsLock {
     width: 60px;
   }
-  [shape="pc105"] #CapsLock,
-  [shape="pc105"] #Enter {
+  [shape="iso"] #CapsLock,
+  [shape="iso"] #Enter {
     z-index: 1;
   }
-  [shape="pc105"] #CapsLockISO {
+  [shape="iso"] #CapsLockISO {
     margin-left: -64px;
     width: 73px;
   }
-  [shape="pc105"] #EnterISO {
+  [shape="iso"] #EnterISO {
     margin-top: -44px;
     margin-left: -44px;
     width: 40px;
@@ -165,77 +162,95 @@ const css = `
 
 
   /**************************************************************************
-   * Ortholinear Keyboard Geometry (TMx, OLKB)
+   * Ortholinear Keyboard Geometry (TypeMatrix, OLKB)
    */
 
-  [shape="tmx"] #CapsLock, [shape="olkb"] #CapsLock {
+  [shape^="ol"] #CapsLock {
     display: none;
   }
-  [shape="tmx"] #Backslash, [shape="olkb"] #Backslash {
+  [shape^="ol"] #Backslash {
     margin-top: 94px;
     margin-left: -96px;
   }
-  [shape="tmx"] #Backquote,    [shape="olkb"] #Backquote,
-  [shape="tmx"] #Tab,          [shape="olkb"] #Tab,
-  [shape="tmx"] #ShiftLeft,    [shape="olkb"] #ShiftLeft,
-  [shape="tmx"] #ControlLeft,  [shape="olkb"] #ControlLeft,
-  [shape="tmx"] #Equal,        [shape="olkb"] #Equal,
-  [shape="tmx"] #BracketRight, [shape="olkb"] #BracketRight,
-  [shape="tmx"] #ShiftRight,   [shape="olkb"] #ShiftRight,
-  [shape="tmx"] #ControlRight, [shape="olkb"] #ControlRight,
-  [shape="tmx"] #Backspace,    [shape="olkb"] #Backspace,
-  [shape="tmx"] #Enter,        [shape="olkb"] #Enter {
+  [shape^="ol"] #Backquote,
+  [shape^="ol"] #Tab,
+  [shape^="ol"] #ShiftLeft,
+  [shape^="ol"] #ControlLeft,
+  [shape^="ol"] #Equal,
+  [shape^="ol"] #BracketRight,
+  [shape^="ol"] #ShiftRight,
+  [shape^="ol"] #ControlRight,
+  [shape^="ol"] #Backspace,
+  [shape^="ol"] #Enter {
     width: 46px;
   }
-  [shape="tmx"] #OSLeft,   [shape="olkb"] #OSLeft,
-  [shape="tmx"] #AltLeft,  [shape="olkb"] #AltLeft,
-  [shape="tmx"] #OSRight,  [shape="olkb"] #OSRight,
-  [shape="tmx"] #AltRight, [shape="olkb"] #AltRight {
+  [shape^="ol"] #OSLeft,
+  [shape^="ol"] #AltLeft,
+  [shape^="ol"] #OSRight,
+  [shape^="ol"] #AltRight {
     width: 63px;
   }
-  [shape="tmx"] #Backquote,
-  [shape="tmx"] #Tab,
-  [shape="tmx"] #ShiftLeft,
-  [shape="tmx"] #ControlLeft {
+  [shape^="ol"] #ShiftLeft,
+  [shape^="ol"] #ShiftRight {
+    margin-top: -44px;
+    height: 86px;
+  }
+
+  /* TypeMatrix-specific (TMx2030) */
+
+  [shape="ol60"] #Backquote,
+  [shape="ol60"] #Tab,
+  [shape="ol60"] #ShiftLeft,
+  [shape="ol60"] #ControlLeft {
     margin-left: 3px;
   }
-  [shape="tmx"] #KeyA {
+  [shape="ol60"] #KeyA {
     margin-left: 55px; /* XXX why 55px instead of 54px? */
   }
-  [shape="tmx"] #Digit6,
-  [shape="tmx"] #KeyY,
-  [shape="tmx"] #KeyH,
-  [shape="tmx"] #KeyN {
+  [shape="ol60"] #Digit6,
+  [shape="ol60"] #KeyY,
+  [shape="ol60"] #KeyH,
+  [shape="ol60"] #KeyN {
     margin-left: 54px;
   }
-  [shape="tmx"] #Backspace {
+  [shape="ol60"] #Backspace {
     margin-left: -378px;
     height: 86px;
   }
-  [shape="tmx"] #Enter {
+  [shape="ol60"] #Enter {
     margin-left: -326px;
     height: 86px;
   }
-  [shape="tmx"] #ShiftLeft,  [shape="olkb"] #ShiftLeft,
-  [shape="tmx"] #ShiftRight, [shape="olkb"] #ShiftRight {
-    height: 86px;
-    margin-top: -44px;
-  }
-  [shape="tmx"] #ShiftRight {
+  [shape="ol60"] #ShiftRight {
     margin-left: 48px;
   }
-  [shape="tmx"] #Space {
+  [shape="ol60"] #Space {
     width: 230px;
   }
 
-  /* OLKB-specific */
-  [shape="olkb"] .pinkyKey,
-  [shape="olkb"] #ContextMenu { display: none; }
-  [shape="olkb"] #Escape      { display: inline-block; width: 46px; }
-  [shape="olkb"] #Space       { width: 178px; }
-  [shape="olkb"] #Enter       { margin-top: -44px; }
-  [shape="olkb"] #KeyA        { margin-left: 54px; }
-  [shape="olkb"] { padding-left: 100px; }
+  /* OLKB-specific (Preonic, Planck)*/
+
+  [shape="ol50"],
+  [shape="ol40"] { padding-left: 100px; }
+  [shape="ol50"] #Escape,
+  [shape="ol40"] #Escape { display: inline-block; width: 46px; }
+  [shape="ol50"] #KeyA,
+  [shape="ol40"] #KeyA { margin-left: 54px; }
+  [shape="ol50"] #Space,
+  [shape="ol40"] #Space { width: 178px; }
+  [shape="ol50"] #Enter,
+  [shape="ol40"] #Enter { margin-top: -44px; }
+  [shape="ol50"] #ContextMenu,
+  [shape="ol40"] #ContextMenu,
+  [shape="ol50"] .pinkyKey,
+  [shape="ol40"] .pinkyKey { display: none; }
+
+  [shape="ol40"] .numberKey { display: none; }
+  [shape="ol40"] #ShiftLeft,
+  [shape="ol40"] #ShiftRight,
+  [shape="ol40"] #Enter     { margin-top: 2px; height: 40px; }
+  [shape="ol40"] #Escape    { margin-top: 94px; }
+  [shape="ol40"] #Backspace { margin: -90px 514px 0; /* XXX magic numbers */ }
 
 
   /**************************************************************************
@@ -463,7 +478,7 @@ class Keyboard extends HTMLElement {
     this.root = this.attachShadow({ mode: 'open' });
     this.root.appendChild(template.content.cloneNode(true));
     this._state = {
-      shape: this.getAttribute('shape') || 'pc104',
+      shape: this.getAttribute('shape') || 'ansi',
       theme: this.getAttribute('theme') || '',
       layout: {},
       modifiers: {}
@@ -491,12 +506,13 @@ class Keyboard extends HTMLElement {
 
   set shape(value) {
     switch (value.toLowerCase()) {
-      case 'pc105':
+      case 'iso':
         setFingerAssignment(this.root, false);
         break;
-      case 'pc104':
-      case 'tmx':
-      case 'olkb':
+      case 'ansi':
+      case 'ol60':
+      case 'ol50':
+      case 'ol40':
         setFingerAssignment(this.root, true);
         break;
       default:
