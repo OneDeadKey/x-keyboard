@@ -461,6 +461,21 @@ const drawKey = (element, keyMap) => {
   element.appendChild(createLabel('strong', '', 'dk'));
 };
 
+const drawDK = (element, keyMap, deadKey) => {
+  const key = keyMap[element.id];
+  if (!key || element.classList.contains('specialKey')) {
+    return;
+  }
+  const alt0 = deadKey[key[0]];
+  const alt1 = deadKey[key[1]];
+  if (alt0) {
+    element.querySelector('em.dk').textContent = alt0;
+    if (alt1 && alt0.toUpperCase() !== alt1) {
+      element.querySelector('strong.dk').textContent = alt1;
+    }
+  }
+};
+
 const setFingerAssignment = (root, ansiStyle) => {
   let i = 1;
   (ansiStyle ?
@@ -608,17 +623,19 @@ class Keyboard extends HTMLElement {
       return '';
     }
     element.style.cssText = defaultKeyPressStyle;
-
     const dk = this.layout.pendingDK;
     const rv = this.layout.keyDown(keyCode);
     if (this.layout.modifiers.altgr) {
       this.root.getElementById('keyboard').classList.add('alt');
     }
-    if (dk) {
-      this.unlatchDeadKey();
-    }
-    if (this.layout.pendingDK) {
-      this.latchDeadKey(this.layout.pendingDK);
+    if (dk) { // a dead key has just been unlatched, hide all key hints
+      this.root.getElementById('keyboard').classList.remove('dk')
+      Array.from(this.root.querySelectorAll('.dk'))
+        .forEach(span => span.textContent = '');
+    } else if (this.layout.pendingDK) { // show hints for this dead key
+      Array.from(this.root.querySelectorAll('key'))
+        .forEach(key => drawDK(key, this.layout.keyMap, this.layout.pendingDK));
+      this.root.getElementById('keyboard').classList.add('dk');
     }
     return rv;
   }
@@ -629,40 +646,10 @@ class Keyboard extends HTMLElement {
       return;
     }
     element.style.cssText = '';
-
     const rv = this.layout.keyUp(keyCode);
     if (!this.layout.modifiers.altgr) {
       this.root.getElementById('keyboard').classList.remove('alt');
     }
-  }
-
-  latchDeadKey(dk) {
-    if (!dk) {
-      return;
-    }
-    Array.from(this.root.querySelectorAll('key')).forEach(element => {
-      // display dead keys in the virtual keyboard
-      const key = this.layout.keyMap[element.id];
-      if (!key || element.classList.contains('specialKey')) {
-        return;
-      }
-      const alt0 = dk[key[0]];
-      const alt1 = dk[key[1]];
-      if (alt0) {
-        element.querySelector('em.dk').textContent = alt0;
-      }
-      // if (alt1 && alt0.toUpperCase() !== alt1) { // better
-      if (alt1 && key[0].toUpperCase() !== key[1]) { // nicer, lighter
-        element.querySelector('strong.dk').textContent = alt1;
-      }
-    });
-    this.root.getElementById('keyboard').classList.add('dk');
-  }
-
-  unlatchDeadKey() {
-    this.root.getElementById('keyboard').classList.remove('dk')
-    Array.from(this.root.querySelectorAll('.dk'))
-      .forEach(span => span.textContent = '');
   }
 
   /**
