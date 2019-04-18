@@ -231,7 +231,7 @@ const css = `
   /* OLKB-specific (Preonic, Planck)*/
 
   [shape="ol50"],
-  [shape="ol40"] { padding-left: 100px; }
+  [shape="ol40"] { width: 564px; padding: 0 50px; }
   [shape="ol50"] #Escape,
   [shape="ol40"] #Escape { display: inline-block; width: 46px; }
   [shape="ol50"] #KeyA,
