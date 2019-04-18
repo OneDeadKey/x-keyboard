@@ -600,6 +600,7 @@ class Keyboard extends HTMLElement {
 
   set layout(value) {
     this._state.layout = value;
+    this._state.layout.platform = this.platform;
     Array.from(this.root.querySelectorAll('key'))
       .filter(key => !key.classList.contains('specialKey'))
       .forEach(key => drawKey(key, value.keyMap));
@@ -619,7 +620,7 @@ class Keyboard extends HTMLElement {
 
   keyDown(keyCode) {
     const element = this.root.getElementById(keyCode);
-    if (!element) {
+    if (!element || !this.layout) {
       return '';
     }
     element.style.cssText = defaultKeyPressStyle;
