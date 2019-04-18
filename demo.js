@@ -22,7 +22,7 @@ window.addEventListener('DOMContentLoaded', () => {
         .then(data => keyboard.setKalamineLayout(data.layout, data.dead_keys))
         .then(showKeys);
     } else { // blank layout
-      keyboard.setLayout();
+      keyboard.setKalamineLayout();
       showKeys();
     }
   };

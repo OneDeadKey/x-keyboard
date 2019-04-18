@@ -184,9 +184,9 @@ const css = `
   [shape^="ol"] #Enter {
     width: 46px;
   }
-  [shape^="ol"] #OSLeft,
+  [shape^="ol"] #MetaLeft,
   [shape^="ol"] #AltLeft,
-  [shape^="ol"] #OSRight,
+  [shape^="ol"] #MetaRight,
   [shape^="ol"] #AltRight {
     width: 63px;
   }
@@ -262,31 +262,28 @@ const css = `
   #ControlRight em::before { content: 'Ctrl'; }
   #AltLeft      em::before { content: 'Alt';  }
   #AltRight     em::before { content: 'AltGr';}
-  [platform="win"]   #OSLeft  em::before,
-  [platform="win"]   #OSRight em::before { content: 'Win'; }
-  [platform="linux"] #OSLeft  em::before,
-  [platform="linux"] #OSRight em::before { content: 'Super'; }
+  [platform="win"]   #MetaLeft  em::before,
+  [platform="win"]   #MetaRight em::before { content: 'Win'; }
+  [platform="linux"] #MetaLeft  em::before,
+  [platform="linux"] #MetaRight em::before { content: 'Super'; }
 
   /* icon labels on Mac */
+  [platform="mac"] #row_AA       em::before { font-style: normal; }
   [platform="mac"] #ControlLeft  em::before,
-  [platform="mac"] #ControlRight em::before { content: '\u2303'; }
+  [platform="mac"] #ControlRight em::before { font-size: 1.2em; content: '\u2303'; }
   [platform="mac"] #AltLeft      em::before,
-  [platform="mac"] #AltRight     em::before { content: '\u2325'; }
-  [platform="mac"] #OSLeft       em::before,
-  [platform="mac"] #OSRight      em::before { content: '\u2318'; }
-  [platform="mac"] #row_AA       em::before {
-    font-size: 1.25em;
-    font-style: normal;
-  }
+  [platform="mac"] #AltRight     em::before { font-size: 1.2em; content: '\u2325'; }
+  [platform="mac"] #MetaLeft     em::before,
+  [platform="mac"] #MetaRight    em::before { font-size: 1.2em; content: '\u2318'; }
 
   /* swap the Command and Option keys on Mac */
-  [platform="mac"] #OSLeft,
+  [platform="mac"] #MetaLeft,
   [platform="mac"] #AltRight { margin-left: 64px; }
-  [platform="mac"] #OSRight,
+  [platform="mac"] #MetaRight,
   [platform="mac"] #AltLeft { margin-left: -122px; }
-  [shape^="ol"][platform="mac"] #OSLeft,
+  [shape^="ol"][platform="mac"] #MetaLeft,
   [shape^="ol"][platform="mac"] #AltRight { margin-left: 71px; }
-  [shape^="ol"][platform="mac"] #OSRight,
+  [shape^="ol"][platform="mac"] #MetaRight,
   [shape^="ol"][platform="mac"] #AltLeft { margin-left: -136px; }
 
   /* not really a 'menu' character, but looks like one */
@@ -412,11 +409,11 @@ const html = `
     </li>
     <li id="row_AA">
       <key class="specialKey" id="ControlLeft">       <em></em> </key>
-      <key class="specialKey" id="OSLeft">            <em></em> </key>
+      <key class="specialKey" id="MetaLeft">          <em></em> </key>
       <key class="specialKey" id="AltLeft">           <em></em> </key>
       <key class="homeKey"    id="Space" finger="m1"> <em></em> </key>
       <key class="specialKey" id="AltRight">          <em></em> </key>
-      <key class="specialKey" id="OSRight">           <em></em> </key>
+      <key class="specialKey" id="MetaRight">         <em></em> </key>
       <key class="specialKey" id="ContextMenu">       <em></em> </key>
       <key class="specialKey" id="ControlRight">      <em></em> </key>
     </li>
@@ -557,7 +554,7 @@ class Keyboard extends HTMLElement {
   }
 
   set shape(value) {
-    shape = value.toLowerCase();
+    const shape = value.toLowerCase();
     switch (shape) {
       case 'iso':
         setFingerAssignment(this.root, false);
@@ -619,13 +616,14 @@ class Keyboard extends HTMLElement {
    */
 
   keyDown(keyCode) {
-    const element = this.root.getElementById(keyCode);
+    const code = keyCode.replace(/^OS/, 'Meta'); // https://bugzil.la/1264150
+    const element = this.root.getElementById(code);
     if (!element || !this.layout) {
       return '';
     }
     element.style.cssText = defaultKeyPressStyle;
     const dk = this.layout.pendingDK;
-    const rv = this.layout.keyDown(keyCode);
+    const rv = this.layout.keyDown(code);
     if (this.layout.modifiers.altgr) {
       this.root.getElementById('keyboard').classList.add('alt');
     }
@@ -642,12 +640,13 @@ class Keyboard extends HTMLElement {
   }
 
   keyUp(keyCode) {
-    const element = this.root.getElementById(keyCode);
+    const code = keyCode.replace(/^OS/, 'Meta'); // https://bugzil.la/1264150
+    const element = this.root.getElementById(code);
     if (!element) {
       return;
     }
     element.style.cssText = '';
-    const rv = this.layout.keyUp(keyCode);
+    const rv = this.layout.keyUp(code);
     if (!this.layout.modifiers.altgr) {
       this.root.getElementById('keyboard').classList.remove('alt');
     }
