@@ -440,8 +440,8 @@ const drawDK = (element, keyMap, deadKey) => {
 const setFingerAssignment = (root, ansiStyle) => {
   let i = 1;
   (ansiStyle ?
-    [ 'l5', 'l5', 'l4', 'l3', 'l2', 'l2', 'r2', 'r2', 'r3', 'r4' ] :
-    [ 'l5', 'l4', 'l3', 'l2', 'l2', 'r2', 'r2', 'r3', 'r4', 'r5' ])
+    [ 'l5', 'l4', 'l3', 'l2', 'l2', 'r2', 'r2', 'r3', 'r4', 'r5' ] :
+    [ 'l5', 'l5', 'l4', 'l3', 'l2', 'l2', 'r2', 'r2', 'r3', 'r4' ])
     .forEach(finger =>
       root.getElementById('Digit' + (i++ % 10)).setAttribute('finger', finger));
 };
