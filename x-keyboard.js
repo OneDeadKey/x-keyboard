@@ -30,22 +30,10 @@ const css = `
     margin: 0;
     padding: 0;
   }
-  #row_AD {
-    position: absolute;
-    top: 46px;
-  }
-  #row_AC {
-    position: absolute;
-    top: 92px;
-  }
-  #row_AB {
-    position: absolute;
-    top: 138px;
-  }
-  #row_AA {
-    position: absolute;
-    top: 184px;
-  }
+  #row_AD { position: absolute; top:  46px; }
+  #row_AC { position: absolute; top:  92px; }
+  #row_AB { position: absolute; top: 138px; }
+  #row_AA { position: absolute; top: 184px; }
 
   /* keys */
   key {
@@ -96,12 +84,12 @@ const css = `
     font-size: 13px;
     font-style: italic;
   }
-  #row_AA    .specialKey   { width: 56px; }
-  #row_AA     #ContextMenu { width: 40px; }
-  #Space                   { width: 240px;}
-  #Tab,       #Backspace   { width: 60px; }
-  #CapsLock,  #Enter       { width: 73px; }
-  #ShiftLeft, #ShiftRight  { width: 96px; }
+  #row_AA    .specialKey   { width:  56px; }
+  #row_AA     #ContextMenu { width:  40px; }
+  #Space                   { width: 240px; }
+  #Tab,       #Backspace   { width:  60px; }
+  #CapsLock,  #Enter       { width:  73px; }
+  #ShiftLeft, #ShiftRight  { width:  96px; }
 
   #Escape *, #Tab *, #CapsLock *, #ShiftLeft *, #ShiftRight *, #Enter * {
     font-size: 1.25em;
@@ -201,29 +189,15 @@ const css = `
   [shape="ol60"] #Backquote,
   [shape="ol60"] #Tab,
   [shape="ol60"] #ShiftLeft,
-  [shape="ol60"] #ControlLeft {
-    margin-left: 3px;
-  }
-  [shape="ol60"] #KeyA {
-    margin-left: 55px; /* XXX why 55px instead of 54px? */
-  }
+  [shape="ol60"] #ControlLeft { margin-left:  3px; }
+  [shape="ol60"] #KeyA        { margin-left: 55px; /* XXX why not 54px? */ }
   [shape="ol60"] #Digit6,
   [shape="ol60"] #KeyY,
   [shape="ol60"] #KeyH,
-  [shape="ol60"] #KeyN {
-    margin-left: 54px;
-  }
-  [shape="ol60"] #Backspace {
-    margin-left: -378px;
-    height: 86px;
-  }
-  [shape="ol60"] #Enter {
-    margin-left: -326px;
-    height: 86px;
-  }
-  [shape="ol60"] #ShiftRight {
-    margin-left: 48px;
-  }
+  [shape="ol60"] #KeyN        { margin-left:   54px; }
+  [shape="ol60"] #Backspace   { margin-left: -378px; height: 86px; }
+  [shape="ol60"] #Enter       { margin-left: -326px; height: 86px; }
+  [shape="ol60"] #ShiftRight  { margin-left:   48px; }
   [shape="ol60"] #Space {
     width: 230px;
   }
@@ -254,7 +228,7 @@ const css = `
 
 
   /**************************************************************************
-   * Platform
+   * Special Keys: position & icons
    */
 
   /* text labels on PC (win/linux) */
@@ -281,11 +255,19 @@ const css = `
   [platform="mac"] #AltRight { margin-left: 64px; }
   [platform="mac"] #MetaRight,
   [platform="mac"] #AltLeft { margin-left: -122px; }
-  [shape^="ol"][platform="mac"] #MetaLeft,
-  [shape^="ol"][platform="mac"] #AltRight { margin-left: 71px; }
-  [shape^="ol"][platform="mac"] #MetaRight,
-  [shape^="ol"][platform="mac"] #AltLeft { margin-left: -136px; }
+  [platform="mac"][shape^="ol"] #MetaLeft,
+  [platform="mac"][shape^="ol"] #AltRight { margin-left: 71px; }
+  [platform="mac"][shape^="ol"] #MetaRight,
+  [platform="mac"][shape^="ol"] #AltLeft { margin-left: -136px; }
 
+  /* common key icons */
+  #ShiftLeft   em::before,
+  #ShiftRight  em::before { content: '\u21e7'; }
+  #CapsLock    em::before { content: '\u21ea'; }
+  #Tab         em::before { content: '\u21b9'; }
+  #Backspace   em::before { content: '\u232b'; }
+  #Escape      em::before { content: '\u238b'; }
+  #Enter       em::before { content: '\u23ce'; }
   /* not really a 'menu' character, but looks like one */
   #ContextMenu em::before { content: '\u2630'; }
 
@@ -325,9 +307,7 @@ const css = `
 const html = `
   <ul id="keyboard">
     <li id="row_AE">
-      <key id="Escape" class="specialKey">
-        <em> &#x238b; </em>
-      </key>
+      <key id="Escape" class="specialKey"> <em></em> </key>
       <key id="Backquote" finger="l5" class="pinkyKey"> </key>
       <key id="Digit1"    finger="l5" class="numberKey"></key>
       <key id="Digit2"    finger="l4" class="numberKey"></key>
@@ -341,14 +321,10 @@ const html = `
       <key id="Digit0"    finger="r5" class="numberKey"></key>
       <key id="Minus"     finger="r5" class="pinkyKey"> </key>
       <key id="Equal"     finger="r5" class="pinkyKey"> </key>
-      <key id="Backspace" class="specialKey">
-        <em> &#x232b; </em>
-      </key>
+      <key id="Backspace" class="specialKey"> <em></em> </key>
     </li>
     <li id="row_AD">
-      <key id="Tab" class="specialKey">
-        <em> &#x21b9; </em>
-      </key>
+      <key id="Tab" class="specialKey"> <em></em> </key>
       <key id="KeyQ"         finger="l5" class="letterKey"></key>
       <key id="KeyW"         finger="l4" class="letterKey"></key>
       <key id="KeyE"         finger="l3" class="letterKey"></key>
@@ -364,12 +340,8 @@ const html = `
       <key id="Backslash"    finger="r5" class="pinkyKey"> </key>
     </li>
     <li id="row_AC">
-      <key id="CapsLock" class="specialKey">
-        <em> &#x21ea; </em>
-      </key>
-      <key id="CapsLockISO" class="specialKey hiddenKey">
-        &nbsp;
-      </key>
+      <key id="CapsLock" class="specialKey"> <em></em> </key>
+      <key id="CapsLockISO" class="specialKey hiddenKey"> &nbsp; </key>
       <key id="KeyA"      finger="l5" class="letterKey homeKey"></key>
       <key id="KeyS"      finger="l4" class="letterKey homeKey"></key>
       <key id="KeyD"      finger="l3" class="letterKey homeKey"></key>
@@ -381,17 +353,11 @@ const html = `
       <key id="KeyL"      finger="r4" class="letterKey homeKey"></key>
       <key id="Semicolon" finger="r5" class="letterKey homeKey"></key>
       <key id="Quote"     finger="r5" class="pinkyKey"> </key>
-      <key id="Enter" class="specialKey">
-        <em> &#x23ce; </em>
-      </key>
-      <key id="EnterISO" class="specialKey hiddenKey">
-        &nbsp;
-      </key>
+      <key id="Enter" class="specialKey"> <em></em> </key>
+      <key id="EnterISO" class="specialKey hiddenKey"> &nbsp; </key>
     </li>
     <li id="row_AB">
-      <key id="ShiftLeft"     finger="l5" class="specialKey">
-        <em> &#x21e7; </em>
-      </key>
+      <key id="ShiftLeft"     finger="l5" class="specialKey"> <em></em> </key>
       <key id="IntlBackslash" finger="l5" class="pinkyKey"> </key>
       <key id="KeyZ"          finger="l5" class="letterKey"></key>
       <key id="KeyX"          finger="l4" class="letterKey"></key>
@@ -403,9 +369,7 @@ const html = `
       <key id="Comma"         finger="r3" class="letterKey"></key>
       <key id="Period"        finger="r4" class="letterKey"></key>
       <key id="Slash"         finger="r5" class="letterKey"></key>
-      <key id="ShiftRight"    finger="r5" class="specialKey">
-        <em> &#x21e7; </em>
-      </key>
+      <key id="ShiftRight"    finger="r5" class="specialKey"> <em></em> </key>
     </li>
     <li id="row_AA">
       <key class="specialKey" id="ControlLeft">       <em></em> </key>
