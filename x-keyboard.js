@@ -372,14 +372,14 @@ const html = `
       <key id="ShiftRight"    finger="r5" class="specialKey"> <em></em> </key>
     </li>
     <li id="row_AA">
-      <key class="specialKey" id="ControlLeft">       <em></em> </key>
-      <key class="specialKey" id="MetaLeft">          <em></em> </key>
-      <key class="specialKey" id="AltLeft">           <em></em> </key>
-      <key class="homeKey"    id="Space" finger="m1"> <em></em> </key>
-      <key class="specialKey" id="AltRight">          <em></em> </key>
-      <key class="specialKey" id="MetaRight">         <em></em> </key>
-      <key class="specialKey" id="ContextMenu">       <em></em> </key>
-      <key class="specialKey" id="ControlRight">      <em></em> </key>
+      <key id="ControlLeft"   finger="l5" class="specialKey"> <em></em> </key>
+      <key id="MetaLeft"      finger="l1" class="specialKey"> <em></em> </key>
+      <key id="AltLeft"       finger="l1" class="specialKey"> <em></em> </key>
+      <key id="Space"         finger="m1" class="homeKey">    <em></em> </key>
+      <key id="AltRight"      finger="r1" class="specialKey"> <em></em> </key>
+      <key id="MetaRight"     finger="r1" class="specialKey"> <em></em> </key>
+      <key id="ContextMenu"   finger="r1" class="specialKey"> <em></em> </key>
+      <key id="ControlRight"  finger="r5" class="specialKey"> <em></em> </key>
     </li>
   </ul>
 `;
