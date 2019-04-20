@@ -621,17 +621,17 @@ class Keyboard extends HTMLElement {
    */
 
   clearStyle() {
-    Array.from(this.root.querySelectorAll('li[style]'))
+    Array.from(this.root.querySelectorAll('key[style]'))
       .forEach(element => element.removeAttribute('style'));
   }
 
   showHint(key) {
     let hintClass = '';
-    Array.from(this.root.querySelectorAll('li.hint'))
-      .forEach(li => li.classList.remove('hint'));
-    getKeyChord(this.root, key).forEach(li => {
-      li.classList.add('hint');
-      hintClass += li.getAttribute('finger') + ' ';
+    Array.from(this.root.querySelectorAll('key.hint'))
+      .forEach(key => key.classList.remove('hint'));
+    getKeyChord(this.root, key).forEach(key => {
+      key.classList.add('hint');
+      hintClass += key.getAttribute('finger') + ' ';
     });
     return hintClass;
   }
@@ -639,7 +639,7 @@ class Keyboard extends HTMLElement {
   showKey(key, cssText) {
     this.clearStyle();
     getKeyChord(this.root, key)
-      .forEach(li => li.style.cssText = cssText || defaultKeyPressStyle);
+      .forEach(key => key.style.cssText = cssText || defaultKeyPressStyle);
   }
 
   showKeys(chars, cssText) {
