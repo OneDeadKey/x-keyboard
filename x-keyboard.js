@@ -11,11 +11,11 @@ import { newKeyboardLayout, newKalamineLayout, isDeadKey } from './layout.js';
 
 const css = `
   /**
-   * graphical keyboard layout, fixed size (664*230px)
+   * graphical keyboard layout, fixed size (690*230px)
    */
 
   ul {
-    width: 664px;
+    width: 690px;
     height: 230px;
     padding: 0;
     margin: 20px auto;
@@ -88,11 +88,12 @@ const css = `
     font-size: 13px;
     font-style: italic;
   }
-  #row_AA    .specialKey   { width:  56px; }
-  #row_AA     #ContextMenu { width:  40px; }
-  #Space                   { width: 240px; }
-  #Tab,       #Backspace   { width:  60px; }
-  #ShiftLeft, #ShiftRight  { width:  96px; }
+  #row_AA .specialKey { width:  56px; }
+  #Space              { width: 250px; }
+  #Tab                { width:  60px; }
+  #Backspace          { width:  86px; }
+  #ShiftLeft          { width:  96px; }
+  #ShiftRight         { width: 122px; }
 
   #Escape *, #Tab *, #CapsLock *, #ShiftLeft *, #ShiftRight *, #Enter * {
     font-size: 1.25em;
@@ -130,10 +131,9 @@ const css = `
   [shape^="ansi"] #CapsLockISO, [shape^="ansi"] #EnterISO {
     display: none;
   }
-  [shape^="ansi"] #CapsLock,
-  [shape^="ansi"] #Enter {
-    width: 73px;
-  }
+  [shape="ansi"] #CapsLock  { width: 73px; }
+  [shape="ansi"] #Enter     { width: 99px; }
+  [shape="ansi"] #Backslash { width: 66px; }
 
 
   /**************************************************************************
@@ -142,18 +142,18 @@ const css = `
 
   [shape^="alt"] #IntlYen   { display: block; }
   [shape^="alt"] #Backslash { display: none; }
-  [shape^="alt"] #Backspace { width: 14px; }
+  [shape^="alt"] #Backspace { width: 40px; }
 
   /* visual tweaks for Return */
   [shape^="alt"] #Enter {
     margin-top: -44px;
     margin-left: 35px;
     height: 86px;
-    width: 40px;
+    width: 66px;
   }
   [shape^="alt"] #EnterISO {
-    margin-left: -77px;
-    width: 73px;
+    margin-left: -103px;
+    width: 99px;
   }
 
 
@@ -171,13 +171,13 @@ const css = `
   [shape^="iso"] #Enter {
     margin-top: -44px;
     margin-left: 48px;
-    width: 27px;
+    width: 53px;
     height: 86px;
   }
   [shape^="iso"] #EnterISO {
     margin-top: -44px;
-    margin-left: -44px;
-    width: 40px;
+    margin-left: -70px;
+    width: 66px;
   }
 
   /* show IntlBackslash for ISO & ABNT */
@@ -193,7 +193,7 @@ const css = `
   /* show IntlRo for ABNT & JIS */
   [shape="iso104"] #ShiftRight,
   [shape="iso106"] #ShiftRight {
-    width: 50px;
+    width: 76px;
   }
   [shape="iso104"] #IntlRo,
   [shape="iso106"] #IntlRo {
@@ -202,7 +202,7 @@ const css = `
 
   /* show IntlYen for JIS */
   [shape="iso106"] #IntlYen   { display: block; }
-  [shape="iso106"] #Backspace { width: 14px; }
+  [shape="iso106"] #Backspace { width: 40px; }
 
 
   /**************************************************************************
@@ -214,8 +214,9 @@ const css = `
   }
   [shape^="ol"] #Backslash {
     margin-top: 94px;
-    margin-left: -96px;
+    margin-left: -105px;
   }
+  [shape^="ol"] #Escape,
   [shape^="ol"] #Backquote,
   [shape^="ol"] #Tab,
   [shape^="ol"] #ShiftLeft,
@@ -226,7 +227,7 @@ const css = `
   [shape^="ol"] #ControlRight,
   [shape^="ol"] #Backspace,
   [shape^="ol"] #Enter {
-    width: 46px;
+    width: 55px;
   }
   [shape^="ol"] #MetaLeft,
   [shape^="ol"] #AltLeft,
@@ -242,30 +243,29 @@ const css = `
 
   /* TypeMatrix-specific (TMx2030) */
 
+  [shape="ol60"] #Space       { width: 239px; }
+  [shape="ol60"] #ContextMenu { width:  40px; }
   [shape="ol60"] #Backquote,
   [shape="ol60"] #Tab,
   [shape="ol60"] #ShiftLeft,
   [shape="ol60"] #ControlLeft { margin-left:  3px; }
-  [shape="ol60"] #KeyA        { margin-left: 55px; /* XXX why not 54px? */ }
+  [shape="ol60"] #KeyA        { margin-left: 64px; /* XXX why not 63px? */ }
   [shape="ol60"] #Digit6,
   [shape="ol60"] #KeyY,
   [shape="ol60"] #KeyH,
-  [shape="ol60"] #KeyN        { margin-left:   54px; }
-  [shape="ol60"] #Backspace   { margin-left: -378px; height: 86px; }
-  [shape="ol60"] #Enter       { margin-left: -326px; height: 86px; }
+  [shape="ol60"] #KeyN        { margin-left:   63px; }
+  [shape="ol60"] #Backspace   { margin-left: -396px; height: 86px; }
+  [shape="ol60"] #Enter       { margin-left: -335px; height: 86px; }
   [shape="ol60"] #ShiftRight  { margin-left:   48px; }
-  [shape="ol60"] #Space {
-    width: 230px;
-  }
 
   /* OLKB-specific (Preonic, Planck)*/
 
   [shape="ol50"],
-  [shape="ol40"] { width: 564px; padding: 0 50px; }
+  [shape="ol40"] { width: 590px; padding: 0 50px; }
   [shape="ol50"] #Escape,
-  [shape="ol40"] #Escape { display: inline-block; width: 46px; }
+  [shape="ol40"] #Escape { display: inline-block; }
   [shape="ol50"] #KeyA,
-  [shape="ol40"] #KeyA { margin-left: 54px; }
+  [shape="ol40"] #KeyA { margin-left: 63px; }
   [shape="ol50"] #Space,
   [shape="ol40"] #Space { width: 178px; }
   [shape="ol50"] #Enter,
@@ -280,7 +280,7 @@ const css = `
   [shape="ol40"] #ShiftRight,
   [shape="ol40"] #Enter     { margin-top: 2px; height: 40px; }
   [shape="ol40"] #Escape    { margin-top: 94px; }
-  [shape="ol40"] #Backspace { margin: -90px 514px 0; /* XXX magic numbers */ }
+  [shape="ol40"] #Backspace { margin: -90px 523px 0; }
 
 
   /**************************************************************************
