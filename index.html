@@ -34,7 +34,7 @@
 
   <input id="txtInput" spellcheck="false">
 
-  <x-keyboard id="keyboard" shape="pc104" theme="reach"></x-keyboard>
+  <x-keyboard id="keyboard"></x-keyboard>
 
   <form>
     <label>emulate<input id="emulation" type="checkbox"></label>
@@ -48,7 +48,10 @@
       <option>dvorak</option>
     </select>
     <select id="shape">
-      <option value="iso"> ISO </option>
+      <option value="alt">  ALT  </option>
+      <option value="jis">  JIS  </option>
+      <option value="abnt"> ABNT </option>
+      <option value="iso">  ISO  </option>
       <option value="ansi" selected> ANSI </option>
       <option value="ol60"> 60% </option>
       <option value="ol50"> 50% </option>

@@ -12,15 +12,17 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // keyboard selector: layout, shape, color theme
   const setPlatform = () => keyboard.platform = platform.value;
-  const setShape = () => keyboard.shape = shape.value;
-  const setTheme = () => keyboard.theme = theme.value;
-  const showKeys = () => keyboard.showKeys(keys.value);
-  const setLayout = () => {
+  const setShape    = () => keyboard.shape = shape.value;
+  const setTheme    = () => keyboard.theme = theme.value;
+  const showKeys    = () => keyboard.showKeys(keys.value);
+  const setLayout   = () => {
     if (layout.value) {
       fetch(`layouts/${layout.value}.json`)
         .then(response => response.json())
-        .then(data => keyboard.setKalamineLayout(data.layout, data.dead_keys))
-        .then(showKeys);
+        .then(data => {
+          keyboard.setKalamineLayout(data.layout, data.dead_keys);
+          showKeys();
+        });
     } else { // blank layout
       keyboard.setKalamineLayout();
       showKeys();

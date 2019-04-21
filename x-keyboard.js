@@ -1,5 +1,9 @@
 import { newKeyboardLayout, newKalamineLayout, isDeadKey } from './layout.js';
 
+// Useful links:
+// https://www.w3.org/TR/uievents-code/
+// https://commons.wikimedia.org/wiki/File:Physical_keyboard_layouts_comparison_ANSI_ISO_KS_ABNT_JIS.png
+
 
 /*******************************************************************************
  * Shadow DOM
@@ -20,7 +24,7 @@ const css = `
 
 
   /**************************************************************************
-   * Default Keyboard Geometry (ANSI/pc104)
+   * Default Keyboard Geometry (ANSI/101)
    */
 
   /* rows */
@@ -88,7 +92,6 @@ const css = `
   #row_AA     #ContextMenu { width:  40px; }
   #Space                   { width: 240px; }
   #Tab,       #Backspace   { width:  60px; }
-  #CapsLock,  #Enter       { width:  73px; }
   #ShiftLeft, #ShiftRight  { width:  96px; }
 
   #Escape *, #Tab *, #CapsLock *, #ShiftLeft *, #ShiftRight *, #Enter * {
@@ -100,53 +103,106 @@ const css = `
   }
 
   /* hide LSGT for ANSI (default) */
-  #IntlBackslash, #CapsLockISO, #EnterISO, #Escape {
+  #IntlBackslash, #IntlRo, #IntlYen, #Escape {
     display: none;
   }
 
 
   /**************************************************************************
-   * European Keyboard Geometry (ISO/pc105)
+   * Visual Tweaks for CapsLock and Return
    */
 
-  [shape="iso"] #ShiftLeft {
-    width: 50px;
-  }
-  [shape="iso"] #Enter {
-    width: 27px;
-    height: 86px;
-    margin-top: -44px;
-    margin-left: 48px;
-  }
-  [shape="iso"] #Backslash {
-    margin-top: 48px;
-    margin-left: -31px;
-  }
-  [shape="iso"] #IntlBackslash {
-    display: block;
-  }
-  /* visual tweaks for CapsLock and Return */
-  [shape="iso"] #CapsLockISO,
-  [shape="iso"] #EnterISO {
+  #CapsLockISO, #EnterISO {
     background-color: #e8e8e8;
     display: block;
   }
-  [shape="iso"] #CapsLock {
+  #CapsLock {
     width: 60px;
   }
-  [shape="iso"] #CapsLock,
-  [shape="iso"] #Enter {
+  #CapsLock, #Enter {
     z-index: 1;
   }
-  [shape="iso"] #CapsLockISO {
+  #CapsLockISO {
     margin-left: -64px;
     width: 73px;
   }
-  [shape="iso"] #EnterISO {
+  [shape^="ol"]   #CapsLockISO, [shape^="ol"]   #EnterISO,
+  [shape^="ansi"] #CapsLockISO, [shape^="ansi"] #EnterISO {
+    display: none;
+  }
+  [shape^="ansi"] #CapsLock,
+  [shape^="ansi"] #Enter {
+    width: 73px;
+  }
+
+
+  /**************************************************************************
+   * Alternate Keyboard Geometry (ALT/101)
+   */
+
+  [shape^="alt"] #IntlYen   { display: block; }
+  [shape^="alt"] #Backslash { display: none; }
+  [shape^="alt"] #Backspace { width: 14px; }
+
+  /* visual tweaks for Return */
+  [shape^="alt"] #Enter {
+    margin-top: -44px;
+    margin-left: 35px;
+    height: 86px;
+    width: 40px;
+  }
+  [shape^="alt"] #EnterISO {
+    margin-left: -77px;
+    width: 73px;
+  }
+
+
+  /**************************************************************************
+   * European Keyboard Geometry (ISO/pc102)
+   *     + Brazilian Variant (ABNT/pc104)
+   *     + Japanese Variant (JIS/pc106)
+   */
+
+  /* visual tweaks for Backslash & Return */
+  [shape^="iso"] #Backslash {
+    margin-top: 48px;
+    margin-left: -31px;
+  }
+  [shape^="iso"] #Enter {
+    margin-top: -44px;
+    margin-left: 48px;
+    width: 27px;
+    height: 86px;
+  }
+  [shape^="iso"] #EnterISO {
     margin-top: -44px;
     margin-left: -44px;
     width: 40px;
   }
+
+  /* show IntlBackslash for ISO & ABNT */
+  [shape="iso102"] #ShiftLeft,
+  [shape="iso104"] #ShiftLeft {
+    width: 50px;
+  }
+  [shape="iso102"] #IntlBackslash,
+  [shape="iso104"] #IntlBackslash {
+    display: block;
+  }
+
+  /* show IntlRo for ABNT & JIS */
+  [shape="iso104"] #ShiftRight,
+  [shape="iso106"] #ShiftRight {
+    width: 50px;
+  }
+  [shape="iso104"] #IntlRo,
+  [shape="iso106"] #IntlRo {
+    display: block;
+  }
+
+  /* show IntlYen for JIS */
+  [shape="iso106"] #IntlYen   { display: block; }
+  [shape="iso106"] #Backspace { width: 14px; }
 
 
   /**************************************************************************
@@ -321,6 +377,7 @@ const html = `
       <key id="Digit0"    finger="r5" class="numberKey"></key>
       <key id="Minus"     finger="r5" class="pinkyKey"> </key>
       <key id="Equal"     finger="r5" class="pinkyKey"> </key>
+      <key id="IntlYen"   finger="r5" class="pinkyKey"> </key>
       <key id="Backspace" class="specialKey"> <em></em> </key>
     </li>
     <li id="row_AD">
@@ -369,6 +426,7 @@ const html = `
       <key id="Comma"         finger="r3" class="letterKey"></key>
       <key id="Period"        finger="r4" class="letterKey"></key>
       <key id="Slash"         finger="r5" class="letterKey"></key>
+      <key id="IntlRo"        finger="r5" class="letterKey"></key>
       <key id="ShiftRight"    finger="r5" class="specialKey"> <em></em> </key>
     </li>
     <li id="row_AA">
@@ -521,19 +579,26 @@ class Keyboard extends HTMLElement {
     const shape = value.toLowerCase();
     switch (shape) {
       case 'iso':
+      case 'abnt': // ABNT = ISO + IntlRo + NumpadComma
+      case 'jis':  // JIS = ISO + IntlRo + IntlYen - IntlBackslash
+                   //          + NonConvert + Convert + KanaMode
         setFingerAssignment(this.root, false);
         break;
       case 'ansi':
-      case 'ol60':
-      case 'ol50':
-      case 'ol40':
+      case 'alt':  // = ANSI - Backslash + IntlYen
+      // case 'ks':// = alternate 101 + Lang1 + Lang2
+      case 'ol60': // TypeMatrix 2030
+      case 'ol50': // OLKB Preonic
+      case 'ol40': // OLKB Planck
         setFingerAssignment(this.root, true);
         break;
       default:
         return;
     }
     this._state.shape = shape;
-    this.root.getElementById('keyboard').setAttribute('shape', shape);
+    this.root.getElementById('keyboard').setAttribute('shape', {
+      iso: 'iso102', abnt: 'iso104', jis: 'iso106'
+    }[shape] || shape);
   }
 
   get platform() {
