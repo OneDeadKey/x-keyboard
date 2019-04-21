@@ -71,10 +71,12 @@ const KEYNAMES = {
   'TLDE': 'Backquote',
   'AE11': 'Minus',
   'AE12': 'Equal',
+  'AE13': 'IntlYen',
   'AD11': 'BracketLeft',
   'AD12': 'BracketRight',
   'BKSL': 'Backslash',
   'AC11': 'Quote',
+  'AB11': 'IntlRo',
   'LSGT': 'IntlBackslash',
 };
 
