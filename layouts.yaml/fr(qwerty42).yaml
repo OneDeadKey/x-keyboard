@@ -1,11 +1,6 @@
-name: Lafayette42
-name8: q42-fr
-locale: fr
-variant: lafayette42
-description: French (Qwerty-Lafayette, compact variant)
-url: https://github.com/fabi1cazenave/qwerty-lafayette
+name: qwerty42-fr
+description: French QWERTY layout, compact variant - https://github.com/fabi1cazenave/qwerty-lafayette
 geometry: ERGO
-version: 0.7.0
 
 base: |
   ╭╌╌╌╌╌┰─────┬─────┬─────┬─────┬─────┰─────┬─────┬─────┬─────┬─────┰╌╌╌╌╌┬╌╌╌╌╌╮

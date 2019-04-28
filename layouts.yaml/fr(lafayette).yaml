@@ -1,11 +1,6 @@
-name: Qwerty-Lafayette
-name8: qwerty-l
-locale: fr
-variant: lafayette
-description: French (Qwerty-Lafayette)
-url: https://github.com/fabi1cazenave/qwerty-lafayette
+name: lafayette
+description: French QWERTY layout - https://qwerty-lafayette.org/
 geometry: ISO
-version: 0.8.0
 
 base: |
   ┌─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┲━━━━━━━━━━┓

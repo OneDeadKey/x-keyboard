@@ -86,6 +86,8 @@ function parseKalamineLayout(keyMap) {
   for (let xkb in keyMap) {
     rv[KEYNAMES[xkb]] = keyMap[xkb];
   }
+  rv.IntlBackslash = rv.IntlBackslash || rv.Backslash;
+  rv.IntlYen       = rv.IntlYen       || rv.Backslash;
   return rv;
 }
 

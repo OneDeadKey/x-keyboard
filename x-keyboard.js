@@ -1,4 +1,5 @@
-import { newKeyboardLayout, newKalamineLayout, isDeadKey } from './layout.js';
+import { newKeyboardLayout, newKalamineLayout, isDeadKey }
+from './x-keyboard-layout.js';
 
 // Useful links:
 // https://www.w3.org/TR/uievents-code/

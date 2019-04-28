@@ -21,6 +21,9 @@ window.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(data => {
           keyboard.setKalamineLayout(data.layout, data.dead_keys);
+          if (!shape.value) {
+            keyboard.shape = data.geometry.toLowerCase();
+          }
           showKeys();
         });
     } else { // blank layout
