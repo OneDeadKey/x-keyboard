@@ -633,12 +633,12 @@ class Keyboard extends HTMLElement {
       .forEach(key => drawKey(key, value.keyMap));
   }
 
-  setKalamineLayout(keyMap, deadKeys) {
-    this.layout = newKalamineLayout(keyMap || {}, deadKeys || []);
+  setKalamineLayout(keyMap, deadKeys, geometry) {
+    this.layout = newKalamineLayout(keyMap, deadKeys, geometry);
   }
 
-  setKeyboardLayout(keyMap, deadKeys) {
-    this.layout = newKeyboardLayout(keyMap || {}, deadKeys || {});
+  setKeyboardLayout(keyMap, deadKeys, geometry) {
+    this.layout = newKeyboardLayout(keyMap, deadKeys, geometry);
   }
 
   /**

@@ -204,7 +204,11 @@ function isDeadKey(value) {
   return value && value.length === 2 && value[0] === '*';
 }
 
-function newKeyboardLayout(keyMap, deadKeys) {
+function newKeyboardLayout(aKeyMap, aDeadKeys, aGeometry) {
+  const keyMap   = aKeyMap   || {};
+  const deadKeys = aDeadKeys || {};
+  const geometry = aGeometry || '';
+
   let modifiers = Object.assign({}, MODIFIERS);
   let pendingDK = undefined;
   let platform = '';
@@ -213,6 +217,7 @@ function newKeyboardLayout(keyMap, deadKeys) {
     get keyMap()    { return keyMap;    },
     get deadKeys()  { return deadKeys;  },
     get pendingDK() { return pendingDK; },
+    get geometry()  { return geometry;  },
     get platform()  { return platform;  },
     set platform(value) { platform = value; },
 
@@ -256,8 +261,8 @@ function newKeyboardLayout(keyMap, deadKeys) {
   };
 }
 
-function newKalamineLayout(kalamineKeyMap, kalamineDeadKeys) {
-  const keyMap   = parseKalamineLayout(kalamineKeyMap);
-  const deadKeys = parseKalamineDeadKeys(kalamineDeadKeys);
-  return newKeyboardLayout(keyMap, deadKeys);
+function newKalamineLayout(kalamineKeyMap, kalamineDeadKeys, geometry) {
+  const keyMap   = parseKalamineLayout(kalamineKeyMap     || {});
+  const deadKeys = parseKalamineDeadKeys(kalamineDeadKeys || []);
+  return newKeyboardLayout(keyMap, deadKeys, (geometry || '').toLowerCase());
 }
