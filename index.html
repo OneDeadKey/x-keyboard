@@ -17,14 +17,10 @@
       margin: auto;
       text-align: center;
     }
-    #txtInput {
+    input {
       width: 680px;
       text-align: center;
       font-size: 1.3em;
-    }
-    #keys {
-      width: 6em;
-      text-align: center;
     }
   </style>
   <script src="x-keyboard.js" type="module"></script>
@@ -32,12 +28,11 @@
 </head>
 <body>
 
-  <input id="txtInput" spellcheck="false">
+  <input spellcheck="false">
 
   <x-keyboard id="keyboard"></x-keyboard>
 
   <form>
-    <label>emulate<input id="emulation" type="checkbox"></label>
     <select id="layout">
       <option selected></option>
       <option>be</option>
@@ -67,7 +62,7 @@
       <option>us(dvorak)</option>
       <option>us(workman)</option>
     </select>
-    <select id="shape">
+    <select id="geometry">
       <option value="" selected> (auto) </option>
       <option value="alt">        ALT   </option>
       <option value="jis">        JIS   </option>
@@ -89,7 +84,6 @@
       <option>reach</option>
       <option>hints</option>
     </select>
-    <input id="keys">
   </form>
 
 </body>

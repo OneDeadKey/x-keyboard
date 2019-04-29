@@ -1,44 +1,45 @@
 window.addEventListener('DOMContentLoaded', () => {
   'use strict';
 
-  const keyboard  = document.querySelector('x-keyboard');
-  const emulation = document.getElementById('emulation');
-  const layout    = document.getElementById('layout');
-  const input     = document.getElementById('txtInput');
-  const shape     = document.getElementById('shape');
-  const platform  = document.getElementById('platform');
-  const theme     = document.getElementById('theme');
-  const keys      = document.getElementById('keys');
+  const keyboard = document.querySelector('x-keyboard');
+  const input    = document.querySelector('input');
 
-  // keyboard selector: layout, shape, color theme
-  const setPlatform = () => keyboard.platform = platform.value;
-  const setShape    = () => keyboard.shape = shape.value;
-  const setTheme    = () => keyboard.theme = theme.value;
-  const showKeys    = () => keyboard.showKeys(keys.value);
-  const setLayout   = () => {
-    if (layout.value) {
-      fetch(`layouts/${layout.value}.json`)
-        .then(response => response.json())
-        .then(data => {
-          keyboard.setKalamineLayout(data.layout, data.dead_keys);
-          if (!shape.value) {
-            keyboard.shape = data.geometry.toLowerCase();
-          }
-          showKeys();
-        });
-    } else { // blank layout
-      keyboard.setKalamineLayout();
-      showKeys();
+  // keyboard state: these <select> element IDs match the x-keyboard properties
+  // -- but the `layout` property requires a bit more work (JSON fetch)
+  const IDs = [ 'layout', 'geometry', 'platform', 'theme' ];
+  let state = {};
+  let ui = {};
+  const setProp = (key, value) => {
+    if (key === 'layout') {
+      if (value) {
+        fetch(`layouts/${value}.json`)
+          .then(response => response.json())
+          .then(data => keyboard.setKalamineLayout(data.layout, data.dead_keys,
+            data.geometry.replace('ERGO', 'ISO')));
+      } else {
+        keyboard.setKalamineLayout();
+      }
+    } else {
+      keyboard[key] = value;
     }
+    state[key] = value;
+    ui[key].value = value;
   };
-  shape.addEventListener('change', setShape);
-  platform.addEventListener('change', setPlatform);
-  theme.addEventListener('change', setTheme);
-  layout.addEventListener('change', setLayout);
-  setLayout();
-  setShape();
-  setPlatform();
-  setTheme();
+  const updateHash = () => {
+    window.location.hash = IDs
+      .reduce((hash, value) => hash + '/' + state[value], '')
+      .replace(/\/+$/, '');
+  };
+  const initialState = window.location.hash.split('/').slice(1);
+  IDs.forEach((key, i) => {
+    ui[key] = document.getElementById(key);
+    ui[key].addEventListener('change', (event) => {
+      setProp(key, event.target.value);
+      updateHash();
+    });
+    state[key] = initialState[i] || '';
+    setProp(key, state[key]);
+  });
 
   // highlight keyboard keys and emulate the keyboard
   let previousValue = '';
@@ -49,7 +50,7 @@ window.addEventListener('DOMContentLoaded', () => {
       previousValue = input.value = '';
       return false;
     }
-    if (!emulation.checked) {
+    if (!state.layout) {
       return true;
     }
     if (previousValue !== input.value) {
@@ -64,13 +65,9 @@ window.addEventListener('DOMContentLoaded', () => {
     previousValue = input.value;
     return false;
   };
-  window.addEventListener('focusout', () => {
-    keyboard.clearStyle();
-    keyboard.showKeys(keys.value);
-  });
+  window.addEventListener('focusout', () => keyboard.clearStyle());
 
-  const kps = 'background-color: #aaf';
-  keys.addEventListener('input', e => keyboard.showKeys(e.target.value, kps));
+  // ready to type!
   input.value = '';
   input.focus();
 });

@@ -549,14 +549,14 @@ class Keyboard extends HTMLElement {
     this.root = this.attachShadow({ mode: 'open' });
     this.root.appendChild(template.content.cloneNode(true));
     this._state = {
-      shape:    this.getAttribute('shape')    || 'ansi',
-      theme:    this.getAttribute('theme')    || '',
+      geometry: this.getAttribute('geometry') || '',
       platform: this.getAttribute('platform') || guessPlatform(),
+      theme:    this.getAttribute('theme')    || '',
       layout:   {},
     };
-    this.shape    = this._state.shape;
-    this.theme    = this._state.theme;
+    this.geometry = this._state.geometry;
     this.platform = this._state.platform;
+    this.theme    = this._state.theme;
   }
 
   /**
@@ -572,34 +572,34 @@ class Keyboard extends HTMLElement {
     this.root.getElementById('keyboard').setAttribute('theme', value);
   }
 
-  get shape() {
-    return this._state.shape;
+  get geometry() {
+    return this._state.geometry;
   }
 
-  set shape(value) {
-    const shape = value.toLowerCase();
-    switch (shape) {
-      case 'iso':
-      case 'abnt': // ABNT = ISO + IntlRo + NumpadComma
-      case 'jis':  // JIS = ISO + IntlRo + IntlYen - IntlBackslash
-                   //          + NonConvert + Convert + KanaMode
-        setFingerAssignment(this.root, false);
-        break;
-      case 'ansi':
-      case 'alt':  // = ANSI - Backslash + IntlYen
-      // case 'ks':// = alternate 101 + Lang1 + Lang2
-      case 'ol60': // TypeMatrix 2030
-      case 'ol50': // OLKB Preonic
-      case 'ol40': // OLKB Planck
-        setFingerAssignment(this.root, true);
-        break;
-      default:
-        return;
-    }
-    this._state.shape = shape;
-    this.root.getElementById('keyboard').setAttribute('shape', {
-      iso: 'iso102', abnt: 'iso104', jis: 'iso106'
-    }[shape] || shape);
+  set geometry(value) {
+    const euroStyleShapes = { iso: 'iso102', abnt: 'iso104', jis: 'iso106' };
+    const supportedShapes =
+      [ 'ansi', 'iso', 'abnt', 'jis', 'alt', 'ol60', 'ol50', 'ol40' ];
+    /**
+     * Supported geometries (besides ANSI):
+     * - Euro-style [Enter] key:
+     *     ISO  = ANSI + IntlBackslash
+     *     ABNT = ISO + IntlRo + NumpadComma
+     *     JIS  = ISO + IntlRo + IntlYen - IntlBackslash
+     *                + NonConvert + Convert + KanaMode
+     * - Russian-style [Enter] key:
+     *     ALT = ANSI - Backslash + IntlYen
+     *     (KS = ALT + Lang1 + Lang2) TODO
+     * - Ortholinear:
+     *     OL60 = TypeMatrix 2030
+     *     OL50 = OLKB Preonic
+     *     OL40 = OLKB Planck
+     */
+    this._state.geometry = supportedShapes.indexOf(value) >= 0 ? value : '';
+    const geometry = this._state.geometry || this.layout.geometry || 'ansi';
+    this.root.getElementById('keyboard').setAttribute('shape',
+      euroStyleShapes[geometry] || geometry);
+    setFingerAssignment(this.root, !(geometry in euroStyleShapes));
   }
 
   get platform() {
@@ -628,6 +628,7 @@ class Keyboard extends HTMLElement {
   set layout(value) {
     this._state.layout = value;
     this._state.layout.platform = this.platform;
+    this.geometry = this._state.geometry;
     Array.from(this.root.querySelectorAll('key'))
       .filter(key => !key.classList.contains('specialKey'))
       .forEach(key => drawKey(key, value.keyMap));
