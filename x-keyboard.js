@@ -552,7 +552,7 @@ class Keyboard extends HTMLElement {
       geometry: this.getAttribute('geometry') || '',
       platform: this.getAttribute('platform') || guessPlatform(),
       theme:    this.getAttribute('theme')    || '',
-      layout:   {},
+      layout:   newKeyboardLayout()
     };
     this.geometry = this._state.geometry;
     this.platform = this._state.platform;
