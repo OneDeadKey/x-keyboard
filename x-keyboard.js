@@ -451,34 +451,38 @@ template.innerHTML = `<style>${css}</style>${html}`;
  * Keyboard Layout
  */
 
+const dkClass = (label) => isDeadKey(label) ? 'deadKey' : '';
+const keyText = (label) => (label || '').slice(-1);
+
 const drawKey = (element, keyMap) => {
-  element.innerHTML = '';
-  if (!keyMap) {
+  if (!keyMap || !(element.id in keyMap)) {
+    element.innerHTML = '';
     return;
   }
-
-  const createLabel = (type, label, className) => {
-    let element = document.createElement(type);
-    if (isDeadKey(label)) {
-      element.classList.add('deadKey');
-      element.textContent = label[1];
-    } else {
-      element.textContent = label || '';
-    }
-    if (className) {
-      element.classList.add(className);
-    }
-    return element;
-  };
-
-  const [ base, shift, alt ] = keyMap[element.id] || [''];
-  element.appendChild(createLabel('strong', shift));
-  if (base.toUpperCase() !== shift) {
-    element.appendChild(createLabel('em', base));
-  }
-  element.appendChild(createLabel('em', alt, 'altgr'));
-  element.appendChild(createLabel('em', '', 'dk'));
-  element.appendChild(createLabel('strong', '', 'dk'));
+  /**
+   * What key label should we display when the `base` and `shift` layers have
+   * the lowercase and uppercase versions of the same letter?
+   * Most of the time we want the uppercase letter, but there are tricky cases:
+   *   - German:
+   *      'ß'.toUpperCase() == 'SS'
+   *      'ẞ'.toLowerCase() == 'ß'
+   *   - Greek:
+   *      'ς'.toUpperCase() == 'Σ'
+   *      'σ'.toUpperCase() == 'Σ'
+   *      'Σ'.toLowerCase() == 'σ'
+   * So if the lowercase version of the `shift` layer does not match the `base`
+   * layer, we'll show the lowercase letter (e.g. Greek 'ς').
+   */
+  const [ base, shift, alt ] = keyMap[element.id];
+  const baseLabel  = base.toUpperCase() !== shift ? base : '';
+  const shiftLabel = baseLabel || shift.toLowerCase() === base ? shift : base;
+  element.innerHTML = `
+    <strong class="${dkClass(shiftLabel)}">${keyText(shiftLabel)}</strong>
+    <em     class="${dkClass(baseLabel)}">${keyText(baseLabel)}</em>
+    <em     class="${dkClass(alt)} altgr">${keyText(alt)}</em>
+    <em     class="dk"></em>
+    <strong class="dk"></em>
+  `;
 };
 
 const drawDK = (element, keyMap, deadKey) => {
@@ -488,9 +492,16 @@ const drawDK = (element, keyMap, deadKey) => {
   }
   const alt0 = deadKey[key[0]];
   const alt1 = deadKey[key[1]];
+  /**
+   * Rule of thumb: display the `alt1` key if its lowercase is not `alt0`.
+   * Tricky case:
+   *   'µ'.toUpperCase() == 'Μ' //        micro sign => capital letter MU
+   *   'μ'.toUpperCase() == 'Μ' //   small letter MU => capital letter MU
+   *   'Μ'.toLowerCase() == 'μ' // capital letter MU =>   small letter MU
+   */
   if (alt0) {
     element.querySelector('em.dk').textContent = alt0;
-    if (alt1 && alt0.toUpperCase() !== alt1) {
+    if (alt1 && alt0 !== alt1.toLowerCase()) {
       element.querySelector('strong.dk').textContent = alt1;
     }
   }
