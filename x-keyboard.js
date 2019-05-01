@@ -670,9 +670,11 @@ class Keyboard extends HTMLElement {
       this.root.getElementById('keyboard').classList.add('alt');
     }
     if (dk) { // a dead key has just been unlatched, hide all key hints
-      this.root.getElementById('keyboard').classList.remove('dk')
-      Array.from(this.root.querySelectorAll('.dk'))
-        .forEach(span => span.textContent = '');
+      if (!element.classList.contains('specialKey')) {
+        this.root.getElementById('keyboard').classList.remove('dk')
+        Array.from(this.root.querySelectorAll('.dk'))
+          .forEach(span => span.textContent = '');
+      }
     } else if (this.layout.pendingDK) { // show hints for this dead key
       Array.from(this.root.querySelectorAll('key'))
         .forEach(key => drawDK(key, this.layout.keyMap, this.layout.pendingDK));
