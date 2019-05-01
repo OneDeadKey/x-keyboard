@@ -1,5 +1,7 @@
 #!/bin/sh
-for file in layouts.yaml/*
+for file in layouts.yaml/*.yaml
 do
-  kalamine $file --out layouts/$(basename ${file%.*}).json
+  json="layouts/$(basename ${file%.*}).json"
+  kalamine $file --out $json
+  sed -i -f pretty_print.sed $json
 done
