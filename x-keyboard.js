@@ -561,7 +561,7 @@ class Keyboard extends HTMLElement {
     this.root.appendChild(template.content.cloneNode(true));
     this._state = {
       geometry: this.getAttribute('geometry') || '',
-      platform: this.getAttribute('platform') || guessPlatform(),
+      platform: this.getAttribute('platform') || '',
       theme:    this.getAttribute('theme')    || '',
       layout:   newKeyboardLayout()
     };
@@ -618,7 +618,7 @@ class Keyboard extends HTMLElement {
   }
 
   set platform(value) {
-    const platform = value.toLowerCase();
+    const platform = value.toLowerCase() || guessPlatform();
     switch (platform) {
       case 'win':
       case 'mac':
