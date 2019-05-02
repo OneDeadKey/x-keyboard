@@ -7,8 +7,6 @@ window.addEventListener('DOMContentLoaded', () => {
   // keyboard state: these <select> element IDs match the x-keyboard properties
   // -- but the `layout` property requires a bit more work (JSON fetch)
   const IDs = [ 'layout', 'geometry', 'platform', 'theme' ];
-  let state = {};
-  let ui = {};
   const setProp = (key, value) => {
     if (key === 'layout') {
       if (value) {
@@ -22,24 +20,29 @@ window.addEventListener('DOMContentLoaded', () => {
     } else {
       keyboard[key] = value;
     }
-    state[key] = value;
-    ui[key].value = value;
+    document.getElementById(key).value = value;
   };
-  const updateHash = () => {
+  IDs.forEach((key, i) =>
+    document.getElementById(key).addEventListener('change', (event) =>
+      updateHashState(key, event.target.value)));
+
+  // store the keyboard state in the URL hash like it's 1995 again! :-)
+  let state = {};
+  const updateHashState = (key, value) => {
+    state[key] = value;
     window.location.hash = IDs
       .reduce((hash, value) => hash + '/' + state[value], '')
       .replace(/\/+$/, '');
   };
-  const initialState = window.location.hash.split('/').slice(1);
-  IDs.forEach((key, i) => {
-    ui[key] = document.getElementById(key);
-    ui[key].addEventListener('change', (event) => {
-      setProp(key, event.target.value);
-      updateHash();
+  const applyHashState = () => {
+    const hashState = window.location.hash.split('/').slice(1);
+    IDs.forEach((key, i) => {
+      setProp(key, hashState[i] || '');
+      state[key] = hashState[i] || '';;
     });
-    state[key] = initialState[i] || '';
-    setProp(key, state[key]);
-  });
+  };
+  window.addEventListener('hashchange', applyHashState);
+  applyHashState();
 
   // highlight keyboard keys and emulate the keyboard
   let previousValue = '';
