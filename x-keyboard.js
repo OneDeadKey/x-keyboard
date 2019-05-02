@@ -455,7 +455,7 @@ const dkClass = (label) => isDeadKey(label) ? 'deadKey' : '';
 const keyText = (label) => (label || '').slice(-1);
 
 const drawKey = (element, keyMap) => {
-  if (!keyMap || !(element.id in keyMap)) {
+  if (!keyMap || !keyMap[element.id]) {
     element.innerHTML = '';
     return;
   }
@@ -660,7 +660,7 @@ class Keyboard extends HTMLElement {
   keyDown(keyCode) {
     const code = keyCode.replace(/^OS/, 'Meta'); // https://bugzil.la/1264150
     const element = this.root.getElementById(code);
-    if (!element || !this.layout) {
+    if (!element) {
       return '';
     }
     element.style.cssText = defaultKeyPressStyle;
