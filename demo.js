@@ -14,8 +14,10 @@ window.addEventListener('DOMContentLoaded', () => {
           .then(response => response.json())
           .then(data => keyboard.setKalamineLayout(data.layout, data.dead_keys,
             data.geometry.replace('ERGO', 'ISO')));
+        input.placeholder = "type here";
       } else {
         keyboard.setKalamineLayout();
+        input.placeholder = "select a keyboard layout";
       }
     } else {
       keyboard[key] = value;
