@@ -7,88 +7,123 @@
     html {
       height: 100%;
       width: 100%;
-      display: table;
       font-family: sans-serif;
+      background-color: #ddd;
     }
     body {
-      display: table-cell;
-      vertical-align: middle;
-      width: 680px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 0 25px;
       margin: auto;
+      width: 690px; /* same as the <x-keyboard> fixed width */
+      height: 100%;
+      border-left: 1px solid #aaa;
+      border-right: 1px solid #aaa;
+      box-shadow: 0px 1px 10px #888;
+      background-color: #fff;
+    }
+    header {
+      font-size: 1rem;
+      color: brown;
+    }
+    h1 {
+      margin-bottom: 0.2em;
+      font-size: 1.4rem;
+      border-bottom: 1px solid brown;
+    }
+    div {
       text-align: center;
     }
     input {
-      width: 680px;
+      box-sizing: border-box;
+      width: 100%;
       text-align: center;
       font-size: 1.3em;
+    }
+    footer {
+      border-top: 1px solid brown;
+      text-align: right;
+      padding: 0.2rem 0 0.5rem;
+    }
+    footer a {
+      color: brown;
     }
   </style>
   <script src="x-keyboard.js" type="module"></script>
   <script src="demo.js"></script>
 </head>
 <body>
+  <header>
+    <h1>&lt;x-keyboard&gt;</h1>
+    A zero-dependency web component to display and emulate keyboard layouts.
+    </p>
+  </header>
 
-  <input spellcheck="false">
+  <div>
+    <input spellcheck="false">
+    <x-keyboard id="keyboard"></x-keyboard>
+    <form>
+      <select id="layout">
+        <option selected></option>
+        <option>be</option>
+        <option>bg</option>
+        <option>br</option>
+        <option>ch</option>
+        <option>ch(fr)</option>
+        <option>de</option>
+        <option>dk</option>
+        <option>es</option>
+        <option>fr</option>
+        <option>fr(afnor)</option>
+        <option>fr(bepo)</option>
+        <option>fr(dvorak)</option>
+        <option>fr(lafayette)</option>
+        <option>fr(qwerty42)</option>
+        <option>gb</option>
+        <option>gb(dvorak)</option>
+        <option>gr</option>
+        <option>it</option>
+        <option>latam</option>
+        <option>no</option>
+        <option>pt</option>
+        <option>ru</option>
+        <option>ru(legacy)</option>
+        <option>se</option>
+        <option>ua</option>
+        <option>us</option>
+        <option>us(intl)</option>
+        <option>us(colemak)</option>
+        <option>us(dvorak)</option>
+        <option>us(workman)</option>
+      </select>
+      <select id="geometry">
+        <option value="" selected> (auto) </option>
+        <option value="alt">        ALT   </option>
+        <option value="jis">        JIS   </option>
+        <option value="abnt">       ABNT  </option>
+        <option value="iso">        ISO   </option>
+        <option value="ansi">       ANSI  </option>
+        <option value="ol60">       60%   </option>
+        <option value="ol50">       50%   </option>
+        <option value="ol40">       40%   </option>
+      </select>
+      <select id="platform">
+        <option value="" selected> (auto) </option>
+        <option value="win">        win   </option>
+        <option value="mac">        mac   </option>
+        <option value="linux">      linux </option>
+      </select>
+      <select id="theme">
+        <option selected></option>
+        <option>reach</option>
+        <option>hints</option>
+      </select>
+    </form>
+  </div>
 
-  <x-keyboard id="keyboard"></x-keyboard>
-
-  <form>
-    <select id="layout">
-      <option selected></option>
-      <option>be</option>
-      <option>bg</option>
-      <option>br</option>
-      <option>ch</option>
-      <option>ch(fr)</option>
-      <option>de</option>
-      <option>dk</option>
-      <option>es</option>
-      <option>fr</option>
-      <option>fr(afnor)</option>
-      <option>fr(bepo)</option>
-      <option>fr(dvorak)</option>
-      <option>fr(lafayette)</option>
-      <option>fr(qwerty42)</option>
-      <option>gb</option>
-      <option>gb(dvorak)</option>
-      <option>gr</option>
-      <option>it</option>
-      <option>latam</option>
-      <option>no</option>
-      <option>pt</option>
-      <option>ru</option>
-      <option>ru(legacy)</option>
-      <option>se</option>
-      <option>ua</option>
-      <option>us</option>
-      <option>us(intl)</option>
-      <option>us(colemak)</option>
-      <option>us(dvorak)</option>
-      <option>us(workman)</option>
-    </select>
-    <select id="geometry">
-      <option value="" selected> (auto) </option>
-      <option value="alt">        ALT   </option>
-      <option value="jis">        JIS   </option>
-      <option value="abnt">       ABNT  </option>
-      <option value="iso">        ISO   </option>
-      <option value="ansi">       ANSI  </option>
-      <option value="ol60">       60%   </option>
-      <option value="ol50">       50%   </option>
-      <option value="ol40">       40%   </option>
-    </select>
-    <select id="platform">
-      <option value="" selected> (auto) </option>
-      <option value="win">        win   </option>
-      <option value="mac">        mac   </option>
-      <option value="linux">      linux </option>
-    </select>
-    <select id="theme">
-      <option selected></option>
-      <option>reach</option>
-      <option>hints</option>
-    </select>
-  </form>
-
+  <footer>
+    <a href="https://github.com/fabi1cazenave/x-keyboard">project page</a>
+  </footer>
 </body>
 </html>
