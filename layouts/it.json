@@ -57,8 +57,8 @@
     {
       "char": "*^",
       "name": "circumflex",
-      "base": "aceghijosuwyzACEGHIJOSUWYZ",
-      "alt": "âĉêĝĥîĵôŝûŵŷẑÂĈÊĜĤÎĴÔŜÛŴŶẐ",
+      "base": "AaCcEeGgHhIiJjOoSsUuWwYyZz0123456789()+-=",
+      "alt": "ÂâĈĉÊêĜĝĤĥÎîĴĵÔôŜŝÛûŴŵŶŷẐẑ⁰¹²³⁴⁵⁶⁷⁸⁹⁽⁾⁺⁻⁼",
       "alt_space": "^",
       "alt_self": "^"
     }

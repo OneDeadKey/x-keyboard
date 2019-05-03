@@ -57,16 +57,16 @@
     {
       "char": "*^",
       "name": "circumflex",
-      "base": "aceghijosuwyzACEGHIJOSUWYZ",
-      "alt": "âĉêĝĥîĵôŝûŵŷẑÂĈÊĜĤÎĴÔŜÛŴŶẐ",
+      "base": "AaCcEeGgHhIiJjOoSsUuWwYyZz0123456789()+-=",
+      "alt": "ÂâĈĉÊêĜĝĤĥÎîĴĵÔôŜŝÛûŴŵŶŷẐẑ⁰¹²³⁴⁵⁶⁷⁸⁹⁽⁾⁺⁻⁼",
       "alt_space": "^",
       "alt_self": "^"
     },
     {
       "char": "*¨",
       "name": "diaeresis",
-      "base": "aehiotuwxyAEHIOUWXY",
-      "alt": "äëḧïöẗüẅẍÿÄËḦÏÖÜẄẌŸ",
+      "base": "AaEeHhIiOotUuWwXxYy",
+      "alt": "ÄäËëḦḧÏïÖöẗÜüẄẅẌẍŸÿ",
       "alt_space": "\"",
       "alt_self": "¨"
     },
@@ -81,40 +81,40 @@
     {
       "char": "*`",
       "name": "grave",
-      "base": "aeinouwyAEINOUWY",
-      "alt": "àèìǹòùẁỳÀÈÌǸÒÙẀỲ",
+      "base": "AaEeIiNnOoUuWwYy",
+      "alt": "ÀàÈèÌìǸǹÒòÙùẀẁỲỳ",
       "alt_space": "`",
       "alt_self": "`"
     },
     {
       "char": "*~",
       "name": "tilde",
-      "base": "aeinouvyAEINOUVY",
-      "alt": "ãẽĩñõũṽỹÃẼĨÑÕŨṼỸ",
+      "base": "AaEeIiNnOoUuVvYy<>=",
+      "alt": "ÃãẼẽĨĩÑñÕõŨũṼṽỸỹ≲≳≃",
       "alt_space": "~",
       "alt_self": "~"
     },
     {
       "char": "*¯",
       "name": "macron",
-      "base": "aeiouAEIOU",
-      "alt": "āēīōūĀĒĪŌŪ",
+      "base": "AaEeGgIiOoUuYy",
+      "alt": "ĀāĒēḠḡĪīŌōŪūȲȳ",
       "alt_space": "¯",
       "alt_self": "ˉ"
     },
     {
       "char": "*´",
       "name": "acute",
-      "base": "acegiklmnoprsuwyzACEGIKLMNOPRSUWYZ",
-      "alt": "áćéǵíḱĺḿńóṕŕśúẃýźÁĆÉǴÍḰĹḾŃÓṔŔŚÚẂÝŹ",
+      "base": "AaCcEeGgIiKkLlMmNnOoPpRrSsUuWwYyZz",
+      "alt": "ÁáĆćÉéǴǵÍíḰḱĹĺḾḿŃńÓóṔṕŔŕŚśÚúẂẃÝýŹź",
       "alt_space": "'",
       "alt_self": "´"
     },
     {
       "char": "*˙",
       "name": "abovedot",
-      "base": "abcdefghijlmnoprstwxyzABCDEFGHILMNOPRSTWXYZ",
-      "alt": "ȧḃċḋėḟġḣıȷŀṁṅȯṗṙṡṫẇẋẏżȦḂĊḊĖḞĠḢİĿṀṄȮṖṘṠṪẆẊẎŻ",
+      "base": "AaBbCcDdEeFfGgHhIijLlMmNnOoPpRrSsTtWwXxYyZz",
+      "alt": "ȦȧḂḃĊċḊḋĖėḞḟĠġḢḣİıȷĿŀṀṁṄṅȮȯṖṗṘṙṠṡṪṫẆẇẊẋẎẏŻż",
       "alt_space": "˙",
       "alt_self": "˙"
     }
