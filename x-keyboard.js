@@ -53,6 +53,9 @@ const css = `
   }
   key em,
   key strong {
+    display: block;
+    min-width: 0.8em;
+    text-align: center;
     font-weight: inherit;
     font-style: inherit;
     color: #333;
@@ -70,7 +73,7 @@ const css = `
   key .dk,
   key .altgr {
     left: auto;
-    right: 5px;
+    right: 3px;
     color: blue;
     opacity: 0.5;
   }
