@@ -659,6 +659,9 @@ class Keyboard extends HTMLElement {
 
   keyDown(keyCode) {
     const code = keyCode.replace(/^OS/, 'Meta'); // https://bugzil.la/1264150
+    if (!code) {
+      return '';
+    }
     const element = this.root.getElementById(code);
     if (!element) {
       return '';
@@ -685,6 +688,9 @@ class Keyboard extends HTMLElement {
 
   keyUp(keyCode) {
     const code = keyCode.replace(/^OS/, 'Meta'); // https://bugzil.la/1264150
+    if (!code) {
+      return '';
+    }
     const element = this.root.getElementById(code);
     if (!element) {
       return;
