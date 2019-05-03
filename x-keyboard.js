@@ -51,7 +51,8 @@ const css = `
     border: 1px solid #aaa;
     border-radius: 5px;
   }
-  key * {
+  key em,
+  key strong {
     font-weight: inherit;
     font-style: inherit;
     color: #333;
@@ -359,6 +360,10 @@ const css = `
   .alt .altgr,
   .dk .dk { opacity: 1; }
   .dk .altgr { display: none; }
+
+  /* hide Level4 (Shift+AltGr) unless AltGr is pressed */
+  strong.altgr { display: none; }
+  .alt strong.altgr { display: block; }
 `;
 
 const html = `
@@ -453,6 +458,16 @@ template.innerHTML = `<style>${css}</style>${html}`;
 
 const dkClass = (label) => isDeadKey(label) ? 'deadKey' : '';
 const keyText = (label) => (label || '').slice(-1);
+const altUpperChar = (base, shift) =>
+  /**
+   * In order not to overload the `alt` layers visually (AltGr & dead keys),
+   * the `shift` key is displayed only if its lowercase is not `base`.
+   * Tricky case:
+   *   'µ'.toUpperCase() == 'Μ' //        micro sign => capital letter MU
+   *   'μ'.toUpperCase() == 'Μ' //   small letter MU => capital letter MU
+   *   'Μ'.toLowerCase() == 'μ' // capital letter MU =>   small letter MU
+   */
+  shift && base !== shift.toLowerCase() ? shift : '';
 
 const drawKey = (element, keyMap) => {
   if (!keyMap || !keyMap[element.id]) {
@@ -473,15 +488,17 @@ const drawKey = (element, keyMap) => {
    * So if the lowercase version of the `shift` layer does not match the `base`
    * layer, we'll show the lowercase letter (e.g. Greek 'ς').
    */
-  const [ base, shift, alt ] = keyMap[element.id];
-  const baseLabel  = base.toUpperCase() !== shift ? base : '';
+  const [ base, shift, alt, salt ] = keyMap[element.id];
+  const baseLabel = base.toUpperCase() !== shift ? base : '';
   const shiftLabel = baseLabel || shift.toLowerCase() === base ? shift : base;
+  const saltLabel = altUpperChar(alt, salt);
   element.innerHTML = `
     <strong class="${dkClass(shiftLabel)}">${keyText(shiftLabel)}</strong>
-    <em     class="${dkClass(baseLabel)}">${keyText(baseLabel)}</em>
-    <em     class="${dkClass(alt)} altgr">${keyText(alt)}</em>
+    <em     class="${dkClass(baseLabel)}" >${keyText(baseLabel)}</em>
+    <strong class="${dkClass(salt)} altgr">${keyText(saltLabel)}</strong>
+    <em     class="${dkClass(alt)}  altgr">${keyText(alt)}</em>
+    <strong class="dk"></strong>
     <em     class="dk"></em>
-    <strong class="dk"></em>
   `;
 };
 
@@ -492,19 +509,8 @@ const drawDK = (element, keyMap, deadKey) => {
   }
   const alt0 = deadKey[key[0]];
   const alt1 = deadKey[key[1]];
-  /**
-   * Rule of thumb: display the `alt1` key if its lowercase is not `alt0`.
-   * Tricky case:
-   *   'µ'.toUpperCase() == 'Μ' //        micro sign => capital letter MU
-   *   'μ'.toUpperCase() == 'Μ' //   small letter MU => capital letter MU
-   *   'Μ'.toLowerCase() == 'μ' // capital letter MU =>   small letter MU
-   */
-  if (alt0) {
-    element.querySelector('em.dk').textContent = alt0;
-    if (alt1 && alt0 !== alt1.toLowerCase()) {
-      element.querySelector('strong.dk').textContent = alt1;
-    }
-  }
+  element.querySelector('em.dk').textContent = alt0 || '';
+  element.querySelector('strong.dk').textContent = altUpperChar(alt0, alt1);
 };
 
 const setFingerAssignment = (root, ansiStyle) => {
