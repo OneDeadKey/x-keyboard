@@ -1,7 +1,9 @@
-export { newKeyboardLayout, newKalamineLayout, isDeadKey };
+// dead keys are identified with a `*` prefix + the diacritic sign
+export function isDeadKey(value) {
+  return value && value.length === 2 && value[0] === '*';
+}
 
-
-/******************************************************************************
+/**
  * Parse Kalamine data:
  * these layouts are designed to create keyboard drivers but are not opmitized
  * for our use case. Here's what we need:
@@ -22,68 +24,68 @@ export { newKeyboardLayout, newKalamineLayout, isDeadKey };
 
 // map XKB names to DOM/KeyboardEvent names
 const KEYNAMES = {
-  'SPCE': 'Space',
+  SPCE: 'Space',
   // numbers
-  'AE01': 'Digit1',
-  'AE02': 'Digit2',
-  'AE03': 'Digit3',
-  'AE04': 'Digit4',
-  'AE05': 'Digit5',
-  'AE06': 'Digit6',
-  'AE07': 'Digit7',
-  'AE08': 'Digit8',
-  'AE09': 'Digit9',
-  'AE10': 'Digit0',
+  AE01: 'Digit1',
+  AE02: 'Digit2',
+  AE03: 'Digit3',
+  AE04: 'Digit4',
+  AE05: 'Digit5',
+  AE06: 'Digit6',
+  AE07: 'Digit7',
+  AE08: 'Digit8',
+  AE09: 'Digit9',
+  AE10: 'Digit0',
   // letters: 1st row
-  'AD01': 'KeyQ',
-  'AD02': 'KeyW',
-  'AD03': 'KeyE',
-  'AD04': 'KeyR',
-  'AD05': 'KeyT',
-  'AD06': 'KeyY',
-  'AD07': 'KeyU',
-  'AD08': 'KeyI',
-  'AD09': 'KeyO',
-  'AD10': 'KeyP',
+  AD01: 'KeyQ',
+  AD02: 'KeyW',
+  AD03: 'KeyE',
+  AD04: 'KeyR',
+  AD05: 'KeyT',
+  AD06: 'KeyY',
+  AD07: 'KeyU',
+  AD08: 'KeyI',
+  AD09: 'KeyO',
+  AD10: 'KeyP',
   // letters: 2nd row
-  'AC01': 'KeyA',
-  'AC02': 'KeyS',
-  'AC03': 'KeyD',
-  'AC04': 'KeyF',
-  'AC05': 'KeyG',
-  'AC06': 'KeyH',
-  'AC07': 'KeyJ',
-  'AC08': 'KeyK',
-  'AC09': 'KeyL',
-  'AC10': 'Semicolon',
+  AC01: 'KeyA',
+  AC02: 'KeyS',
+  AC03: 'KeyD',
+  AC04: 'KeyF',
+  AC05: 'KeyG',
+  AC06: 'KeyH',
+  AC07: 'KeyJ',
+  AC08: 'KeyK',
+  AC09: 'KeyL',
+  AC10: 'Semicolon',
   // letters: 3rd row
-  'AB01': 'KeyZ',
-  'AB02': 'KeyX',
-  'AB03': 'KeyC',
-  'AB04': 'KeyV',
-  'AB05': 'KeyB',
-  'AB06': 'KeyN',
-  'AB07': 'KeyM',
-  'AB08': 'Comma',
-  'AB09': 'Period',
-  'AB10': 'Slash',
+  AB01: 'KeyZ',
+  AB02: 'KeyX',
+  AB03: 'KeyC',
+  AB04: 'KeyV',
+  AB05: 'KeyB',
+  AB06: 'KeyN',
+  AB07: 'KeyM',
+  AB08: 'Comma',
+  AB09: 'Period',
+  AB10: 'Slash',
   // pinky keys
-  'TLDE': 'Backquote',
-  'AE11': 'Minus',
-  'AE12': 'Equal',
-  'AE13': 'IntlYen',
-  'AD11': 'BracketLeft',
-  'AD12': 'BracketRight',
-  'BKSL': 'Backslash',
-  'AC11': 'Quote',
-  'AB11': 'IntlRo',
-  'LSGT': 'IntlBackslash',
+  TLDE: 'Backquote',
+  AE11: 'Minus',
+  AE12: 'Equal',
+  AE13: 'IntlYen',
+  AD11: 'BracketLeft',
+  AD12: 'BracketRight',
+  BKSL: 'Backslash',
+  AC11: 'Quote',
+  AB11: 'IntlRo',
+  LSGT: 'IntlBackslash',
 };
 
 // turn Kalamine IDs (xkb) into DOM IDs
 function parseKalamineLayout(keyMap) {
-  let rv = {};
-  for (let xkb in keyMap) {
+  const rv = {};
+  for (const xkb in keyMap) {
     rv[KEYNAMES[xkb]] = keyMap[xkb];
   }
   rv.IntlBackslash = rv.IntlBackslash || rv.Backslash;
@@ -100,12 +102,12 @@ function checkKalamineDeadKey(key) {
 
 // parse Kalamine dead keys, return a easier-to-use dictionary
 function parseKalamineDeadKeys(deadKeys) {
-  let rv = {};
+  const rv = {};
   // sorting the dead key array ensures '1dk' comes up first
   deadKeys.filter(checkKalamineDeadKey).sort((a, b) => a.name > b.name)
-    .forEach(dk => {
-      let deadKey = {};
-      for (let i = 0; i < dk.base.length; i++) {
+    .forEach((dk) => {
+      const deadKey = {};
+      for (let i = 0; i < dk.base.length; i += 1) {
         deadKey[dk.base[i]] = dk.alt[i];
       }
       deadKey['\u0020'] = dk.alt_space;
@@ -118,14 +120,14 @@ function parseKalamineDeadKeys(deadKeys) {
 }
 
 
-/******************************************************************************
+/**
  * Keyboard hints:
  * suggest the most efficient way to type a character or a string.
  */
 
 // return the list of all keys that can output the requested char
 function getKeyList(keyMap, char) {
-  let rv = [];
+  const rv = [];
   for (const keyID in keyMap) {
     const level = keyMap[keyID].indexOf(char);
     if (level >= 0) {
@@ -137,8 +139,8 @@ function getKeyList(keyMap, char) {
 
 // return a sequence of keys that can output the requested string
 function getKeySequence(keyMap, deadKeys, str) {
-  let rv = [];
-  Array.from(str || '').forEach(char => {
+  const rv = [];
+  Array.from(str || '').forEach((char) => {
     const keys = getKeyList(keyMap, char);
     if (keys.length) { // direct access (possibly with Shift / AltGr)
       rv.push(keys[0]);
@@ -153,14 +155,14 @@ function getKeySequence(keyMap, deadKeys, str) {
         }
       }
       rv.push({});
-      console.error('char not found:', char);
+      console.error('char not found:', char); // eslint-disable-line
     }
   });
   return rv;
 }
 
 
-/******************************************************************************
+/**
  * Modifiers
  */
 
@@ -182,11 +184,11 @@ function getShiftState(modifiers) {
 function getAltGrState(modifiers, platform) {
   if (platform === 'win') {
     return modifiers.AltRight || (modifiers.ControlLeft && modifiers.AltLeft);
-  } else if (platform === 'mac') {
-    return modifiers.AltRight || modifiers.AltLeft;
-  } else {
-    return modifiers.AltRight;
   }
+  if (platform === 'mac') {
+    return modifiers.AltRight || modifiers.AltLeft;
+  }
+  return modifiers.AltRight;
 }
 
 function getModifierLevel(modifiers, platform) {
@@ -195,50 +197,46 @@ function getModifierLevel(modifiers, platform) {
 }
 
 
-/******************************************************************************
+/**
  * Public API
  */
 
-// all dead keys are identified with a `*` prefix + the diacritic sign
-function isDeadKey(value) {
-  return value && value.length === 2 && value[0] === '*';
-}
-
-function newKeyboardLayout(aKeyMap, aDeadKeys, aGeometry) {
+export function newKeyboardLayout(aKeyMap, aDeadKeys, aGeometry) {
   const keyMap   = aKeyMap   || {};
   const deadKeys = aDeadKeys || {};
   const geometry = aGeometry || '';
 
-  let modifiers = Object.assign({}, MODIFIERS);
-  let pendingDK = undefined;
+  const modifiers = Object.assign({}, MODIFIERS);
+  let pendingDK = null;
   let platform = '';
 
   return {
+    /* eslint-disable */
     get keyMap()    { return keyMap;    },
     get deadKeys()  { return deadKeys;  },
     get pendingDK() { return pendingDK; },
     get geometry()  { return geometry;  },
     get platform()  { return platform;  },
     set platform(value) { platform = value; },
-
     // modifier state
     get modifiers() { return {
       get shift() { return getShiftState(modifiers); },
       get altgr() { return getAltGrState(modifiers, platform); },
       get level() { return getModifierLevel(modifiers, platform); },
     }},
+    /* eslint-enable */
 
     // keyboard hints
     getKey: char => getKeyList(keyMap, char)[0],
     getKeySequence: str => getKeySequence(keyMap, deadKeys, str),
 
     // keyboard emulation
-    keyUp: keyCode => {
+    keyUp: (keyCode) => {
       if (keyCode in modifiers) {
         modifiers[keyCode] = false;
       }
     },
-    keyDown: keyCode => {
+    keyDown: (keyCode) => {
       if (keyCode in modifiers) {
         modifiers[keyCode] = true;
       }
@@ -251,17 +249,17 @@ function newKeyboardLayout(aKeyMap, aDeadKeys, aGeometry) {
         const dk = pendingDK;
         pendingDK = undefined;
         return dk[value] || '';
-      } else if (isDeadKey(value)) {
+      }
+      if (isDeadKey(value)) {
         pendingDK = deadKeys[value];
         return '';
-      } else {
-        return value || '';
       }
-    }
+      return value || '';
+    },
   };
 }
 
-function newKalamineLayout(kalamineKeyMap, kalamineDeadKeys, geometry) {
+export function newKalamineLayout(kalamineKeyMap, kalamineDeadKeys, geometry) {
   const keyMap   = parseKalamineLayout(kalamineKeyMap     || {});
   const deadKeys = parseKalamineDeadKeys(kalamineDeadKeys || []);
   return newKeyboardLayout(keyMap, deadKeys, (geometry || '').toLowerCase());

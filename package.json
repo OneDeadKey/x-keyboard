@@ -1,0 +1,31 @@
+{
+  "name": "x-keyboard",
+  "version": "0.1.0",
+  "description": "A web component to display and emulate keyboard layouts.",
+  "main": "x-keyboard.js",
+  "scripts": {
+    "lint": "eslint .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fabi1cazenave/x-keyboard.git"
+  },
+  "keywords": [
+    "webcomponent",
+    "keyboard",
+    "keyboard-layout",
+    "keyboard-emulation"
+  ],
+  "author": "Fabien Cazenave",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fabi1cazenave/x-keyboard/issues"
+  },
+  "homepage": "https://fabi1cazenave.github.io/x-keyboard",
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.17.2"
+  }
+}
