@@ -41,11 +41,9 @@
       "no-multi-spaces": "off",
       "array-bracket-spacing": "off",
       "key-spacing": "off",
-      "import/extensions": {
-        "js": "always"
-      },
-      "no-param-reassign": "off",
-      "no-underscore-dangle": "off"
+      "import/extensions":    [ "error", { "js": "always" } ],
+      "no-param-reassign":    [ "error", { "props": false } ],
+      "no-underscore-dangle": [ "error", { "allowAfterThis": true } ]
     }
   },
   "husky": {

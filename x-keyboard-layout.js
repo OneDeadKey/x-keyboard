@@ -217,24 +217,25 @@ export function newKeyboardLayout(aKeyMap, aDeadKeys, aGeometry) {
 
   const modifiers = Object.assign({}, MODIFIERS);
   const deadKeyDict = getDeadKeyDict(deadKeys);
-  let pendingDK = null;
+  let pendingDK;
   let platform = '';
 
   return {
-    /* eslint-disable */
     get keyMap()    { return keyMap;    },
     get deadKeys()  { return deadKeys;  },
     get pendingDK() { return pendingDK; },
     get geometry()  { return geometry;  },
     get platform()  { return platform;  },
     set platform(value) { platform = value; },
+
     // modifier state
-    get modifiers() { return {
-      get shift() { return getShiftState(modifiers); },
-      get altgr() { return getAltGrState(modifiers, platform); },
-      get level() { return getModifierLevel(modifiers, platform); },
-    }},
-    /* eslint-enable */
+    get modifiers() {
+      return {
+        get shift() { return getShiftState(modifiers); },
+        get altgr() { return getAltGrState(modifiers, platform); },
+        get level() { return getModifierLevel(modifiers, platform); },
+      };
+    },
 
     // keyboard hints
     getKey: char => getKeyList(keyMap, char)[0],
