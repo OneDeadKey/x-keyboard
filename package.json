@@ -4,10 +4,8 @@
   "description": "A web component to display and emulate keyboard layouts.",
   "main": "x-keyboard.js",
   "scripts": {
-    "lint": "eslint .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint ."
   },
-  "pre-commit": [ "lint" ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/fabi1cazenave/x-keyboard.git"
@@ -50,6 +48,11 @@
       "no-param-reassign": "off",
       "no-underscore-dangle": "off",
       "no-restricted-syntax": "off"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
     }
   }
 }
