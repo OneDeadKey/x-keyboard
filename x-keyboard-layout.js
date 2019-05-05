@@ -85,9 +85,9 @@ const KEYNAMES = {
 // turn Kalamine IDs (xkb) into DOM IDs
 function parseKalamineLayout(keyMap) {
   const rv = {};
-  for (const xkb in keyMap) {
-    rv[KEYNAMES[xkb]] = keyMap[xkb];
-  }
+  Object.entries(keyMap).forEach(([ id, value ]) => {
+    rv[KEYNAMES[id]] = value;
+  });
   rv.IntlBackslash = rv.IntlBackslash || rv.Backslash;
   rv.IntlYen       = rv.IntlYen       || rv.Backslash;
   return rv;
@@ -128,32 +128,41 @@ function parseKalamineDeadKeys(deadKeys) {
 // return the list of all keys that can output the requested char
 function getKeyList(keyMap, char) {
   const rv = [];
-  for (const keyID in keyMap) {
-    const level = keyMap[keyID].indexOf(char);
+  Object.entries(keyMap).forEach(([ keyID, value ]) => {
+    const level = value.indexOf(char);
     if (level >= 0) {
       rv.push({ id: keyID, level });
     }
-  }
+  });
   return rv.sort((a, b) => a.level > b.level);
 }
 
+// return a dictionary of all characters that can be done with a dead key
+function getDeadKeyDict(deadKeys) {
+  const dict = {};
+  Object.entries(deadKeys).forEach(([ id, dkObj ]) => {
+    Object.entries(dkObj).forEach(([ base, alt ]) => {
+      if (!(alt in dict)) {
+        dict[alt] = [];
+      }
+      dict[alt].push({ id, base });
+    });
+  });
+  return dict;
+}
+
 // return a sequence of keys that can output the requested string
-function getKeySequence(keyMap, deadKeys, str) {
+function getKeySequence(keyMap, dkDict, str) {
   const rv = [];
   Array.from(str || '').forEach((char) => {
     const keys = getKeyList(keyMap, char);
     if (keys.length) { // direct access (possibly with Shift / AltGr)
       rv.push(keys[0]);
-    } else { // no direct access => look for a dead key
-      for (const dKey in deadKeys) {
-        for (const base in deadKeys[dKey]) {
-          if (deadKeys[dKey][base] === char) {
-            rv.push(getKeyList(keyMap, dKey)[0]);
-            rv.push(getKeyList(keyMap, base)[0]);
-            return;
-          }
-        }
-      }
+    } else if (char in dkDict) { // available with a dead key
+      const dk = dkDict[char][0];
+      rv.push(getKeyList(keyMap, dk.id)[0]);
+      rv.push(getKeyList(keyMap, dk.base)[0]);
+    } else { // not available
       rv.push({});
       console.error('char not found:', char); // eslint-disable-line
     }
@@ -207,6 +216,7 @@ export function newKeyboardLayout(aKeyMap, aDeadKeys, aGeometry) {
   const geometry = aGeometry || '';
 
   const modifiers = Object.assign({}, MODIFIERS);
+  const deadKeyDict = getDeadKeyDict(deadKeys);
   let pendingDK = null;
   let platform = '';
 
@@ -228,7 +238,7 @@ export function newKeyboardLayout(aKeyMap, aDeadKeys, aGeometry) {
 
     // keyboard hints
     getKey: char => getKeyList(keyMap, char)[0],
-    getKeySequence: str => getKeySequence(keyMap, deadKeys, str),
+    getKeySequence: str => getKeySequence(keyMap, deadKeyDict, str),
 
     // keyboard emulation
     keyUp: (keyCode) => {
