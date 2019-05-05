@@ -7,6 +7,7 @@
     "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "pre-commit": [ "lint" ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/fabi1cazenave/x-keyboard.git"
@@ -23,6 +24,11 @@
     "url": "https://github.com/fabi1cazenave/x-keyboard/issues"
   },
   "homepage": "https://fabi1cazenave.github.io/x-keyboard",
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.17.2"
+  },
   "eslintConfig": {
     "env": {
       "browser": true,
@@ -37,16 +43,13 @@
       "no-multi-spaces": "off",
       "array-bracket-spacing": "off",
       "key-spacing": "off",
-      "import/extensions": { "js": "always" },
+      "import/extensions": {
+        "js": "always"
+      },
       "guard-for-in": "off",
       "no-param-reassign": "off",
       "no-underscore-dangle": "off",
       "no-restricted-syntax": "off"
     }
-  },
-  "devDependencies": {
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.17.2"
   }
 }
