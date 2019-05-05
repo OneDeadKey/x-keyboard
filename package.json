@@ -23,6 +23,27 @@
     "url": "https://github.com/fabi1cazenave/x-keyboard/issues"
   },
   "homepage": "https://fabi1cazenave.github.io/x-keyboard",
+  "eslintConfig": {
+    "env": {
+      "browser": true,
+      "es6": true
+    },
+    "extends": "airbnb-base",
+    "parserOptions": {
+      "ecmaVersion": 2015,
+      "sourceType": "module"
+    },
+    "rules": {
+      "no-multi-spaces": "off",
+      "array-bracket-spacing": "off",
+      "key-spacing": "off",
+      "import/extensions": { "js": "always" },
+      "guard-for-in": "off",
+      "no-param-reassign": "off",
+      "no-underscore-dangle": "off",
+      "no-restricted-syntax": "off"
+    }
+  },
   "devDependencies": {
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",

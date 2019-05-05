@@ -1,4 +1,4 @@
-import { isDeadKey, newKeyboardLayout, newKalamineLayout }
+import { newKeyboardLayout, newKalamineLayout, isDeadKey }
   from './x-keyboard-layout.js';
 
 // Useful links:

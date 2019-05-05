@@ -107,9 +107,9 @@ function parseKalamineDeadKeys(deadKeys) {
   deadKeys.filter(checkKalamineDeadKey).sort((a, b) => a.name > b.name)
     .forEach((dk) => {
       const deadKey = {};
-      for (let i = 0; i < dk.base.length; i += 1) {
-        deadKey[dk.base[i]] = dk.alt[i];
-      }
+      Array.from(dk.base).forEach((base, i) => {
+        deadKey[base] = dk.alt[i];
+      });
       deadKey['\u0020'] = dk.alt_space;
       deadKey['\u00a0'] = dk.alt_space;
       deadKey['\u202f'] = dk.alt_space;
