@@ -1,12 +1,12 @@
 import { newKeyboardLayout, newKalamineLayout, isDeadKey }
-from './x-keyboard-layout.js';
+  from './x-keyboard-layout.js';
 
 // Useful links:
 // https://www.w3.org/TR/uievents-code/
 // https://commons.wikimedia.org/wiki/File:Physical_keyboard_layouts_comparison_ANSI_ISO_KS_ABNT_JIS.png
 
 
-/*******************************************************************************
+/**
  * Shadow DOM
  */
 
@@ -455,22 +455,17 @@ const template = document.createElement('template');
 template.innerHTML = `<style>${css}</style>${html}`;
 
 
-/*******************************************************************************
+/**
  * Keyboard Layout
  */
 
-const dkClass = (label) => isDeadKey(label) ? 'deadKey' : '';
-const keyText = (label) => (label || '').slice(-1);
-const altUpperChar = (base, shift) =>
-  /**
-   * In order not to overload the `alt` layers visually (AltGr & dead keys),
-   * the `shift` key is displayed only if its lowercase is not `base`.
-   * Tricky case:
-   *   'µ'.toUpperCase() == 'Μ' //        micro sign => capital letter MU
-   *   'μ'.toUpperCase() == 'Μ' //   small letter MU => capital letter MU
-   *   'Μ'.toLowerCase() == 'μ' // capital letter MU =>   small letter MU
-   */
-  shift && base !== shift.toLowerCase() ? shift : '';
+const dkClass = label => (isDeadKey(label) ? 'deadKey' : '');
+const keyText = label => (label || '').slice(-1);
+
+// In order not to overload the `alt` layers visually (AltGr & dead keys),
+// the `shift` key is displayed only if its lowercase is not `base`.
+const altUpperChar = (base, shift) => (shift && base !== shift.toLowerCase()
+  ? shift : '');
 
 const drawKey = (element, keyMap) => {
   if (!keyMap || !keyMap[element.id]) {
@@ -488,6 +483,9 @@ const drawKey = (element, keyMap) => {
    *      'ς'.toUpperCase() == 'Σ'
    *      'σ'.toUpperCase() == 'Σ'
    *      'Σ'.toLowerCase() == 'σ'
+   *      'µ'.toUpperCase() == 'Μ' //        micro sign => capital letter MU
+   *      'μ'.toUpperCase() == 'Μ' //   small letter MU => capital letter MU
+   *      'Μ'.toLowerCase() == 'μ' // capital letter MU =>   small letter MU
    * So if the lowercase version of the `shift` layer does not match the `base`
    * layer, we'll show the lowercase letter (e.g. Greek 'ς').
    */
@@ -517,12 +515,12 @@ const drawDK = (element, keyMap, deadKey) => {
 };
 
 const setFingerAssignment = (root, ansiStyle) => {
-  let i = 1;
-  (ansiStyle ?
-    [ 'l5', 'l4', 'l3', 'l2', 'l2', 'r2', 'r2', 'r3', 'r4', 'r5' ] :
-    [ 'l5', 'l5', 'l4', 'l3', 'l2', 'l2', 'r2', 'r2', 'r3', 'r4' ])
-    .forEach(finger =>
-      root.getElementById('Digit' + (i++ % 10)).setAttribute('finger', finger));
+  (ansiStyle
+    ? ['l5', 'l4', 'l3', 'l2', 'l2', 'r2', 'r2', 'r3', 'r4', 'r5']
+    : ['l5', 'l5', 'l4', 'l3', 'l2', 'l2', 'r2', 'r2', 'r3', 'r4'])
+    .forEach((finger, i) => {
+      root.getElementById(`Digit${(i + 1) % 10}`).setAttribute('finger', finger);
+    });
 };
 
 const getKeyChord = (root, key) => {
@@ -530,13 +528,13 @@ const getKeyChord = (root, key) => {
     return [];
   }
   const element = root.getElementById(key.id);
-  let chord = [ element ];
+  const chord = [ element ];
   if (key.level > 1) { // altgr
     chord.push(root.getElementById('AltRight'));
   }
   if (key.level % 2) { // shift
-    chord.push(root.getElementById(element.getAttribute('finger')[0] == 'l' ?
-      'ShiftRight' : 'ShiftLeft'));
+    chord.push(root.getElementById(element.getAttribute('finger')[0] === 'l'
+      ? 'ShiftRight' : 'ShiftLeft'));
   }
   return chord;
 };
@@ -545,25 +543,25 @@ const guessPlatform = () => {
   const p = navigator.platform.toLowerCase();
   if (p.startsWith('win')) {
     return 'win';
-  } else if (p.startsWith('mac')) {
-    return 'mac';
-  } else if (p.startsWith('linux')) {
-    return 'linux';
-  } else {
-    return '';
   }
+  if (p.startsWith('mac')) {
+    return 'mac';
+  }
+  if (p.startsWith('linux')) {
+    return 'linux';
+  }
+  return '';
 };
 
 const defaultKeyPressStyle = 'background-color: #aaf;';
 const defaultKeyPressDuration = 250;
 
 
-/*******************************************************************************
+/**
  * Custom Element
  */
 
 class Keyboard extends HTMLElement {
-
   constructor() {
     super();
     this.root = this.attachShadow({ mode: 'open' });
@@ -572,7 +570,7 @@ class Keyboard extends HTMLElement {
       geometry: this.getAttribute('geometry') || '',
       platform: this.getAttribute('platform') || '',
       theme:    this.getAttribute('theme')    || '',
-      layout:   newKeyboardLayout()
+      layout:   newKeyboardLayout(),
     };
     this.geometry = this._state.geometry;
     this.platform = this._state.platform;
@@ -598,8 +596,9 @@ class Keyboard extends HTMLElement {
 
   set geometry(value) {
     const euroStyleShapes = { iso: 'iso102', abnt: 'iso104', jis: 'iso106' };
-    const supportedShapes =
-      [ 'ansi', 'iso', 'abnt', 'jis', 'alt', 'ol60', 'ol50', 'ol40' ];
+    const supportedShapes = [
+      'ansi', 'iso', 'abnt', 'jis', 'alt', 'ol60', 'ol50', 'ol40',
+    ];
     /**
      * Supported geometries (besides ANSI):
      * - Euro-style [Enter] key:
@@ -683,9 +682,11 @@ class Keyboard extends HTMLElement {
     }
     if (dk) { // a dead key has just been unlatched, hide all key hints
       if (!element.classList.contains('specialKey')) {
-        this.root.getElementById('keyboard').classList.remove('dk')
+        this.root.getElementById('keyboard').classList.remove('dk');
         Array.from(this.root.querySelectorAll('.dk'))
-          .forEach(span => span.textContent = '');
+          .forEach((span) => {
+            span.textContent = '';
+          });
       }
     } else if (this.layout.pendingDK) { // show hints for this dead key
       Array.from(this.root.querySelectorAll('key'))
@@ -698,14 +699,14 @@ class Keyboard extends HTMLElement {
   keyUp(keyCode) {
     const code = keyCode.replace(/^OS/, 'Meta'); // https://bugzil.la/1264150
     if (!code) {
-      return '';
+      return;
     }
     const element = this.root.getElementById(code);
     if (!element) {
       return;
     }
     element.style.cssText = '';
-    const rv = this.layout.keyUp(code);
+    this.layout.keyUp(code);
     if (!this.layout.modifiers.altgr) {
       this.root.getElementById('keyboard').classList.remove('alt');
     }
@@ -720,37 +721,41 @@ class Keyboard extends HTMLElement {
       .forEach(element => element.removeAttribute('style'));
   }
 
-  showHint(key) {
+  showHint(keyObj) {
     let hintClass = '';
     Array.from(this.root.querySelectorAll('key.hint'))
       .forEach(key => key.classList.remove('hint'));
-    getKeyChord(this.root, key).forEach(key => {
+    getKeyChord(this.root, keyObj).forEach((key) => {
       key.classList.add('hint');
-      hintClass += key.getAttribute('finger') + ' ';
+      hintClass += `${key.getAttribute('finger')} `;
     });
     return hintClass;
   }
 
-  showKey(key, cssText) {
+  showKey(keyObj, cssText) {
     this.clearStyle();
-    getKeyChord(this.root, key)
-      .forEach(key => key.style.cssText = cssText || defaultKeyPressStyle);
+    getKeyChord(this.root, keyObj)
+      .forEach((key) => {
+        key.style.cssText = cssText || defaultKeyPressStyle;
+      });
   }
 
   showKeys(chars, cssText) {
     this.clearStyle();
     this.layout.getKeySequence(chars)
-      .forEach(key => this.root.getElementById(key.id).style.cssText =
-        cssText || defaultKeyPressStyle);
+      .forEach((key) => {
+        this.root.getElementById(key.id).style.cssText = cssText
+          || defaultKeyPressStyle;
+      });
   }
 
   typeKeys(str, duration) {
-    function *pressKeys(keys) {
-      for (let key of keys) {
+    function* pressKeys(keys) {
+      for (const key of keys) { // eslint-disable-line
         yield key;
       }
     }
-    let it = pressKeys(this.layout.getKeySequence(str));
+    const it = pressKeys(this.layout.getKeySequence(str));
     const send = setInterval(() => {
       const { value, done } = it.next();
       // this.showHint(value);
@@ -760,7 +765,6 @@ class Keyboard extends HTMLElement {
       }
     }, duration || defaultKeyPressDuration);
   }
-
 }
 
 customElements.define('x-keyboard', Keyboard);

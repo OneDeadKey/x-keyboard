@@ -1,0 +1,58 @@
+{
+  "name": "x-keyboard",
+  "version": "0.1.0",
+  "description": "A web component to display and emulate keyboard layouts.",
+  "main": "x-keyboard.js",
+  "scripts": {
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fabi1cazenave/x-keyboard.git"
+  },
+  "keywords": [
+    "webcomponent",
+    "keyboard",
+    "keyboard-layout",
+    "keyboard-emulation"
+  ],
+  "author": "Fabien Cazenave",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fabi1cazenave/x-keyboard/issues"
+  },
+  "homepage": "https://fabi1cazenave.github.io/x-keyboard",
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.17.2"
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": true,
+      "es6": true
+    },
+    "extends": "airbnb-base",
+    "parserOptions": {
+      "ecmaVersion": 2015,
+      "sourceType": "module"
+    },
+    "rules": {
+      "no-multi-spaces": "off",
+      "array-bracket-spacing": "off",
+      "key-spacing": "off",
+      "import/extensions": {
+        "js": "always"
+      },
+      "guard-for-in": "off",
+      "no-param-reassign": "off",
+      "no-underscore-dangle": "off",
+      "no-restricted-syntax": "off"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
+  }
+}
