@@ -337,10 +337,15 @@ const css = `
    * Color Theme
    */
 
+  .press {
+    background-color: #aaf;
+  }
+
   [theme="reach"] .pinkyKey  { background-color: hsl(  0, 100%, 90%); }
   [theme="reach"] .numberKey { background-color: hsl( 42, 100%, 90%); }
   [theme="reach"] .letterKey { background-color: hsl(122, 100%, 90%); }
   [theme="reach"] .homeKey   { background-color: hsl(122, 100%, 75%); }
+  [theme="reach"] .press     { background-color: #aaf; }
 
   [theme="hints"] [finger="m1"] { background-color: hsl(  0, 100%, 95%); }
   [theme="hints"] [finger="l2"] { background-color: hsl( 42, 100%, 85%); }
@@ -352,9 +357,11 @@ const css = `
   [theme="hints"] [finger="l5"],
   [theme="hints"] [finger="r5"] { background-color: hsl(230, 100%, 85%); }
   [theme="hints"] .specialKey   { background-color: #ddd; }
-  [theme="hints"] .hint {
+  [theme="hints"] .press        { background-color: #113; }
+  [theme="hints"] .hint         { background-color: #a33; }
+  [theme="hints"] .hint strong,  [theme="hints"] .hint em,
+  [theme="hints"] .press strong, [theme="hints"] .press em {
     font-weight: bold;
-    background-color: brown;
     color: white;
   }
 
@@ -553,9 +560,6 @@ const guessPlatform = () => {
   return '';
 };
 
-const defaultKeyPressStyle = 'background-color: #aaf;';
-const defaultKeyPressDuration = 250;
-
 
 /**
  * Custom Element
@@ -674,7 +678,7 @@ class Keyboard extends HTMLElement {
     if (!element) {
       return '';
     }
-    element.style.cssText = defaultKeyPressStyle;
+    element.classList.add('press');
     const dk = this.layout.pendingDK;
     const rv = this.layout.keyDown(code);
     if (this.layout.modifiers.altgr) {
@@ -705,7 +709,7 @@ class Keyboard extends HTMLElement {
     if (!element) {
       return;
     }
-    element.style.cssText = '';
+    element.classList.remove('press');
     this.layout.keyUp(code);
     if (!this.layout.modifiers.altgr) {
       this.root.getElementById('keyboard').classList.remove('alt');
@@ -719,6 +723,16 @@ class Keyboard extends HTMLElement {
   clearStyle() {
     Array.from(this.root.querySelectorAll('key[style]'))
       .forEach(element => element.removeAttribute('style'));
+    Array.from(this.root.querySelectorAll('.press'))
+      .forEach(element => element.classList.remove('press'));
+  }
+
+  showKeys(chars, cssText) {
+    this.clearStyle();
+    this.layout.getKeySequence(chars)
+      .forEach((key) => {
+        this.root.getElementById(key.id).style.cssText = cssText;
+      });
   }
 
   showHint(keyObj) {
@@ -732,24 +746,15 @@ class Keyboard extends HTMLElement {
     return hintClass;
   }
 
-  showKey(keyObj, cssText) {
+  pressKey(keyObj) {
     this.clearStyle();
     getKeyChord(this.root, keyObj)
       .forEach((key) => {
-        key.style.cssText = cssText || defaultKeyPressStyle;
+        key.classList.add('press');
       });
   }
 
-  showKeys(chars, cssText) {
-    this.clearStyle();
-    this.layout.getKeySequence(chars)
-      .forEach((key) => {
-        this.root.getElementById(key.id).style.cssText = cssText
-          || defaultKeyPressStyle;
-      });
-  }
-
-  typeKeys(str, duration) {
+  pressKeys(str, duration) {
     function* pressKeys(keys) {
       for (const key of keys) { // eslint-disable-line
         yield key;
@@ -759,11 +764,11 @@ class Keyboard extends HTMLElement {
     const send = setInterval(() => {
       const { value, done } = it.next();
       // this.showHint(value);
-      this.showKey(value);
+      this.pressKey(value);
       if (done) {
         clearInterval(send);
       }
-    }, duration || defaultKeyPressDuration);
+    }, duration || 250);
   }
 }
 
