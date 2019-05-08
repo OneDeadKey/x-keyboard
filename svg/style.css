@@ -1,0 +1,57 @@
+.key, .specialKey {
+  stroke: #666;
+  stroke-width: .5px;
+  /* vector-effect: non-scaling-stroke; */
+  fill: none;
+}
+.specialKey {
+  fill: #eee;
+}
+
+/* Backslash & Return */
+#Return    .alt,
+#Return    .iso,
+#Backslash .iso,
+.alt #Return    .ansi,
+.alt #Backslash .ansi,
+.iso #Return    .ansi,
+.iso #Backslash .ansi { display: none; }
+.alt #Return    .alt,
+.iso #Return    .iso,
+.iso #Backslash .iso { display: block; }
+
+/* Backspace & IntlYen */
+#IntlYen, #Backspace .alt,
+.intlYen  #Backspace .ansi { display: none; }
+.intlYen  #Backspace .alt,
+.intlYen  #IntlYen { display: block; }
+
+/* ShiftLeft & IntlBackslash */
+#IntlBackslash, #ShiftLeft .iso,
+.intlBackslash  #ShiftLeft .ansi { display: none; }
+.intlBackslash  #ShiftLeft .iso,
+.intlBackslash  #IntlBackslash { display: block; }
+
+/* ShiftRight & IntlRo */
+#IntlRo, #ShiftRight .abnt,
+.intlRo  #ShiftRight .ansi { display: none; }
+.intlRo  #ShiftRight .abnt,
+.intlRo  #IntlRo { display: block; }
+
+/* KS & JIS */
+#NonConvert, #Convert, #KanaMode,
+#Lang1, #Lang2,
+#Space .jis,
+#Space .ks,
+.ks  #Space .ansi,
+.ks  #Space .jis,
+.jis #Space .ansi,
+.jis #Space .ks { display: none; }
+.ks  #Space .ks,
+.jis #NonConvert, .jis #Convert, .jis #KanaMode,
+.ks #Lang1, .ks #Lang2,
+.jis #Space .jis { display: block; }
+
+#Backtick .jis,
+.jis #Backtick .ansi { display: none; }
+.jis #Backtick .jis { display: block; }
