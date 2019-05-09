@@ -34,14 +34,20 @@
       <option value="gnu">       Linux   </option>
     </select>
 
+    <select onchange="document.querySelector('svg').setAttribute('theme', this.value);">
+      <option selected></option>
+      <option>reach</option>
+      <option>hints</option>
+    </select>
+
     <svg viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg">
       <!-- number row -->
       <g id="row_AE" transform="translate(5,5)">
-        <g class="specialKey" id="Escape" transform="translate(0,0)">
+        <g finger="l5" class="specialKey" id="Escape" transform="translate(0,0)">
           <rect width="50" height="50" rx="5" ry="5" class="ergo" />
           <text width="25" height="25" x="15" y="42" class="ergo" text-anchor="middle">⎋</text>
         </g>
-        <g class="pinkyKey" id="Backtick" transform="translate(0,0)">
+        <g finger="l5" class="pinkyKey" id="Backtick" transform="translate(0,0)">
           <rect width="50" height="50" rx="5" ry="5" class="specialKey jis" />
           <rect width="50" height="50" rx="5" ry="5" class="ansi alt iso ergo" />
           <text width="25" height="25" x="15" y="42" class="level1 ansi" text-anchor="middle">`</text>
@@ -51,75 +57,75 @@
           <text width="25" height="25" x="25" y="30" class="jis" text-anchor="middle">全角</text>
           <text width="25" height="25" x="25" y="42" class="jis" text-anchor="middle">漢字</text>
         </g>
-        <g class="numberKey" id="Digit1" transform="translate(60,0)">
+        <g finger="l5" class="numberKey" id="Digit1" transform="translate(60,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1">1</text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">!</text>
         </g>
-        <g class="numberKey" id="Digit2" transform="translate(120,0)">
+        <g finger="l4" class="numberKey" id="Digit2" transform="translate(120,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1">2</text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">@</text>
           <text width="25" height="25" x="38" y="42" text-anchor="middle" class="level3">(</text>
         </g>
-        <g class="numberKey" id="Digit3" transform="translate(180,0)">
+        <g finger="l3" class="numberKey" id="Digit3" transform="translate(180,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1">3</text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">#</text>
           <text width="25" height="25" x="38" y="42" text-anchor="middle" class="level3">)</text>
         </g>
-        <g class="numberKey" id="Digit4" transform="translate(240,0)">
+        <g finger="l2" class="numberKey" id="Digit4" transform="translate(240,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1">4</text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">$</text>
           <text width="25" height="25" x="38" y="42" text-anchor="middle" class="level3">'</text>
         </g>
-        <g class="numberKey" id="Digit5" transform="translate(300,0)">
+        <g finger="l2" class="numberKey" id="Digit5" transform="translate(300,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1">5</text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">%</text>
           <text width="25" height="25" x="38" y="42" text-anchor="middle" class="level3">"</text>
         </g>
-        <g class="numberKey" id="Digit6" transform="translate(360,0)">
+        <g finger="r2" class="numberKey" id="Digit6" transform="translate(360,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1">6</text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">^</text>
         </g>
-        <g class="numberKey" id="Digit7" transform="translate(420,0)">
+        <g finger="r2" class="numberKey" id="Digit7" transform="translate(420,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1">7</text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">&amp;</text>
         </g>
-        <g class="numberKey" id="Digit8" transform="translate(480,0)">
+        <g finger="r3" class="numberKey" id="Digit8" transform="translate(480,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1">8</text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">*</text>
         </g>
-        <g class="numberKey" id="Digit9" transform="translate(540,0)">
+        <g finger="r4" class="numberKey" id="Digit9" transform="translate(540,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1">9</text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">«</text>
         </g>
-        <g class="numberKey" id="Digit0" transform="translate(600,0)">
+        <g finger="r5" class="numberKey" id="Digit0" transform="translate(600,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1">0</text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">»</text>
         </g>
-        <g class="pinkyKey" id="Minus" transform="translate(660,0)">
+        <g finger="r5" class="pinkyKey" id="Minus" transform="translate(660,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1">-</text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">_</text>
         </g>
-        <g class="pinkyKey" id="Equal" transform="translate(720,0)">
+        <g finger="r5" class="pinkyKey" id="Equal" transform="translate(720,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1">=</text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">+</text>
         </g>
-        <g class="pinkyKey" id="IntlYen" transform="translate(780,0)">
+        <g finger="r5" class="pinkyKey" id="IntlYen" transform="translate(780,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">¥</text>
         </g />
-        <g class="specialKey" id="Backspace" transform="translate(780,0)">
+        <g finger="r5" class="specialKey" id="Backspace" transform="translate(780,0)">
           <rect width="110" height="50" rx="5" ry="5" class="ansi" />
           <rect width="50"  height="50" rx="5" ry="5" class="ergo" />
           <rect width="50"  height="50" rx="5" ry="5" class="alt" x="60" />
@@ -131,78 +137,78 @@
 
       <!-- letters, first row -->
       <g id="row_AD" transform="translate(5,65)">
-        <g class="specialKey" id="Tab">
+        <g finger="l5" class="specialKey" id="Tab">
           <rect width="80" height="50" rx="5" ry="5" />
           <rect width="50" height="50" rx="5" ry="5" class="ergo" />
           <text width="25" height="25" x="15" y="42" class="ergo" text-anchor="middle">↹</text>
           <text width="25" height="25" x="15" y="42"              text-anchor="middle">↹</text>
         </g>
-        <g class="letterKey" id="KeyQ" transform="translate(90,0)">
+        <g finger="l5" class="letterKey" id="KeyQ" transform="translate(90,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1"> </text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">Q</text>
           <text width="25" height="25" x="38" y="42" text-anchor="middle" class="level3">=</text>
         </g>
-        <g class="letterKey" id="KeyW" transform="translate(150,0)">
+        <g finger="l4" class="letterKey" id="KeyW" transform="translate(150,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1"> </text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">W</text>
           <text width="25" height="25" x="38" y="42" text-anchor="middle" class="level3">&lt;</text>
         </g>
-        <g class="letterKey" id="KeyE" transform="translate(210,0)">
+        <g finger="l3" class="letterKey" id="KeyE" transform="translate(210,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1"> </text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">E</text>
           <text width="25" height="25" x="38" y="42" text-anchor="middle" class="level3">&gt;</text>
         </g>
-        <g class="letterKey" id="KeyR" transform="translate(270,0)">
+        <g finger="l2" class="letterKey" id="KeyR" transform="translate(270,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1"> </text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">R</text>
           <text width="25" height="25" x="38" y="42" text-anchor="middle" class="level3">-</text>
         </g>
-        <g class="letterKey" id="KeyT" transform="translate(330,0)">
+        <g finger="l2" class="letterKey" id="KeyT" transform="translate(330,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1"> </text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">T</text>
           <text width="25" height="25" x="38" y="42" text-anchor="middle" class="level3">+</text>
         </g>
-        <g class="letterKey" id="KeyY" transform="translate(390,0)">
+        <g finger="r2" class="letterKey" id="KeyY" transform="translate(390,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1"> </text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">Y</text>
         </g>
-        <g class="letterKey" id="KeyU" transform="translate(450,0)">
+        <g finger="r2" class="letterKey" id="KeyU" transform="translate(450,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1"> </text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">U</text>
         </g>
-        <g class="letterKey" id="KeyI" transform="translate(510,0)">
+        <g finger="r3" class="letterKey" id="KeyI" transform="translate(510,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1"> </text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">I</text>
         </g>
-        <g class="letterKey" id="KeyO" transform="translate(570,0)">
+        <g finger="r4" class="letterKey" id="KeyO" transform="translate(570,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1"> </text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">O</text>
         </g>
-        <g class="letterKey" id="KeyP" transform="translate(630,0)">
+        <g finger="r5" class="letterKey" id="KeyP" transform="translate(630,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1"> </text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">P</text>
         </g>
-        <g class="pinkyKey" id="BracketLeft" transform="translate(690,0)">
+        <g finger="r5" class="pinkyKey" id="BracketLeft" transform="translate(690,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1">[</text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">{</text>
         </g>
-        <g class="pinkyKey" id="BracketRight" transform="translate(750,0)">
+        <g finger="r5" class="pinkyKey" id="BracketRight" transform="translate(750,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1">]</text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">}</text>
         </g>
-        <g class="pinkyKey" id="Backslash" transform="translate(810,0)">
+        <g finger="r5" class="pinkyKey" id="Backslash" transform="translate(810,0)">
           <rect width="80" height="50" rx="5" ry="5" class="ansi" />
           <rect width="50" height="50" rx="5" ry="5" class="iso" x="-45" y="60" />
           <text width="25" height="25" x="15" y="42" class="level1" text-anchor="middle">\</text>
@@ -212,72 +218,72 @@
 
       <!-- letters, second row -->
       <g id="row_AC" transform="translate(5,125)">
-        <g class="specialKey" id="CapsLock">
+        <g finger="l5" class="specialKey" id="CapsLock">
           <rect width="95" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" class="ansi" text-anchor="middle">⇪</text>
           <text width="25" height="25" x="25" y="42" class="jis"  text-anchor="middle">英数</text><!-- alphanumeric (eisū) -->
         </g>
-        <g class="letterKey homeKey" id="KeyA" transform="translate(105,0)">
+        <g finger="l5" class="letterKey homeKey" id="KeyA" transform="translate(105,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1"> </text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">A</text>
           <text width="25" height="25" x="38" y="42" text-anchor="middle" class="level3">{</text>
         </g>
-        <g class="letterKey homeKey" id="KeyS" transform="translate(165,0)">
+        <g finger="l4" class="letterKey homeKey" id="KeyS" transform="translate(165,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1"> </text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">S</text>
           <text width="25" height="25" x="38" y="42" text-anchor="middle" class="level3">[</text>
         </g>
-        <g class="letterKey homeKey" id="KeyD" transform="translate(225,0)">
+        <g finger="l3" class="letterKey homeKey" id="KeyD" transform="translate(225,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1"> </text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">D</text>
           <text width="25" height="25" x="38" y="42" text-anchor="middle" class="level3">]</text>
         </g>
-        <g class="letterKey homeKey" id="KeyF" transform="translate(285,0)">
+        <g finger="l2" class="letterKey homeKey" id="KeyF" transform="translate(285,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1"> </text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">F</text>
           <text width="25" height="25" x="38" y="42" text-anchor="middle" class="level3">}</text>
         </g>
-        <g class="letterKey" id="KeyG" transform="translate(345,0)">
+        <g finger="l2" class="letterKey" id="KeyG" transform="translate(345,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1"> </text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">G</text>
           <text width="25" height="25" x="38" y="42" text-anchor="middle" class="level3">/</text>
         </g>
-        <g class="letterKey" id="KeyH" transform="translate(405,0)">
+        <g finger="r2" class="letterKey" id="KeyH" transform="translate(405,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1"> </text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">H</text>
         </g>
-        <g class="letterKey homeKey" id="KeyJ" transform="translate(465,0)">
+        <g finger="r2" class="letterKey homeKey" id="KeyJ" transform="translate(465,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1"> </text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">J</text>
         </g>
-        <g class="letterKey homeKey" id="KeyK" transform="translate(525,0)">
+        <g finger="r3" class="letterKey homeKey" id="KeyK" transform="translate(525,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1"> </text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">K</text>
         </g>
-        <g class="letterKey homeKey" id="KeyL" transform="translate(585,0)">
+        <g finger="r4" class="letterKey homeKey" id="KeyL" transform="translate(585,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1"> </text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">L</text>
         </g>
-        <g class="letterKey homeKey" id="Semicolon" transform="translate(645,0)">
+        <g finger="r5" class="letterKey homeKey" id="Semicolon" transform="translate(645,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1"> </text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">★</text>
         </g>
-        <g class="pinkyKey" id="Quote" transform="translate(705,0)">
+        <g finger="r5" class="pinkyKey" id="Quote" transform="translate(705,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1">'</text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">"</text>
         </g>
-        <g class="specialKey" id="Enter" transform="translate(765,0)">
+        <g finger="r5" class="specialKey" id="Enter" transform="translate(765,0)">
           <path class="alt" d="M50,-60 h70 a5,5 0 0 1 5,5 v100 a5,5 0 0 1 -5,5 h-115 a5,5 0 0 1 -5,-5 v-40 a5,5 0 0 1 5,-5 h35 a5,5 1 0 0 5,-5 v-50 a5,5 0 0 1 5,-5 z" />
           <path class="iso" d="M50,-60 h70 a5,5 0 0 1 5,5 v100 a5,5 0 0 1 -5,5 h-55 a5,5 0 0 1 -5,-5 v-50 a5,5 1 0 0 -5,-5 h-5 a5,5 0 0 1 -5,-5 v-40 a5,5 0 0 1 5,-5 z" />
           <rect width="125" height="50" rx="5" ry="5" class="ansi" />
@@ -289,7 +295,7 @@
 
       <!-- letters, third row -->
       <g id="row_AB" transform="translate(5,185)">
-        <g class="specialKey" id="ShiftLeft">
+        <g finger="l5" class="specialKey" id="ShiftLeft">
           <rect class="ansi alt" width="125" height="50"  rx="5" ry="5" />
           <rect class="iso"      width="65"  height="50"  rx="5" ry="5" />
           <rect class="ol50"     width="50"  height="110" rx="5" ry="5" y="-60" />
@@ -297,72 +303,72 @@
           <text class="ergo"     width="25"  height="25"  x="15" y="42" text-anchor="middle">⇧</text>
           <text                  width="25"  height="25"  x="15" y="42" text-anchor="middle">⇧</text>
         </g>
-        <g class="letterKey" id="IntlBackslash" transform="translate(75,0)">
+        <g finger="l5" class="letterKey" id="IntlBackslash" transform="translate(75,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1">&lt;</text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">&gt;</text>
         </g>
-        <g class="letterKey" id="KeyZ" transform="translate(135,0)">
+        <g finger="l5" class="letterKey" id="KeyZ" transform="translate(135,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1"> </text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">Z</text>
           <text width="25" height="25" x="38" y="42" text-anchor="middle" class="level3">~</text>
         </g>
-        <g class="letterKey" id="KeyX" transform="translate(195,0)">
+        <g finger="l4" class="letterKey" id="KeyX" transform="translate(195,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1"> </text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">X</text>
           <text width="25" height="25" x="38" y="42" text-anchor="middle" class="level3">`</text>
         </g>
-        <g class="letterKey" id="KeyC" transform="translate(255,0)">
+        <g finger="l3" class="letterKey" id="KeyC" transform="translate(255,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1"> </text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">C</text>
           <text width="25" height="25" x="38" y="42" text-anchor="middle" class="level3">|</text>
         </g>
-        <g class="letterKey" id="KeyV" transform="translate(315,0)">
+        <g finger="l2" class="letterKey" id="KeyV" transform="translate(315,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1"> </text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">V</text>
           <text width="25" height="25" x="38" y="42" text-anchor="middle" class="level3">_</text>
         </g>
-        <g class="letterKey" id="KeyB" transform="translate(375,0)">
+        <g finger="l2" class="letterKey" id="KeyB" transform="translate(375,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1"> </text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">B</text>
           <text width="25" height="25" x="38" y="42" text-anchor="middle" class="level3">\</text>
         </g>
-        <g class="letterKey" id="KeyN" transform="translate(435,0)">
+        <g finger="r2" class="letterKey" id="KeyN" transform="translate(435,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1"> </text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">N</text>
         </g>
-        <g class="letterKey" id="KeyM" transform="translate(495,0)">
+        <g finger="r2" class="letterKey" id="KeyM" transform="translate(495,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1"> </text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">M</text>
         </g>
-        <g class="letterKey" id="Comma" transform="translate(555,0)">
+        <g finger="r3" class="letterKey" id="Comma" transform="translate(555,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1">,</text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">;</text>
         </g>
-        <g class="letterKey" id="Period" transform="translate(615,0)">
+        <g finger="r4" class="letterKey" id="Period" transform="translate(615,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1">.</text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">:</text>
         </g>
-        <g class="letterKey" id="Slash" transform="translate(675,0)">
+        <g finger="r5" class="letterKey" id="Slash" transform="translate(675,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1">?</text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">/</text>
         </g>
-        <g class="pinkyKey" id="IntlRo" transform="translate(735,0)">
+        <g finger="r5" class="pinkyKey" id="IntlRo" transform="translate(735,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle" class="level1"> </text>
           <text width="25" height="25" x="15" y="20" text-anchor="middle" class="level2">ろ</text>
         </g>
-        <g class="specialKey" id="ShiftRight" transform="translate(735,0)">
+        <g finger="r5" class="specialKey" id="ShiftRight" transform="translate(735,0)">
           <rect class="ansi" width="155" height="50"  rx="5" ry="5" />
           <rect class="abnt" width="95"  height="50"  rx="5" ry="5" x="60" />
           <rect class="ol50" width="50"  height="110" rx="5" ry="5" y="-60" />
@@ -375,71 +381,71 @@
 
       <!-- base row -->
       <g id="row_AA" transform="translate(5,245)">
-        <g class="specialKey" id="ControlLeft" transform="translate(0,0)">
+        <g finger="l5" class="specialKey" id="ControlLeft" transform="translate(0,0)">
           <rect width="70" height="50" rx="5" ry="5" />
           <rect width="50" height="50" rx="5" ry="5" class="ergo" />
           <text width="25" height="25" x="10" y="42" class="win gnu" text-anchor="left">Ctrl</text>
           <text width="25" height="25" x="15" y="42" class="mac"     text-anchor="middle">⌃</text>
         </g>
-        <g class="specialKey" id="MetaLeft" transform="translate(80,0)">
+        <g finger="l1" class="specialKey" id="MetaLeft" transform="translate(80,0)">
           <rect width="70" height="50" rx="5" ry="5" />
           <rect width="80" height="50" rx="5" ry="5" class="ergo" />
           <text width="25" height="25" x="10" y="42" class="win" text-anchor="left">Win</text>
           <text width="25" height="25" x="10" y="42" class="gnu" text-anchor="left">Super</text>
           <text width="25" height="25" x="15" y="42" class="mac" text-anchor="middle">⌘</text>
         </g>
-        <g class="specialKey" id="AltLeft" transform="translate(160,0)">
+        <g finger="l1" class="specialKey" id="AltLeft" transform="translate(160,0)">
           <rect width="70" height="50" rx="5" ry="5" />
           <rect width="80" height="50" rx="5" ry="5" class="ergo" />
           <text width="25" height="25" x="10" y="42" class="win gnu" text-anchor="left">Alt</text>
           <text width="25" height="25" x="15" y="42" class="mac"     text-anchor="middle">⌥</text>
         </g>
-        <g class="specialKey" id="Lang2" transform="translate(240,0)"><!-- hanja -->
+        <g finger="l1" class="specialKey" id="Lang2" transform="translate(240,0)"><!-- hanja -->
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="25" y="42" text-anchor="middle">한자</text>
         </g>
-        <g class="specialKey" id="NonConvert" transform="translate(240,0)"><!-- muhenkan -->
+        <g finger="l1" class="specialKey" id="NonConvert" transform="translate(240,0)"><!-- muhenkan -->
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="25" y="42" text-anchor="middle">無変換</text>
         </g>
-        <g class="homeKey" id="Space" transform="translate(240,0)">
+        <g finger="m1" class="homeKey" id="Space" transform="translate(240,0)">
           <rect class="ansi" width="350" height="50" rx="5" ry="5" />
           <rect class="ergo" width="230" height="50" rx="5" ry="5" />
           <rect class="jis"  width="170" height="50" rx="5" ry="5" x="60" />
           <rect class="ks"   width="230" height="50" rx="5" ry="5" x="60" />
         </g>
-        <g class="specialKey" id="Convert" transform="translate(480,0)"><!-- henkan -->
+        <g finger="r1" class="specialKey" id="Convert" transform="translate(480,0)"><!-- henkan -->
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="25" y="42" text-anchor="middle">変換</text>
         </g>
-        <g class="specialKey" id="KanaMode" transform="translate(540,0)"><!-- katakana/hiragana/romaji -->
+        <g finger="r1" class="specialKey" id="KanaMode" transform="translate(540,0)"><!-- katakana/hiragana/romaji -->
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="25" y="18" text-anchor="middle">カタカナ</text>
           <text width="25" height="25" x="25" y="30" text-anchor="middle">ひらがな</text>
           <text width="25" height="25" x="25" y="42" text-anchor="middle">ローマ字</text>
         </g>
-        <g class="specialKey" id="Lang1" transform="translate(540,0)"><!-- han/yeong -->
+        <g finger="r1" class="specialKey" id="Lang1" transform="translate(540,0)"><!-- han/yeong -->
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="25" y="42" text-anchor="middle">한/영</text>
         </g>
-        <g class="specialKey" id="AltRight" transform="translate(600,0)">
+        <g finger="r1" class="specialKey" id="AltRight" transform="translate(600,0)">
           <rect width="70" height="50" rx="5" ry="5" />
           <rect width="80" height="50" rx="5" ry="5" class="ergo" />
           <text width="25" height="25" x="10" y="42" class="win gnu" text-anchor="left">AltGr</text>
           <text width="25" height="25" x="15" y="42" class="mac"     text-anchor="middle">⌥</text>
         </g>
-        <g class="specialKey" id="MetaRight" transform="translate(680,0)">
+        <g finger="r1" class="specialKey" id="MetaRight" transform="translate(680,0)">
           <rect width="70" height="50" rx="5" ry="5" />
           <rect width="80" height="50" rx="5" ry="5" class="ergo" />
           <text width="25" height="25" x="10" y="42" class="win" text-anchor="left">Win</text>
           <text width="25" height="25" x="10" y="42" class="gnu" text-anchor="left">Super</text>
           <text width="25" height="25" x="15" y="42" class="mac" text-anchor="middle">⌘</text>
         </g>
-        <g class="specialKey" id="ContextMenu" transform="translate(760,0)">
+        <g finger="r5" class="specialKey" id="ContextMenu" transform="translate(760,0)">
           <rect width="50" height="50" rx="5" ry="5" />
           <text width="25" height="25" x="15" y="42" text-anchor="middle">☰</text>
         </g>
-        <g class="specialKey" id="ControlRight" transform="translate(820,0)">
+        <g finger="r5" class="specialKey" id="ControlRight" transform="translate(820,0)">
           <rect width="70" height="50" rx="5" ry="5" />
           <rect width="50" height="50" rx="5" ry="5" class="ergo" />
           <text width="25" height="25" x="10" y="42" class="win gnu" text-anchor="left">Ctrl</text>

@@ -194,10 +194,34 @@ text.level4 {
                 .ergo #AltRight  { transform: translate(660px, 0); }
 
 /**
- * Highlight Key
+ * Color Theme
  */
 
-g:target rect,
-g:target path {
+g:target rect, .press rect,
+g:target path, .press path {
   fill: #aad;
+}
+
+[theme="reach"] .pinkyKey  rect { fill: hsl(  0, 100%, 90%); }
+[theme="reach"] .numberKey rect { fill: hsl( 42, 100%, 90%); }
+[theme="reach"] .letterKey rect { fill: hsl(122, 100%, 90%); }
+[theme="reach"] .homeKey   rect { fill: hsl(122, 100%, 75%); }
+[theme="reach"] .press     rect { fill: #aaf; }
+
+[theme="hints"] [finger="m1"] rect { fill: hsl(  0, 100%, 95%); }
+[theme="hints"] [finger="l2"] rect { fill: hsl( 42, 100%, 85%); }
+[theme="hints"] [finger="r2"] rect { fill: hsl( 61, 100%, 85%); }
+[theme="hints"] [finger="l3"] rect,
+[theme="hints"] [finger="r3"] rect { fill: hsl(136, 100%, 85%); }
+[theme="hints"] [finger="l4"] rect,
+[theme="hints"] [finger="r4"] rect { fill: hsl(200, 100%, 85%); }
+[theme="hints"] [finger="l5"] rect,
+[theme="hints"] [finger="r5"] rect { fill: hsl(230, 100%, 85%); }
+[theme="hints"] .specialKey   rect,
+[theme="hints"] .specialKey   path { fill: #eee; }
+[theme="hints"] .press        rect { fill: #113; }
+[theme="hints"] .hint         rect { fill: #a33; }
+[theme="hints"] .hint text {
+  font-weight: bold;
+  fill: white;
 }
