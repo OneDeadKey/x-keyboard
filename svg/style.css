@@ -1,10 +1,11 @@
-rect, .key, .specialKey {
+rect, path {
   stroke: #666;
   stroke-width: .5px;
-  /* vector-effect: non-scaling-stroke; */
   fill: none;
 }
-.specialKey, .specialKey rect {
+.specialKey,
+.specialKey rect,
+.specialKey path {
   fill: #eee;
 }
 
@@ -27,16 +28,22 @@ text.level4 {
  */
 
 /* Backslash & Enter */
-#Enter     .alt,
+#Enter path.alt,
 #Enter     .iso,
 #Backslash .iso,
-.alt #Enter     .ansi,
+.alt #Enter rect.ansi,
+.iso #Enter rect.ansi,
+.iso #Enter text.ansi,
 .alt #Backslash .ansi,
-.iso #Enter     .ansi,
 .iso #Backslash .ansi { display: none; }
+#Enter text.ansi,
 .alt #Enter     .alt,
 .iso #Enter     .iso,
 .iso #Backslash .iso { display: block; }
+.iso #Backslash text,
+.alt #Backslash text {
+  transform: translate(-45px, 60px);
+}
 
 /* Backspace & IntlYen */
 #IntlYen, #Backspace .alt,
@@ -93,7 +100,12 @@ text.level4 {
  */
 
 .specialKey .win,
-.specialKey .gnu,
+.specialKey .gnu {
+  display: none;
+  font-size: 12px;
+}
+
+/* display MacOSX by default */
 [platform="gnu"] .specialKey .win,
 [platform="gnu"] .specialKey .mac,
 [platform="win"] .specialKey .gnu,
@@ -102,5 +114,90 @@ text.level4 {
 [platform="gnu"] .specialKey .gnu,
 [platform="win"] .specialKey .win { display: block; }
 
-.specialKey .win,
-.specialKey .gnu { font-size: 12px; }
+/* swap Alt/Meta for MacOSX */
+[platform="gnu"] #MetaLeft,
+[platform="win"] #MetaLeft,
+                 #AltLeft   { transform: translate(80px, 0); }
+[platform="gnu"] #AltLeft,
+[platform="win"] #AltLeft,
+                 #MetaLeft  { transform: translate(160px, 0); }
+[platform="gnu"] #AltRight,
+[platform="win"] #AltRight,
+                 #MetaRight { transform: translate(600px, 0); }
+[platform="gnu"] #MetaRight,
+[platform="win"] #MetaRight,
+                 #AltRight  { transform: translate(680px, 0); }
+
+/**
+ * Ortholinear
+ */
+
+#Space      .ergo,
+.specialKey .ergo,
+.specialKey .ol50,
+.specialKey .ol40,
+.ergo #Space      rect,
+.ergo .specialKey rect,
+.ergo .specialKey text { display: none; }
+.ergo #Space      .ergo,
+.ergo .specialKey .ergo,
+.ol50 .specialKey .ol50,
+.ol40 .specialKey .ol40 { display: block; }
+
+.ergo .pinkyKey,
+.ergo #CapsLock,
+.ergo #ContextMenu,
+.ol40 #row_AE .numberKey { display: none; }
+
+.ergo #row_AE       { transform: translate(  95px,   5px ); }
+.ergo #row_AD       { transform: translate(  65px,  65px ); }
+.ergo #row_AC       { transform: translate(  50px, 125px ); }
+.ergo #row_AB       { transform: translate(  20px, 185px ); }
+
+.ergo #Tab          { transform: translate(  30px,   0px ); }
+.ergo #ShiftLeft    { transform: translate(  75px,   0px ); }
+.ergo #ControlLeft  { transform: translate(  90px,   0px ); }
+.ergo #MetaLeft     { transform: translate( 150px,   0px ); }
+.ergo #AltLeft      { transform: translate( 240px,   0px ); }
+.ergo #Space        { transform: translate( 330px,   0px ); }
+.ergo #AltRight     { transform: translate( 570px,   0px ); }
+.ergo #MetaRight    { transform: translate( 660px,   0px ); }
+.ergo #ControlRight { transform: translate( 750px,   0px ); }
+
+.ol50 #Backspace    { transform: translate( 660px,   0px ); }
+.ol50 #Enter        { transform: translate( 705px, -60px ); }
+
+.ol40 #Escape       { transform: translate(   0px, 120px ); }
+.ol40 #Backspace    { transform: translate( 660px,  60px ); }
+.ol40 #Enter        { transform: translate( 705px,   0px ); }
+
+[platform="gnu"].ergo .specialKey .win,
+[platform="gnu"].ergo .specialKey .mac,
+[platform="win"].ergo .specialKey .gnu,
+[platform="win"].ergo .specialKey .mac { display: none; }
+.ergo .specialKey .mac,
+[platform="gnu"].ergo .specialKey .gnu,
+[platform="win"].ergo .specialKey .win { display: block; }
+
+/* swap Alt/Meta for MacOSX */
+[platform="gnu"].ergo #MetaLeft,
+[platform="win"].ergo #MetaLeft,
+                .ergo #AltLeft   { transform: translate(150px, 0); }
+[platform="gnu"].ergo #AltLeft,
+[platform="win"].ergo #AltLeft,
+                .ergo #MetaLeft  { transform: translate(240px, 0); }
+[platform="gnu"].ergo #AltRight,
+[platform="win"].ergo #AltRight,
+                .ergo #MetaRight { transform: translate(570px, 0); }
+[platform="gnu"].ergo #MetaRight,
+[platform="win"].ergo #MetaRight,
+                .ergo #AltRight  { transform: translate(660px, 0); }
+
+/**
+ * Highlight Key
+ */
+
+g:target rect,
+g:target path {
+  fill: #aad;
+}
