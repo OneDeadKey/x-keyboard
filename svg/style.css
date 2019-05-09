@@ -1,0 +1,106 @@
+rect, .key, .specialKey {
+  stroke: #666;
+  stroke-width: .5px;
+  /* vector-effect: non-scaling-stroke; */
+  fill: none;
+}
+.specialKey, .specialKey rect {
+  fill: #eee;
+}
+
+text {
+  fill: #333;
+  font: normal 18px sans-serif;
+  text-align: center;
+}
+
+text.level3,
+text.level4 {
+  fill: blue;
+  opacity: .5;
+}
+
+#Backspace text { font-size: 12px; }
+
+/**
+ * Keyboard Geometry: ANSI, ISO, ABNT, ALT
+ */
+
+/* Backslash & Enter */
+#Enter     .alt,
+#Enter     .iso,
+#Backslash .iso,
+.alt #Enter     .ansi,
+.alt #Backslash .ansi,
+.iso #Enter     .ansi,
+.iso #Backslash .ansi { display: none; }
+.alt #Enter     .alt,
+.iso #Enter     .iso,
+.iso #Backslash .iso { display: block; }
+
+/* Backspace & IntlYen */
+#IntlYen, #Backspace .alt,
+.intlYen  #Backspace .ansi { display: none; }
+.intlYen  #Backspace .alt,
+.intlYen  #IntlYen { display: block; }
+
+/* ShiftLeft & IntlBackslash */
+#IntlBackslash, #ShiftLeft .iso,
+.intlBackslash  #ShiftLeft .ansi { display: none; }
+.intlBackslash  #ShiftLeft .iso,
+.intlBackslash  #IntlBackslash { display: block; }
+
+/* ShiftRight & IntlRo */
+#IntlRo, #ShiftRight .abnt,
+.intlRo  #ShiftRight .ansi { display: none; }
+.intlRo  #ShiftRight .abnt,
+.intlRo  #IntlRo { display: block; }
+
+/**
+ * Korean & Japanese Input Systems
+ */
+
+#NonConvert, #Convert, #KanaMode,
+#Lang1, #Lang2,
+#Space .jis,
+#Space .ks,
+.ks  #Space .ansi,
+.ks  #Space .jis,
+.jis #Space .ansi,
+.jis #Space .ks { display: none; }
+.ks  #Space .ks,
+.jis #NonConvert, .jis #Convert, .jis #KanaMode,
+.ks #Lang1, .ks #Lang2,
+.jis #Space .jis { display: block; }
+
+#Backtick .jis,
+#CapsLock .jis,
+.jis #Backtick .ansi,
+.jis #CapsLock .ansi { display: none; }
+.jis #Backtick .jis,
+.jis #CapsLock .jis { display: block; }
+
+#Lang1 text,
+#Lang2 text,
+#Convert text,
+#NonConvert text,
+.jis #CapsLock text { font-size: 14px; }
+#KanaMode text,
+.jis #Backtick text { font-size: 10px; }
+
+/**
+ * Windows / MacOSX / Linux modifiers
+ */
+
+.specialKey .win,
+.specialKey .gnu,
+[platform="gnu"] .specialKey .win,
+[platform="gnu"] .specialKey .mac,
+[platform="win"] .specialKey .gnu,
+[platform="win"] .specialKey .mac { display: none; }
+[platform="mac"] .specialKey .mac,
+[platform="gnu"] .specialKey .gnu,
+[platform="win"] .specialKey .win { display: block; }
+
+.specialKey .win,
+.specialKey .gnu { font-size: 12px; }
