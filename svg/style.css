@@ -1,23 +1,39 @@
-.key, .specialKey {
+rect, .key, .specialKey {
   stroke: #666;
   stroke-width: .5px;
   /* vector-effect: non-scaling-stroke; */
   fill: none;
 }
-.specialKey {
+.specialKey, .specialKey rect {
   fill: #eee;
 }
 
-/* Backslash & Return */
-#Return    .alt,
-#Return    .iso,
+text {
+  fill: #333;
+  font: normal 18px sans-serif;
+  text-align: center;
+}
+
+text.level3,
+text.level4 {
+  fill: blue;
+  opacity: .5;
+}
+
+/**
+ * Keyboard Geometry: ANSI, ISO, ABNT, ALT
+ */
+
+/* Backslash & Enter */
+#Enter     .alt,
+#Enter     .iso,
 #Backslash .iso,
-.alt #Return    .ansi,
+.alt #Enter     .ansi,
 .alt #Backslash .ansi,
-.iso #Return    .ansi,
+.iso #Enter     .ansi,
 .iso #Backslash .ansi { display: none; }
-.alt #Return    .alt,
-.iso #Return    .iso,
+.alt #Enter     .alt,
+.iso #Enter     .iso,
 .iso #Backslash .iso { display: block; }
 
 /* Backspace & IntlYen */
@@ -38,7 +54,10 @@
 .intlRo  #ShiftRight .abnt,
 .intlRo  #IntlRo { display: block; }
 
-/* KS & JIS */
+/**
+ * Korean & Japanese Input Systems
+ */
+
 #NonConvert, #Convert, #KanaMode,
 #Lang1, #Lang2,
 #Space .jis,
@@ -53,5 +72,17 @@
 .jis #Space .jis { display: block; }
 
 #Backtick .jis,
-.jis #Backtick .ansi { display: none; }
-.jis #Backtick .jis { display: block; }
+#CapsLock .jis,
+.jis #Backtick .ansi,
+.jis #CapsLock .ansi { display: none; }
+.jis #Backtick .jis,
+.jis #CapsLock .jis { display: block; }
+
+#Lang1 text,
+#Lang2 text,
+#Convert text,
+#NonConvert text,
+.jis #CapsLock text { font-size: 14px; }
+#KanaMode text,
+.jis #Backtick text { font-size: 10px; }
+
