@@ -20,6 +20,8 @@ text.level4 {
   opacity: .5;
 }
 
+#Backspace text { font-size: 12px; }
+
 /**
  * Keyboard Geometry: ANSI, ISO, ABNT, ALT
  */
@@ -86,3 +88,19 @@ text.level4 {
 #KanaMode text,
 .jis #Backtick text { font-size: 10px; }
 
+/**
+ * Windows / MacOSX / Linux modifiers
+ */
+
+.specialKey .win,
+.specialKey .gnu,
+[platform="gnu"] .specialKey .win,
+[platform="gnu"] .specialKey .mac,
+[platform="win"] .specialKey .gnu,
+[platform="win"] .specialKey .mac { display: none; }
+[platform="mac"] .specialKey .mac,
+[platform="gnu"] .specialKey .gnu,
+[platform="win"] .specialKey .win { display: block; }
+
+.specialKey .win,
+.specialKey .gnu { font-size: 12px; }
