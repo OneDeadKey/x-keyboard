@@ -27,6 +27,8 @@ text.level4 {
  * Keyboard Geometry: ANSI, ISO, ABNT, ALT
  */
 
+#Escape { display: none; }
+
 /* Backslash & Enter */
 #Enter path.alt,
 #Enter     .iso,
@@ -40,9 +42,9 @@ text.level4 {
 .alt #Enter     .alt,
 .iso #Enter     .iso,
 .iso #Backslash .iso { display: block; }
-.iso #Backslash text,
-.alt #Backslash text {
-  transform: translate(-45px, 60px);
+.iso #Backslash,
+.alt #Backslash {
+  transform: translate(765px, 60px);
 }
 
 /* Backspace & IntlYen */
@@ -132,21 +134,31 @@ text.level4 {
  * Ortholinear
  */
 
-#Space      .ergo,
+#Space      .ol60,
+#Space      .ol50,
+#Space      .ol40,
 .specialKey .ergo,
+.specialKey .ol60,
 .specialKey .ol50,
 .specialKey .ol40,
+.ergo #CapsLock,
 .ergo #Space      rect,
+.ergo #Backslash  rect,
 .ergo .specialKey rect,
 .ergo .specialKey text { display: none; }
-.ergo #Space      .ergo,
-.ergo .specialKey .ergo,
+.ol50 #Escape,
+.ol40 #Escape,
+.ol60 #Space      .ol60,
+.ol50 #Space      .ol50,
+.ol40 #Space      .ol40,
+.ol60 #Backslash  .ol60,
+.ol60 .specialKey .ol60,
 .ol50 .specialKey .ol50,
-.ol40 .specialKey .ol40 { display: block; }
+.ol40 .specialKey .ol40,
+.ergo .specialKey .ergo { display: block; }
 
-.ergo .pinkyKey,
-.ergo #CapsLock,
-.ergo #ContextMenu,
+.ol50 .pinkyKey, .ol50 #ContextMenu,
+.ol40 .pinkyKey, .ol40 #ContextMenu,
 .ol40 #row_AE .numberKey { display: none; }
 
 .ergo #row_AE       { transform: translate(  95px,   5px ); }
@@ -163,6 +175,13 @@ text.level4 {
 .ergo #AltRight     { transform: translate( 570px,   0px ); }
 .ergo #MetaRight    { transform: translate( 660px,   0px ); }
 .ergo #ControlRight { transform: translate( 750px,   0px ); }
+
+.ol60 #ControlRight { transform: translate( 810px,   0px ); }
+.ol60 #ShiftRight   { transform: translate( 795px,   0px ); }
+.ol60 #ContextMenu  { transform: translate( 750px,   0px ); }
+.ol60 #Backslash    { transform: translate( 690px, 120px ); }
+.ol60 #Backspace    { transform: translate( 300px,  60px ); }
+.ol60 #Enter        { transform: translate( 345px,  60px ); }
 
 .ol50 #Backspace    { transform: translate( 660px,   0px ); }
 .ol50 #Enter        { transform: translate( 705px, -60px ); }
@@ -192,6 +211,13 @@ text.level4 {
 [platform="gnu"].ergo #MetaRight,
 [platform="win"].ergo #MetaRight,
                 .ergo #AltRight  { transform: translate(660px, 0); }
+
+/**
+ * Ortholinear
+ */
+
+.ol60 .left { transform: translate(-60px, 0); }
+/* .ol60 .right { transform: translate(60px, 0); } */
 
 /**
  * Color Theme
