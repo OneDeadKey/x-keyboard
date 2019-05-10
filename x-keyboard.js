@@ -268,12 +268,12 @@ const css = `
   .specialKey,
   .specialKey rect,
   .specialKey path {
-    fill: #eee;
+    fill: #e4e4e4;
   }
 
   text {
     fill: #333;
-    font: normal 18px sans-serif;
+    font: normal 20px sans-serif;
     text-align: center;
   }
 
@@ -360,7 +360,7 @@ const css = `
   .specialKey .win,
   .specialKey .gnu {
     display: none;
-    font-size: 12px;
+    font-size: 14px;
   }
 
   /* display MacOSX by default */
@@ -494,9 +494,10 @@ const css = `
   [theme="hints"] [finger="l5"] rect,
   [theme="hints"] [finger="r5"] rect { fill: hsl(230, 100%, 85%); }
   [theme="hints"] .specialKey   rect,
-  [theme="hints"] .specialKey   path { fill: #eee; }
-  [theme="hints"] .press        rect { fill: #113; }
+  [theme="hints"] .specialKey   path { fill: #e4e4e4; }
   [theme="hints"] .hint         rect { fill: #a33; }
+  [theme="hints"] .press        rect { fill: #335; }
+  [theme="hints"] .press        text { fill: #fff; }
   [theme="hints"] .hint text {
     font-weight: bold;
     fill: white;
@@ -570,8 +571,8 @@ const drawKey = (element, keyMap) => {
   const shiftLabel = baseLabel || shift.toLowerCase() === base ? shift : base;
   const saltLabel = altUpperChar(alt, salt);
   element.innerHTML = `
-    ${keyLevel(1, keyText(baseLabel),  dkClass(baseLabel),  { x: 15, y: 42 })}
-    ${keyLevel(2, keyText(shiftLabel), dkClass(shiftLabel), { x: 15, y: 20 })}
+    ${keyLevel(1, keyText(baseLabel),  dkClass(baseLabel),  { x: 12, y: 42 })}
+    ${keyLevel(2, keyText(shiftLabel), dkClass(shiftLabel), { x: 12, y: 20 })}
     ${keyLevel(3, keyText(alt),        dkClass(alt),        { x: 38, y: 42 })}
     ${keyLevel(4, keyText(saltLabel),  dkClass(salt),       { x: 38, y: 20 })}
     ${keyLevel(5, '',                  'dk',                { x: 38, y: 42 })}
