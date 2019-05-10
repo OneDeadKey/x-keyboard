@@ -10,456 +10,521 @@ import { newKeyboardLayout, newKalamineLayout, isDeadKey }
  * Shadow DOM
  */
 
+const joinAttrs = (defaults, attributes) => Object
+  .entries(Object.assign(defaults, attributes))
+  .map(([ id, value ]) => `${id}="${value}"`)
+  .join(' ');
+
+const rect = (className, attributes) => {
+  const attrs = joinAttrs({
+    width: 50, height: 50, rx: 5, ry: 5,
+  }, attributes);
+  return `<rect ${attrs} class="${className || ''}" />`;
+};
+
+const text = (value, className, attributes) => {
+  const attrs = joinAttrs({
+    width: 25, height: 25, x: 15, y: 42, 'text-anchor': 'middle',
+  }, attributes);
+  return `<text ${attrs} class="${className || ''}">${value}</text>`;
+};
+
+const keyRect = `${rect()} <g class="key" />`;
+const keyAttr = (className, finger, offset, id) => `
+  class="${className}" finger="${finger}" id="${id}"
+  transform="translate(${offset || 0})"`;
+
+const svg = `
+  <svg viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg">
+    <!-- number row -->
+    <g id="row_AE" transform="translate(5,5)">
+      <g class="left">
+        <g ${keyAttr('specialKey', 'l5', 0, 'Escape')}>
+          ${rect('ergo')}
+          ${text('⎋', 'ergo')}
+        </g>
+        <g ${keyAttr('pinkyKey', 'l5', 0, 'Backquote')}>
+          ${rect('specialKey jis')}
+          ${rect('ansi alt iso ergo')}
+          <!-- halfwidth/fullwidth/kanji (hankaku/zenkaku/kanji) -->
+          ${text('半角', 'jis', { x: 25, y: 18 })}
+          ${text('全角', 'jis', { x: 25, y: 30 })}
+          ${text('漢字', 'jis', { x: 25, y: 42 })}
+          <g class="ansi key" />
+        </g>
+        <g ${keyAttr('numberKey',  'l5',  60, 'Digit1')}>  ${keyRect} </g>
+        <g ${keyAttr('numberKey',  'l4', 120, 'Digit2')}>  ${keyRect} </g>
+        <g ${keyAttr('numberKey',  'l3', 180, 'Digit3')}>  ${keyRect} </g>
+        <g ${keyAttr('numberKey',  'l2', 240, 'Digit4')}>  ${keyRect} </g>
+        <g ${keyAttr('numberKey',  'l2', 300, 'Digit5')}>  ${keyRect} </g>
+      </g>
+      <g class="right">
+        <g ${keyAttr('numberKey',  'r2', 360, 'Digit6')}>  ${keyRect} </g>
+        <g ${keyAttr('numberKey',  'r2', 420, 'Digit7')}>  ${keyRect} </g>
+        <g ${keyAttr('numberKey',  'r3', 480, 'Digit8')}>  ${keyRect} </g>
+        <g ${keyAttr('numberKey',  'r4', 540, 'Digit9')}>  ${keyRect} </g>
+        <g ${keyAttr('numberKey',  'r5', 600, 'Digit0')}>  ${keyRect} </g>
+        <g ${keyAttr('pinkyKey',   'r5', 660, 'Minus')}>   ${keyRect} </g>
+        <g ${keyAttr('pinkyKey',   'r5', 720, 'Equal')}>   ${keyRect} </g>
+        <g ${keyAttr('pinkyKey',   'r5', 780, 'IntlYen')}> ${keyRect} </g>
+        <g ${keyAttr('specialKey', 'r5', 780, 'Backspace')}>
+          ${rect('ansi', { width: 110 })}
+          ${rect('ol60', { height: 110, y: -60 })}
+          ${rect('ol40 ol50')}
+          ${rect('alt', { x: 60 })}
+          ${text('⌫', 'ansi')}
+          ${text('⌫', 'ergo')}
+          ${text('⌫', 'alt', { x: 75 })}
+        </g>
+      </g>
+    </g>
+    <!-- letters, first row -->
+    <g id="row_AD" transform="translate(5,65)">
+      <g class="left">
+        <g ${keyAttr('specialKey', 'l5', 0, 'Tab')}>
+          ${rect('', { width: 80 })}
+          ${rect('ergo')}
+          ${text('↹')}
+          ${text('↹', 'ergo')}
+        </g>
+        <g ${keyAttr('letterKey', 'l5',  90, 'KeyQ')}> ${keyRect} </g>
+        <g ${keyAttr('letterKey', 'l4', 150, 'KeyW')}> ${keyRect} </g>
+        <g ${keyAttr('letterKey', 'l3', 210, 'KeyE')}> ${keyRect} </g>
+        <g ${keyAttr('letterKey', 'l2', 270, 'KeyR')}> ${keyRect} </g>
+        <g ${keyAttr('letterKey', 'l2', 330, 'KeyT')}> ${keyRect} </g>
+      </g>
+      <g class="right">
+        <g ${keyAttr('letterKey', 'r2', 390, 'KeyY')}>         ${keyRect} </g>
+        <g ${keyAttr('letterKey', 'r2', 450, 'KeyU')}>         ${keyRect} </g>
+        <g ${keyAttr('letterKey', 'r3', 510, 'KeyI')}>         ${keyRect} </g>
+        <g ${keyAttr('letterKey', 'r4', 570, 'KeyO')}>         ${keyRect} </g>
+        <g ${keyAttr('letterKey', 'r5', 630, 'KeyP')}>         ${keyRect} </g>
+        <g ${keyAttr('pinkyKey',  'r5', 690, 'BracketLeft')}>  ${keyRect} </g>
+        <g ${keyAttr('pinkyKey',  'r5', 750, 'BracketRight')}> ${keyRect} </g>
+        <g ${keyAttr('pinkyKey',  'r5', 810, 'Backslash')}>
+          ${rect('ansi', { width: 80 })}
+          ${rect('iso ol60')}
+          <g class="key" />
+        </g>
+      </g>
+    </g>
+    <!-- letters, second row -->
+    <g id="row_AC" transform="translate(5,125)">
+      <g class="left">
+        <g ${keyAttr('specialKey', 'l5', 0, 'CapsLock')}>
+          ${rect('', { width: 95 })}
+          ${text('⇪', 'ansi')}
+          ${text('英数', 'jis', { x: 25 })}
+        </g>
+        <g ${keyAttr('letterKey homeKey', 'l5', 105, 'KeyA')}> ${keyRect} </g>
+        <g ${keyAttr('letterKey homeKey', 'l4', 165, 'KeyS')}> ${keyRect} </g>
+        <g ${keyAttr('letterKey homeKey', 'l3', 225, 'KeyD')}> ${keyRect} </g>
+        <g ${keyAttr('letterKey homeKey', 'l2', 285, 'KeyF')}> ${keyRect} </g>
+        <g ${keyAttr('letterKey',         'l2', 345, 'KeyG')}> ${keyRect} </g>
+      </g>
+      <g class="right">
+        <g ${keyAttr('letterKey',         'r2', 405, 'KeyH')}>      ${keyRect} </g>
+        <g ${keyAttr('letterKey homeKey', 'r2', 465, 'KeyJ')}>      ${keyRect} </g>
+        <g ${keyAttr('letterKey homeKey', 'r3', 525, 'KeyK')}>      ${keyRect} </g>
+        <g ${keyAttr('letterKey homeKey', 'r4', 585, 'KeyL')}>      ${keyRect} </g>
+        <g ${keyAttr('letterKey homeKey', 'r5', 645, 'Semicolon')}> ${keyRect} </g>
+        <g ${keyAttr('pinkyKey',          'r5', 705, 'Quote')}>     ${keyRect} </g>
+        <g ${keyAttr('specialKey',        'r5', 765, 'Enter')}>
+          <path class="alt" d="M50,-60 h70 a5,5 0 0 1 5,5 v100 a5,5 0 0 1 -5,5 h-115 a5,5 0 0 1 -5,-5 v-40 a5,5 0 0 1 5,-5 h35 a5,5 1 0 0 5,-5 v-50 a5,5 0 0 1 5,-5 z" />
+          <path class="iso" d="M50,-60 h70 a5,5 0 0 1 5,5 v100 a5,5 0 0 1 -5,5 h-55 a5,5 0 0 1 -5,-5 v-50 a5,5 1 0 0 -5,-5 h-5 a5,5 0 0 1 -5,-5 v-40 a5,5 0 0 1 5,-5 z" />
+          ${rect('ansi', { width: 125 })}
+          ${rect('ol60', { height: 110, y: -60 })}
+          ${rect('ol40 ol50')}
+          ${text('⏎', 'ansi alt ergo')}
+          ${text('⏎', 'iso', { x: 75 })}
+        </g>
+      </g>
+    </g>
+    <!-- letters, third row -->
+    <g id="row_AB" transform="translate(5,185)">
+      <g class="left">
+        <g ${keyAttr('specialKey', 'l5', 0, 'ShiftLeft')}>
+          ${rect('ansi alt',  { width: 125 })}
+          ${rect('iso',       { width:  65 })}
+          ${rect('ol50 ol60', { height: 110, y: -60 })}
+          ${rect('ol40')}
+          ${text('⇧')}
+          ${text('⇧', 'ergo')}
+        </g>
+        <g ${keyAttr('letterKey', 'l5',  75, 'IntlBackslash')}> ${keyRect} </g>
+        <g ${keyAttr('letterKey', 'l5', 135, 'KeyZ')}>          ${keyRect} </g>
+        <g ${keyAttr('letterKey', 'l4', 195, 'KeyX')}>          ${keyRect} </g>
+        <g ${keyAttr('letterKey', 'l3', 255, 'KeyC')}>          ${keyRect} </g>
+        <g ${keyAttr('letterKey', 'l2', 315, 'KeyV')}>          ${keyRect} </g>
+        <g ${keyAttr('letterKey', 'l2', 375, 'KeyB')}>          ${keyRect} </g>
+      </g>
+      <g class="right">
+        <g ${keyAttr('letterKey',  'r2', 435, 'KeyN')}>   ${keyRect} </g>
+        <g ${keyAttr('letterKey',  'r2', 495, 'KeyM')}>   ${keyRect} </g>
+        <g ${keyAttr('letterKey',  'r3', 555, 'Comma')}>  ${keyRect} </g>
+        <g ${keyAttr('letterKey',  'r4', 615, 'Period')}> ${keyRect} </g>
+        <g ${keyAttr('letterKey',  'r5', 675, 'Slash')}>  ${keyRect} </g>
+        <g ${keyAttr('pinkyKey',   'r5', 735, 'IntlRo')}> ${keyRect} </g>
+        <g ${keyAttr('specialKey', 'r5', 735, 'ShiftRight')}>
+          ${rect('ansi',      { width: 155 })}
+          ${rect('abnt',      { width:  95,  x:  60 })}
+          ${rect('ol50 ol60', { height: 110, y: -60 })}
+          ${rect('ol40')}
+          ${text('⇧', 'ansi')}
+          ${text('⇧', 'ergo')}
+          ${text('⇧', 'abnt', { x: 75 })}
+        </g>
+      </g>
+    </g>
+    <!-- base row -->
+    <g id="row_AA" transform="translate(5,245)">
+      <g class="left">
+        <g ${keyAttr('specialKey', 'l5', 0, 'ControlLeft')}>
+          ${rect('', { width: 70 })}
+          ${rect('ergo')}
+          ${text('Ctrl', 'win gnu', { x: 10, 'text-anchor': 'left' })}
+          ${text('⌃',    'mac')}
+        </g>
+        <g ${keyAttr('specialKey', 'l1', 80, 'MetaLeft')}>
+          ${rect('',     { width: 70 })}
+          ${rect('ergo', { width: 80 })}
+          ${text('Win',   'win', { x: 10, 'text-anchor': 'left' })}
+          ${text('Super', 'gnu', { x: 10, 'text-anchor': 'left' })}
+          ${text('⌘',     'mac')}
+        </g>
+        <g ${keyAttr('specialKey', 'l1', 160, 'AltLeft')}>
+          ${rect('',     { width: 70 })}
+          ${rect('ergo', { width: 80 })}
+          ${text('Alt', 'win gnu', { x: 10, 'text-anchor': 'left' })}
+          ${text('⌥',   'mac')}
+        </g>
+        <g ${keyAttr('specialKey', 'l1', 240, 'Lang2')}>
+          ${rect()}
+          ${text('한자', '', { x: 25 })} <!-- hanja  -->
+        </g>
+        <g ${keyAttr('specialKey', 'l1', 240, 'NonConvert')}>
+          ${rect()}
+          ${text('無変換', '', { x: 25 })} <!-- muhenkan -->
+        </g>
+      </g>
+      <g ${keyAttr('homeKey', 'm1', 240, 'Space')}>
+        ${rect('ansi',      { width: 350 })}
+        ${rect('ol60',      { width: 290, x: -60 })}
+        ${rect('ol50 ol40', { width: 230 })}
+        ${rect('ks',        { width: 230, x: 60 })}
+        ${rect('jis',       { width: 170, x: 60 })}
+      </g>
+      <g class="right">
+        <g ${keyAttr('specialKey', 'r1', 480, 'Convert')}>
+          ${rect()}
+          ${text('変換', '', { x: 25 })} <!-- henkan -->
+        </g>
+        <g ${keyAttr('specialKey', 'r1', 540, 'KanaMode')}>
+          ${rect()}
+          ${text('カタカナ', '', { x: 25, y: 18 })} <!-- katakana / hiragana / romaji -->
+          ${text('ひらがな', '', { x: 25, y: 30 })}
+          ${text('ローマ字', '', { x: 25, y: 42 })}
+        </g>
+        <g ${keyAttr('specialKey', 'r1', 540, 'Lang1')}>
+          ${rect()}
+          ${text('한/영', '', { x: 25 })} <!-- han/yeong -->
+        </g>
+        <g ${keyAttr('specialKey', 'r1', 600, 'AltRight')}>
+          ${rect('',     { width: 70 })}
+          ${rect('ergo', { width: 80 })}
+          ${text('Alt', 'win gnu', { x: 10, 'text-anchor': 'left' })}
+          ${text('⌥',   'mac')}
+        </g>
+        <g ${keyAttr('specialKey', 'r1', 680, 'MetaRight')}>
+          ${rect('',     { width: 70 })}
+          ${rect('ergo', { width: 80 })}
+          ${text('Win',   'win', { x: 10, 'text-anchor': 'left' })}
+          ${text('Super', 'gnu', { x: 10, 'text-anchor': 'left' })}
+          ${text('⌘',     'mac')}
+        </g>
+        <g ${keyAttr('specialKey', 'r5', 760, 'ContextMenu')}>
+          ${rect()}
+          ${rect('ergo')}
+          ${text('☰')}
+          ${text('☰', 'ol60')}
+        </g>
+        <g ${keyAttr('specialKey', 'r5', 820, 'ControlRight')}>
+          ${rect('', { width: 70 })}
+          ${rect('ergo')}
+          ${text('Ctrl', 'win gnu', { x: 10, 'text-anchor': 'left' })}
+          ${text('⌃',    'mac')}
+        </g>
+      </g>
+    </g>
+  </svg>
+`;
+
 const css = `
-  /**
-   * graphical keyboard layout, fixed size (690*230px)
-   */
-
-  ul {
-    width: 690px;
-    height: 230px;
-    padding: 0;
-    margin: 20px auto;
-    position: relative;
+  rect, path {
+    stroke: #666;
+    stroke-width: .5px;
+    fill: none;
+  }
+  .specialKey,
+  .specialKey rect,
+  .specialKey path {
+    fill: #eee;
   }
 
-
-  /**************************************************************************
-   * Default Keyboard Geometry (ANSI/101)
-   */
-
-  /* rows */
-  li {
-    list-style-type: none;
-    clear: both;
-    margin: 0;
-    padding: 0;
-  }
-  #row_AD { position: absolute; top:  46px; }
-  #row_AC { position: absolute; top:  92px; }
-  #row_AB { position: absolute; top: 138px; }
-  #row_AA { position: absolute; top: 184px; }
-
-  /* keys */
-  key {
-    position: relative;
-    float: left;
-    clear: none;
-    width: 40px;
-    height: 40px;
-    margin: 2px;
-    border: 1px solid #aaa;
-    border-radius: 5px;
-  }
-  key em,
-  key strong {
-    display: block;
-    min-width: 0.8em;
+  text {
+    fill: #333;
+    font: normal 18px sans-serif;
     text-align: center;
-    font-weight: inherit;
-    font-style: inherit;
-    color: #333;
-  }
-  key strong {
-    position: absolute;
-    top: 2px;
-    left: 3px;
-  }
-  key em {
-    position: absolute;
-    bottom: 2px;
-    left: 3px;
-  }
-  key .dk,
-  key .altgr {
-    left: auto;
-    right: 3px;
-    color: blue;
-    opacity: 0.5;
-  }
-  key .dk {
-    color: red;
-  }
-  key .deadKey {
-    font-weight: bold;
-    color: red;
   }
 
-  /* special keys */
-  .specialKey {
-    background-color: #ddd;
-  }
-  .specialKey * {
-    font-size: 13px;
-    font-style: italic;
-  }
-  #row_AA .specialKey { width:  56px; }
-  #Space              { width: 250px; }
-  #Tab                { width:  60px; }
-  #Backspace          { width:  86px; }
-  #ShiftLeft          { width:  96px; }
-  #ShiftRight         { width: 122px; }
+  #Backspace text { font-size: 12px; }
 
-  #Escape *, #Tab *, #CapsLock *, #ShiftLeft *, #ShiftRight *, #Enter * {
-    font-size: 1.25em;
-    font-style: normal;
-  }
-  #ContextMenu *, #Backspace * {
-    font-style: normal;
+  /**
+   * Keyboard Geometry: ANSI, ISO, ABNT, ALT
+   */
+
+  #Escape { display: none; }
+
+  /* Backslash & Enter */
+  #Enter path.alt,
+  #Enter     .iso,
+  #Backslash .iso,
+  .alt #Enter rect.ansi,
+  .iso #Enter rect.ansi,
+  .iso #Enter text.ansi,
+  .alt #Backslash .ansi,
+  .iso #Backslash .ansi { display: none; }
+  #Enter text.ansi,
+  .alt #Enter     .alt,
+  .iso #Enter     .iso,
+  .iso #Backslash .iso { display: block; }
+  .iso #Backslash,
+  .alt #Backslash {
+    transform: translate(765px, 60px);
   }
 
-  /* hide LSGT for ANSI (default) */
-  #IntlBackslash, #IntlRo, #IntlYen, #Escape {
+  /* Backspace & IntlYen */
+  #IntlYen, #Backspace .alt,
+  .intlYen  #Backspace .ansi { display: none; }
+  .intlYen  #Backspace .alt,
+  .intlYen  #IntlYen { display: block; }
+
+  /* ShiftLeft & IntlBackslash */
+  #IntlBackslash, #ShiftLeft .iso,
+  .intlBackslash  #ShiftLeft .ansi { display: none; }
+  .intlBackslash  #ShiftLeft .iso,
+  .intlBackslash  #IntlBackslash { display: block; }
+
+  /* ShiftRight & IntlRo */
+  #IntlRo, #ShiftRight .abnt,
+  .intlRo  #ShiftRight .ansi { display: none; }
+  .intlRo  #ShiftRight .abnt,
+  .intlRo  #IntlRo { display: block; }
+
+  /**
+   * Korean & Japanese Input Systems
+   */
+
+  #NonConvert, #Convert, #KanaMode,
+  #Lang1, #Lang2,
+  #Space .jis,
+  #Space .ks,
+  .ks  #Space .ansi,
+  .ks  #Space .jis,
+  .jis #Space .ansi,
+  .jis #Space .ks { display: none; }
+  .ks  #Space .ks,
+  .jis #NonConvert, .jis #Convert, .jis #KanaMode,
+  .ks #Lang1, .ks #Lang2,
+  .jis #Space .jis { display: block; }
+
+  #Backquote .jis,
+  #CapsLock  .jis,
+  .jis #Backquote .ansi,
+  .jis #CapsLock  .ansi { display: none; }
+  .jis #Backquote .jis,
+  .jis #CapsLock .jis { display: block; }
+
+  #Lang1 text,
+  #Lang2 text,
+  #Convert text,
+  #NonConvert text,
+  .jis #CapsLock text { font-size: 14px; }
+  #KanaMode text,
+  .jis #Backquote text { font-size: 10px; }
+
+  /**
+   * Windows / MacOSX / Linux modifiers
+   */
+
+  .specialKey .win,
+  .specialKey .gnu {
     display: none;
+    font-size: 12px;
   }
 
+  /* display MacOSX by default */
+  [platform="gnu"] .specialKey .win,
+  [platform="gnu"] .specialKey .mac,
+  [platform="win"] .specialKey .gnu,
+  [platform="win"] .specialKey .mac { display: none; }
+  [platform="mac"] .specialKey .mac,
+  [platform="gnu"] .specialKey .gnu,
+  [platform="win"] .specialKey .win { display: block; }
 
-  /**************************************************************************
-   * Visual Tweaks for CapsLock and Return
+  /* swap Alt/Meta for MacOSX */
+  [platform="gnu"] #MetaLeft,
+  [platform="win"] #MetaLeft,
+                  #AltLeft   { transform: translate(80px, 0); }
+  [platform="gnu"] #AltLeft,
+  [platform="win"] #AltLeft,
+                  #MetaLeft  { transform: translate(160px, 0); }
+  [platform="gnu"] #AltRight,
+  [platform="win"] #AltRight,
+                  #MetaRight { transform: translate(600px, 0); }
+  [platform="gnu"] #MetaRight,
+  [platform="win"] #MetaRight,
+                  #AltRight  { transform: translate(680px, 0); }
+
+  /**
+   * Ortholinear
    */
 
-  #CapsLockISO, #EnterISO {
-    background-color: #e8e8e8;
-    display: block;
-  }
-  #CapsLock {
-    width: 60px;
-  }
-  #CapsLock, #Enter {
-    z-index: 1;
-  }
-  #CapsLockISO {
-    margin-left: -64px;
-    width: 73px;
-  }
-  [shape^="ol"]   #CapsLockISO, [shape^="ol"]   #EnterISO,
-  [shape^="ansi"] #CapsLockISO, [shape^="ansi"] #EnterISO {
-    display: none;
-  }
-  [shape="ansi"] #CapsLock  { width: 73px; }
-  [shape="ansi"] #Enter     { width: 99px; }
-  [shape="ansi"] #Backslash { width: 66px; }
+  #Space      .ol60,
+  #Space      .ol50,
+  #Space      .ol40,
+  .specialKey .ergo,
+  .specialKey .ol60,
+  .specialKey .ol50,
+  .specialKey .ol40,
+  .ergo #CapsLock,
+  .ergo #Space      rect,
+  .ergo #Backslash  rect,
+  .ergo .specialKey rect,
+  .ergo .specialKey text { display: none; }
+  .ol50 #Escape,
+  .ol40 #Escape,
+  .ol60 #Space      .ol60,
+  .ol50 #Space      .ol50,
+  .ol40 #Space      .ol40,
+  .ol60 #Backslash  .ol60,
+  .ol60 .specialKey .ol60,
+  .ol50 .specialKey .ol50,
+  .ol40 .specialKey .ol40,
+  .ergo .specialKey .ergo { display: block; }
 
+  .ol50 .pinkyKey, .ol50 #ContextMenu,
+  .ol40 .pinkyKey, .ol40 #ContextMenu,
+  .ol40 #row_AE .numberKey { display: none; }
 
-  /**************************************************************************
-   * Alternate Keyboard Geometry (ALT/101)
-   */
+  .ergo #row_AE       { transform: translate(  95px,   5px ); }
+  .ergo #row_AD       { transform: translate(  65px,  65px ); }
+  .ergo #row_AC       { transform: translate(  50px, 125px ); }
+  .ergo #row_AB       { transform: translate(  20px, 185px ); }
 
-  [shape^="alt"] #IntlYen   { display: block; }
-  [shape^="alt"] #Backslash { display: none; }
-  [shape^="alt"] #Backspace { width: 40px; }
+  .ergo #Tab          { transform: translate(  30px,   0px ); }
+  .ergo #ShiftLeft    { transform: translate(  75px,   0px ); }
+  .ergo #ControlLeft  { transform: translate(  90px,   0px ); }
+  .ergo #MetaLeft     { transform: translate( 150px,   0px ); }
+  .ergo #AltLeft      { transform: translate( 240px,   0px ); }
+  .ergo #Space        { transform: translate( 330px,   0px ); }
+  .ergo #AltRight     { transform: translate( 570px,   0px ); }
+  .ergo #MetaRight    { transform: translate( 660px,   0px ); }
+  .ergo #ControlRight { transform: translate( 750px,   0px ); }
 
-  /* visual tweaks for Return */
-  [shape^="alt"] #Enter {
-    margin-top: -44px;
-    margin-left: 35px;
-    height: 86px;
-    width: 66px;
-  }
-  [shape^="alt"] #EnterISO {
-    margin-left: -103px;
-    width: 99px;
-  }
+  .ol60 .left         { transform: translate(-60px,    0px ); }
+  .ol60 #ControlRight { transform: translate( 810px,   0px ); }
+  .ol60 #ShiftRight   { transform: translate( 795px,   0px ); }
+  .ol60 #ContextMenu  { transform: translate( 750px,   0px ); }
+  .ol60 #Backslash    { transform: translate( 690px, 120px ); }
+  .ol60 #Backspace    { transform: translate( 300px,  60px ); }
+  .ol60 #Enter        { transform: translate( 345px,  60px ); }
 
+  .ol50 #Backspace    { transform: translate( 660px,   0px ); }
+  .ol50 #Enter        { transform: translate( 705px, -60px ); }
 
-  /**************************************************************************
-   * European Keyboard Geometry (ISO/pc102)
-   *     + Brazilian Variant (ABNT/pc104)
-   *     + Japanese Variant (JIS/pc106)
-   */
+  .ol40 #Escape       { transform: translate(   0px, 120px ); }
+  .ol40 #Backspace    { transform: translate( 660px,  60px ); }
+  .ol40 #Enter        { transform: translate( 705px,   0px ); }
 
-  /* visual tweaks for Backslash & Return */
-  [shape^="iso"] #Backslash {
-    margin-top: 48px;
-    margin-left: -31px;
-  }
-  [shape^="iso"] #Enter {
-    margin-top: -44px;
-    margin-left: 48px;
-    width: 53px;
-    height: 86px;
-  }
-  [shape^="iso"] #EnterISO {
-    margin-top: -44px;
-    margin-left: -70px;
-    width: 66px;
-  }
+  [platform="gnu"].ergo .specialKey .win,
+  [platform="gnu"].ergo .specialKey .mac,
+  [platform="win"].ergo .specialKey .gnu,
+  [platform="win"].ergo .specialKey .mac { display: none; }
+  .ergo .specialKey .mac,
+  [platform="gnu"].ergo .specialKey .gnu,
+  [platform="win"].ergo .specialKey .win { display: block; }
 
-  /* show IntlBackslash for ISO & ABNT */
-  [shape="iso102"] #ShiftLeft,
-  [shape="iso104"] #ShiftLeft {
-    width: 50px;
-  }
-  [shape="iso102"] #IntlBackslash,
-  [shape="iso104"] #IntlBackslash {
-    display: block;
-  }
+  /* swap Alt/Meta for MacOSX */
+  [platform="gnu"].ergo #MetaLeft,
+  [platform="win"].ergo #MetaLeft,
+                  .ergo #AltLeft   { transform: translate(150px, 0); }
+  [platform="gnu"].ergo #AltLeft,
+  [platform="win"].ergo #AltLeft,
+                  .ergo #MetaLeft  { transform: translate(240px, 0); }
+  [platform="gnu"].ergo #AltRight,
+  [platform="win"].ergo #AltRight,
+                  .ergo #MetaRight { transform: translate(570px, 0); }
+  [platform="gnu"].ergo #MetaRight,
+  [platform="win"].ergo #MetaRight,
+                  .ergo #AltRight  { transform: translate(660px, 0); }
 
-  /* show IntlRo for ABNT & JIS */
-  [shape="iso104"] #ShiftRight,
-  [shape="iso106"] #ShiftRight {
-    width: 76px;
-  }
-  [shape="iso104"] #IntlRo,
-  [shape="iso106"] #IntlRo {
-    display: block;
-  }
-
-  /* show IntlYen for JIS */
-  [shape="iso106"] #IntlYen   { display: block; }
-  [shape="iso106"] #Backspace { width: 40px; }
-
-
-  /**************************************************************************
-   * Ortholinear Keyboard Geometry (TypeMatrix, OLKB)
-   */
-
-  [shape^="ol"] #CapsLock {
-    display: none;
-  }
-  [shape^="ol"] #Backslash {
-    margin-top: 94px;
-    margin-left: -105px;
-  }
-  [shape^="ol"] #Escape,
-  [shape^="ol"] #Backquote,
-  [shape^="ol"] #Tab,
-  [shape^="ol"] #ShiftLeft,
-  [shape^="ol"] #ControlLeft,
-  [shape^="ol"] #Equal,
-  [shape^="ol"] #BracketRight,
-  [shape^="ol"] #ShiftRight,
-  [shape^="ol"] #ControlRight,
-  [shape^="ol"] #Backspace,
-  [shape^="ol"] #Enter {
-    width: 55px;
-  }
-  [shape^="ol"] #MetaLeft,
-  [shape^="ol"] #AltLeft,
-  [shape^="ol"] #MetaRight,
-  [shape^="ol"] #AltRight {
-    width: 63px;
-  }
-  [shape^="ol"] #ShiftLeft,
-  [shape^="ol"] #ShiftRight {
-    margin-top: -44px;
-    height: 86px;
-  }
-
-  /* TypeMatrix-specific (TMx2030) */
-
-  [shape="ol60"] #Space       { width: 239px; }
-  [shape="ol60"] #ContextMenu { width:  40px; }
-  [shape="ol60"] #Backquote,
-  [shape="ol60"] #Tab,
-  [shape="ol60"] #ShiftLeft,
-  [shape="ol60"] #ControlLeft { margin-left:  3px; }
-  [shape="ol60"] #KeyA        { margin-left: 64px; /* XXX why not 63px? */ }
-  [shape="ol60"] #Digit6,
-  [shape="ol60"] #KeyY,
-  [shape="ol60"] #KeyH,
-  [shape="ol60"] #KeyN        { margin-left:   63px; }
-  [shape="ol60"] #Backspace   { margin-left: -396px; height: 86px; }
-  [shape="ol60"] #Enter       { margin-left: -335px; height: 86px; }
-  [shape="ol60"] #ShiftRight  { margin-left:   48px; }
-
-  /* OLKB-specific (Preonic, Planck)*/
-
-  [shape="ol50"],
-  [shape="ol40"] { width: 590px; padding: 0 50px; }
-  [shape="ol50"] #Escape,
-  [shape="ol40"] #Escape { display: inline-block; }
-  [shape="ol50"] #KeyA,
-  [shape="ol40"] #KeyA { margin-left: 63px; }
-  [shape="ol50"] #Space,
-  [shape="ol40"] #Space { width: 178px; }
-  [shape="ol50"] #Enter,
-  [shape="ol40"] #Enter { margin-top: -44px; }
-  [shape="ol50"] #ContextMenu,
-  [shape="ol40"] #ContextMenu,
-  [shape="ol50"] .pinkyKey,
-  [shape="ol40"] .pinkyKey { display: none; }
-
-  [shape="ol40"] .numberKey { display: none; }
-  [shape="ol40"] #ShiftLeft,
-  [shape="ol40"] #ShiftRight,
-  [shape="ol40"] #Enter     { margin-top: 2px; height: 40px; }
-  [shape="ol40"] #Escape    { margin-top: 94px; }
-  [shape="ol40"] #Backspace { margin: -90px 523px 0; }
-
-
-  /**************************************************************************
-   * Special Keys: position & icons
-   */
-
-  /* text labels on PC (win/linux) */
-  #ControlLeft  em::before,
-  #ControlRight em::before { content: 'Ctrl'; }
-  #AltLeft      em::before { content: 'Alt';  }
-  #AltRight     em::before { content: 'AltGr';}
-  [platform="win"]   #MetaLeft  em::before,
-  [platform="win"]   #MetaRight em::before { content: 'Win'; }
-  [platform="linux"] #MetaLeft  em::before,
-  [platform="linux"] #MetaRight em::before { content: 'Super'; }
-
-  /* icon labels on Mac */
-  [platform="mac"] #row_AA       em::before { font-style: normal; }
-  [platform="mac"] #ControlLeft  em::before,
-  [platform="mac"] #ControlRight em::before { font-size: 1.2em; content: '\u2303'; }
-  [platform="mac"] #AltLeft      em::before,
-  [platform="mac"] #AltRight     em::before { font-size: 1.2em; content: '\u2325'; }
-  [platform="mac"] #MetaLeft     em::before,
-  [platform="mac"] #MetaRight    em::before { font-size: 1.2em; content: '\u2318'; }
-
-  /* swap the Command and Option keys on Mac */
-  [platform="mac"] #MetaLeft,
-  [platform="mac"] #AltRight { margin-left: 64px; }
-  [platform="mac"] #MetaRight,
-  [platform="mac"] #AltLeft { margin-left: -122px; }
-  [platform="mac"][shape^="ol"] #MetaLeft,
-  [platform="mac"][shape^="ol"] #AltRight { margin-left: 71px; }
-  [platform="mac"][shape^="ol"] #MetaRight,
-  [platform="mac"][shape^="ol"] #AltLeft { margin-left: -136px; }
-
-  /* common key icons */
-  #ShiftLeft   em::before,
-  #ShiftRight  em::before { content: '\u21e7'; }
-  #CapsLock    em::before { content: '\u21ea'; }
-  #Tab         em::before { content: '\u21b9'; }
-  #Backspace   em::before { content: '\u232b'; }
-  #Escape      em::before { content: '\u238b'; }
-  #Enter       em::before { content: '\u23ce'; }
-  /* not really a 'menu' character, but looks like one */
-  #ContextMenu em::before { content: '\u2630'; }
-
-
-  /**************************************************************************
+  /**
    * Color Theme
    */
 
-  .press {
-    background-color: #aaf;
+  g:target rect, .press rect,
+  g:target path, .press path {
+    fill: #aad;
   }
 
-  [theme="reach"] .pinkyKey  { background-color: hsl(  0, 100%, 90%); }
-  [theme="reach"] .numberKey { background-color: hsl( 42, 100%, 90%); }
-  [theme="reach"] .letterKey { background-color: hsl(122, 100%, 90%); }
-  [theme="reach"] .homeKey   { background-color: hsl(122, 100%, 75%); }
-  [theme="reach"] .press     { background-color: #aaf; }
+  [theme="reach"] .pinkyKey  rect { fill: hsl(  0, 100%, 90%); }
+  [theme="reach"] .numberKey rect { fill: hsl( 42, 100%, 90%); }
+  [theme="reach"] .letterKey rect { fill: hsl(122, 100%, 90%); }
+  [theme="reach"] .homeKey   rect { fill: hsl(122, 100%, 75%); }
+  [theme="reach"] .press     rect { fill: #aaf; }
 
-  [theme="hints"] [finger="m1"] { background-color: hsl(  0, 100%, 95%); }
-  [theme="hints"] [finger="l2"] { background-color: hsl( 42, 100%, 85%); }
-  [theme="hints"] [finger="r2"] { background-color: hsl( 61, 100%, 85%); }
-  [theme="hints"] [finger="l3"],
-  [theme="hints"] [finger="r3"] { background-color: hsl(136, 100%, 85%); }
-  [theme="hints"] [finger="l4"],
-  [theme="hints"] [finger="r4"] { background-color: hsl(200, 100%, 85%); }
-  [theme="hints"] [finger="l5"],
-  [theme="hints"] [finger="r5"] { background-color: hsl(230, 100%, 85%); }
-  [theme="hints"] .specialKey   { background-color: #ddd; }
-  [theme="hints"] .press        { background-color: #113; }
-  [theme="hints"] .hint         { background-color: #a33; }
-  [theme="hints"] .hint strong,  [theme="hints"] .hint em,
-  [theme="hints"] .press strong, [theme="hints"] .press em {
+  [theme="hints"] [finger="m1"] rect { fill: hsl(  0, 100%, 95%); }
+  [theme="hints"] [finger="l2"] rect { fill: hsl( 42, 100%, 85%); }
+  [theme="hints"] [finger="r2"] rect { fill: hsl( 61, 100%, 85%); }
+  [theme="hints"] [finger="l3"] rect,
+  [theme="hints"] [finger="r3"] rect { fill: hsl(136, 100%, 85%); }
+  [theme="hints"] [finger="l4"] rect,
+  [theme="hints"] [finger="r4"] rect { fill: hsl(200, 100%, 85%); }
+  [theme="hints"] [finger="l5"] rect,
+  [theme="hints"] [finger="r5"] rect { fill: hsl(230, 100%, 85%); }
+  [theme="hints"] .specialKey   rect,
+  [theme="hints"] .specialKey   path { fill: #eee; }
+  [theme="hints"] .press        rect { fill: #113; }
+  [theme="hints"] .hint         rect { fill: #a33; }
+  [theme="hints"] .hint text {
     font-weight: bold;
-    color: white;
+    fill: white;
   }
 
-  .alt em, .alt strong,
-  .dk em, .dk strong { opacity: 0.25; }
-  .alt .altgr,
-  .dk .dk { opacity: 1; }
-  .dk .altgr { display: none; }
+  /* dimmed AltGr & bold dead keys */
+  .level3, .level4 { fill: blue; opacity: .4; }
+  .level5, .level6 { fill: red; }
+  .deadKey {
+    fill: red;
+    font-weight: bold;
+  }
 
   /* hide Level4 (Shift+AltGr) unless AltGr is pressed */
-  strong.altgr { display: none; }
-  .alt strong.altgr { display: block; }
-`;
+  .level4        { display: none; }
+  .altgr .level4 { display: block; }
 
-const html = `
-  <ul id="keyboard">
-    <li id="row_AE">
-      <key id="Escape" class="specialKey"> <em></em> </key>
-      <key id="Backquote" finger="l5" class="pinkyKey"> </key>
-      <key id="Digit1"    finger="l5" class="numberKey"></key>
-      <key id="Digit2"    finger="l4" class="numberKey"></key>
-      <key id="Digit3"    finger="l3" class="numberKey"></key>
-      <key id="Digit4"    finger="l2" class="numberKey"></key>
-      <key id="Digit5"    finger="l2" class="numberKey"></key>
-      <key id="Digit6"    finger="r2" class="numberKey"></key>
-      <key id="Digit7"    finger="r2" class="numberKey"></key>
-      <key id="Digit8"    finger="r3" class="numberKey"></key>
-      <key id="Digit9"    finger="r4" class="numberKey"></key>
-      <key id="Digit0"    finger="r5" class="numberKey"></key>
-      <key id="Minus"     finger="r5" class="pinkyKey"> </key>
-      <key id="Equal"     finger="r5" class="pinkyKey"> </key>
-      <key id="IntlYen"   finger="r5" class="pinkyKey"> </key>
-      <key id="Backspace" class="specialKey"> <em></em> </key>
-    </li>
-    <li id="row_AD">
-      <key id="Tab" class="specialKey"> <em></em> </key>
-      <key id="KeyQ"         finger="l5" class="letterKey"></key>
-      <key id="KeyW"         finger="l4" class="letterKey"></key>
-      <key id="KeyE"         finger="l3" class="letterKey"></key>
-      <key id="KeyR"         finger="l2" class="letterKey"></key>
-      <key id="KeyT"         finger="l2" class="letterKey"></key>
-      <key id="KeyY"         finger="r2" class="letterKey"></key>
-      <key id="KeyU"         finger="r2" class="letterKey"></key>
-      <key id="KeyI"         finger="r3" class="letterKey"></key>
-      <key id="KeyO"         finger="r4" class="letterKey"></key>
-      <key id="KeyP"         finger="r5" class="letterKey"></key>
-      <key id="BracketLeft"  finger="r5" class="pinkyKey"> </key>
-      <key id="BracketRight" finger="r5" class="pinkyKey"> </key>
-      <key id="Backslash"    finger="r5" class="pinkyKey"> </key>
-    </li>
-    <li id="row_AC">
-      <key id="CapsLock" class="specialKey"> <em></em> </key>
-      <key id="CapsLockISO" class="specialKey hiddenKey"> &nbsp; </key>
-      <key id="KeyA"      finger="l5" class="letterKey homeKey"></key>
-      <key id="KeyS"      finger="l4" class="letterKey homeKey"></key>
-      <key id="KeyD"      finger="l3" class="letterKey homeKey"></key>
-      <key id="KeyF"      finger="l2" class="letterKey homeKey"></key>
-      <key id="KeyG"      finger="l2" class="letterKey"> </key>
-      <key id="KeyH"      finger="r2" class="letterKey"> </key>
-      <key id="KeyJ"      finger="r2" class="letterKey homeKey"></key>
-      <key id="KeyK"      finger="r3" class="letterKey homeKey"></key>
-      <key id="KeyL"      finger="r4" class="letterKey homeKey"></key>
-      <key id="Semicolon" finger="r5" class="letterKey homeKey"></key>
-      <key id="Quote"     finger="r5" class="pinkyKey"> </key>
-      <key id="Enter" class="specialKey"> <em></em> </key>
-      <key id="EnterISO" class="specialKey hiddenKey"> &nbsp; </key>
-    </li>
-    <li id="row_AB">
-      <key id="ShiftLeft"     finger="l5" class="specialKey"> <em></em> </key>
-      <key id="IntlBackslash" finger="l5" class="pinkyKey"> </key>
-      <key id="KeyZ"          finger="l5" class="letterKey"></key>
-      <key id="KeyX"          finger="l4" class="letterKey"></key>
-      <key id="KeyC"          finger="l3" class="letterKey"></key>
-      <key id="KeyV"          finger="l2" class="letterKey"></key>
-      <key id="KeyB"          finger="l2" class="letterKey"></key>
-      <key id="KeyN"          finger="r2" class="letterKey"></key>
-      <key id="KeyM"          finger="r2" class="letterKey"></key>
-      <key id="Comma"         finger="r3" class="letterKey"></key>
-      <key id="Period"        finger="r4" class="letterKey"></key>
-      <key id="Slash"         finger="r5" class="letterKey"></key>
-      <key id="IntlRo"        finger="r5" class="letterKey"></key>
-      <key id="ShiftRight"    finger="r5" class="specialKey"> <em></em> </key>
-    </li>
-    <li id="row_AA">
-      <key id="ControlLeft"   finger="l5" class="specialKey"> <em></em> </key>
-      <key id="MetaLeft"      finger="l1" class="specialKey"> <em></em> </key>
-      <key id="AltLeft"       finger="l1" class="specialKey"> <em></em> </key>
-      <key id="Space"         finger="m1" class="homeKey">    <em></em> </key>
-      <key id="AltRight"      finger="r1" class="specialKey"> <em></em> </key>
-      <key id="MetaRight"     finger="r1" class="specialKey"> <em></em> </key>
-      <key id="ContextMenu"   finger="r1" class="specialKey"> <em></em> </key>
-      <key id="ControlRight"  finger="r5" class="specialKey"> <em></em> </key>
-    </li>
-  </ul>
+  /* highlight AltGr & Dead Keys */
+  .dk .level1, .altgr .level1,
+  .dk .level2, .altgr .level2 { opacity: 0.25; }
+  .dk .level5, .altgr .level3,
+  .dk .level6, .altgr .level4 { opacity: 1; }
+  .dk .level3,
+  .dk .level4 { display: none; }
 `;
 
 const template = document.createElement('template');
-template.innerHTML = `<style>${css}</style>${html}`;
+template.innerHTML = `<style>${css}</style>${svg}`;
 
 
 /**
@@ -468,6 +533,9 @@ template.innerHTML = `<style>${css}</style>${html}`;
 
 const dkClass = label => (isDeadKey(label) ? 'deadKey' : '');
 const keyText = label => (label || '').slice(-1);
+const keyLevel = (level, label, className, position) => text(label,
+  `level${level} ${className}`,
+  Object.assign(position, { 'text-anchor': 'middle' }));
 
 // In order not to overload the `alt` layers visually (AltGr & dead keys),
 // the `shift` key is displayed only if its lowercase is not `base`.
@@ -475,7 +543,8 @@ const altUpperChar = (base, shift) => (shift && base !== shift.toLowerCase()
   ? shift : '');
 
 const drawKey = (element, keyMap) => {
-  if (!keyMap || !keyMap[element.id]) {
+  const key = keyMap[element.parentNode.id];
+  if (!key) {
     element.innerHTML = '';
     return;
   }
@@ -496,37 +565,37 @@ const drawKey = (element, keyMap) => {
    * So if the lowercase version of the `shift` layer does not match the `base`
    * layer, we'll show the lowercase letter (e.g. Greek 'ς').
    */
-  const [ base, shift, alt, salt ] = keyMap[element.id];
+  const [ base, shift, alt, salt ] = key;
   const baseLabel = base.toUpperCase() !== shift ? base : '';
   const shiftLabel = baseLabel || shift.toLowerCase() === base ? shift : base;
   const saltLabel = altUpperChar(alt, salt);
   element.innerHTML = `
-    <strong class="${dkClass(shiftLabel)}">${keyText(shiftLabel)}</strong>
-    <em     class="${dkClass(baseLabel)}" >${keyText(baseLabel)}</em>
-    <strong class="${dkClass(salt)} altgr">${keyText(saltLabel)}</strong>
-    <em     class="${dkClass(alt)}  altgr">${keyText(alt)}</em>
-    <strong class="dk"></strong>
-    <em     class="dk"></em>
+    ${keyLevel(1, keyText(baseLabel),  dkClass(baseLabel),  { x: 15, y: 42 })}
+    ${keyLevel(2, keyText(shiftLabel), dkClass(shiftLabel), { x: 15, y: 20 })}
+    ${keyLevel(3, keyText(alt),        dkClass(alt),        { x: 38, y: 42 })}
+    ${keyLevel(4, keyText(saltLabel),  dkClass(salt),       { x: 38, y: 20 })}
+    ${keyLevel(5, '',                  'dk',                { x: 38, y: 42 })}
+    ${keyLevel(6, '',                  'dk',                { x: 38, y: 20 })}
   `;
 };
 
 const drawDK = (element, keyMap, deadKey) => {
-  const key = keyMap[element.id];
-  if (!key || element.classList.contains('specialKey')) {
+  const key = keyMap[element.parentNode.id];
+  if (!key) {
     return;
   }
   const alt0 = deadKey[key[0]];
   const alt1 = deadKey[key[1]];
-  element.querySelector('em.dk').textContent = alt0 || '';
-  element.querySelector('strong.dk').textContent = altUpperChar(alt0, alt1);
+  element.querySelector('.level5').textContent = alt0 || '';
+  element.querySelector('.level6').textContent = altUpperChar(alt0, alt1);
 };
 
 const setFingerAssignment = (root, ansiStyle) => {
   (ansiStyle
     ? ['l5', 'l4', 'l3', 'l2', 'l2', 'r2', 'r2', 'r3', 'r4', 'r5']
     : ['l5', 'l5', 'l4', 'l3', 'l2', 'l2', 'r2', 'r2', 'r3', 'r4'])
-    .forEach((finger, i) => {
-      root.getElementById(`Digit${(i + 1) % 10}`).setAttribute('finger', finger);
+    .forEach((attr, i) => {
+      root.getElementById(`Digit${(i + 1) % 10}`).setAttribute('finger', attr);
     });
 };
 
@@ -591,7 +660,7 @@ class Keyboard extends HTMLElement {
 
   set theme(value) {
     this._state.theme = value;
-    this.root.getElementById('keyboard').setAttribute('theme', value);
+    this.root.querySelector('svg').setAttribute('theme', value);
   }
 
   get geometry() {
@@ -599,10 +668,6 @@ class Keyboard extends HTMLElement {
   }
 
   set geometry(value) {
-    const euroStyleShapes = { iso: 'iso102', abnt: 'iso104', jis: 'iso106' };
-    const supportedShapes = [
-      'ansi', 'iso', 'abnt', 'jis', 'alt', 'ol60', 'ol50', 'ol40',
-    ];
     /**
      * Supported geometries (besides ANSI):
      * - Euro-style [Enter] key:
@@ -612,17 +677,28 @@ class Keyboard extends HTMLElement {
      *                + NonConvert + Convert + KanaMode
      * - Russian-style [Enter] key:
      *     ALT = ANSI - Backslash + IntlYen
-     *     (KS = ALT + Lang1 + Lang2) TODO
+     *     KS = ALT + Lang1 + Lang2
      * - Ortholinear:
      *     OL60 = TypeMatrix 2030
      *     OL50 = OLKB Preonic
      *     OL40 = OLKB Planck
      */
-    this._state.geometry = supportedShapes.indexOf(value) >= 0 ? value : '';
+    const supportedShapes = {
+      alt:  'alt intlYen',
+      ks:   'alt intlYen ks',
+      jis:  'iso intlYen intlRo jis',
+      abnt: 'iso intlBackslash intlRo',
+      iso:  'iso intlBackslash',
+      ansi: '',
+      ol60: 'ergo ol60',
+      ol50: 'ergo ol50',
+      ol40: 'ergo ol40',
+    };
+    this._state.geometry = value in supportedShapes ? value : '';
     const geometry = this._state.geometry || this.layout.geometry || 'ansi';
-    this.root.getElementById('keyboard').setAttribute('shape',
-      euroStyleShapes[geometry] || geometry);
-    setFingerAssignment(this.root, !(geometry in euroStyleShapes));
+    const shape = supportedShapes[geometry];
+    this.root.querySelector('svg').className.baseVal = shape;
+    setFingerAssignment(this.root, !shape.startsWith('iso'));
   }
 
   get platform() {
@@ -631,17 +707,18 @@ class Keyboard extends HTMLElement {
 
   set platform(value) {
     const platform = value.toLowerCase() || guessPlatform();
-    switch (platform) {
-      case 'win':
-      case 'mac':
-      case 'linux':
-        break;
-      default:
-        return;
+    const supportedPlatforms = {
+      win: 'win',
+      mac: 'mac',
+      linux: 'gnu',
+    };
+    if (!(value in supportedPlatforms)) {
+      return;
     }
     this._state.platform = platform;
     this.layout.platform = platform;
-    this.root.getElementById('keyboard').setAttribute('platform', platform);
+    this.root.querySelector('svg')
+      .setAttribute('platform', supportedPlatforms[platform]);
   }
 
   get layout() {
@@ -652,7 +729,7 @@ class Keyboard extends HTMLElement {
     this._state.layout = value;
     this._state.layout.platform = this.platform;
     this.geometry = this._state.geometry;
-    Array.from(this.root.querySelectorAll('key'))
+    Array.from(this.root.querySelectorAll('.key'))
       .filter(key => !key.classList.contains('specialKey'))
       .forEach(key => drawKey(key, value.keyMap));
   }
@@ -682,20 +759,20 @@ class Keyboard extends HTMLElement {
     const dk = this.layout.pendingDK;
     const rv = this.layout.keyDown(code);
     if (this.layout.modifiers.altgr) {
-      this.root.getElementById('keyboard').classList.add('alt');
+      this.root.querySelector('svg').classList.add('altgr');
     }
     if (dk) { // a dead key has just been unlatched, hide all key hints
       if (!element.classList.contains('specialKey')) {
-        this.root.getElementById('keyboard').classList.remove('dk');
+        this.root.querySelector('svg').classList.remove('dk');
         Array.from(this.root.querySelectorAll('.dk'))
           .forEach((span) => {
             span.textContent = '';
           });
       }
     } else if (this.layout.pendingDK) { // show hints for this dead key
-      Array.from(this.root.querySelectorAll('key'))
+      Array.from(this.root.querySelectorAll('.key'))
         .forEach(key => drawDK(key, this.layout.keyMap, this.layout.pendingDK));
-      this.root.getElementById('keyboard').classList.add('dk');
+      this.root.querySelector('svg').classList.add('dk');
     }
     return rv;
   }
@@ -712,7 +789,7 @@ class Keyboard extends HTMLElement {
     element.classList.remove('press');
     this.layout.keyUp(code);
     if (!this.layout.modifiers.altgr) {
-      this.root.getElementById('keyboard').classList.remove('alt');
+      this.root.querySelector('svg').classList.remove('altgr');
     }
   }
 
@@ -721,7 +798,7 @@ class Keyboard extends HTMLElement {
    */
 
   clearStyle() {
-    Array.from(this.root.querySelectorAll('key[style]'))
+    Array.from(this.root.querySelectorAll('[style]'))
       .forEach(element => element.removeAttribute('style'));
     Array.from(this.root.querySelectorAll('.press'))
       .forEach(element => element.classList.remove('press'));
@@ -737,7 +814,7 @@ class Keyboard extends HTMLElement {
 
   showHint(keyObj) {
     let hintClass = '';
-    Array.from(this.root.querySelectorAll('key.hint'))
+    Array.from(this.root.querySelectorAll('.hint'))
       .forEach(key => key.classList.remove('hint'));
     getKeyChord(this.root, keyObj).forEach((key) => {
       key.classList.add('hint');

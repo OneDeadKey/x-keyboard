@@ -16,7 +16,7 @@
       justify-content: space-between;
       padding: 0 25px;
       margin: auto;
-      width: 690px; /* same as the <x-keyboard> fixed width */
+      max-width: 51em;
       height: 100%;
       border-left: 1px solid #aaa;
       border-right: 1px solid #aaa;
@@ -38,6 +38,7 @@
     input {
       box-sizing: border-box;
       width: 100%;
+      margin-bottom: .5em;
       text-align: center;
       font-size: 1.3em;
     }
@@ -100,6 +101,7 @@
       <select id="geometry">
         <option value="" selected> (auto) </option>
         <option value="alt">        ALT   </option>
+        <option value="ks">         KS    </option>
         <option value="jis">        JIS   </option>
         <option value="abnt">       ABNT  </option>
         <option value="iso">        ISO   </option>
