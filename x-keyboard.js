@@ -375,16 +375,16 @@ const css = `
   /* swap Alt/Meta for MacOSX */
   [platform="gnu"] #MetaLeft,
   [platform="win"] #MetaLeft,
-                  #AltLeft   { transform: translate(80px, 0); }
+                   #AltLeft   { transform: translate(80px, 0); }
   [platform="gnu"] #AltLeft,
   [platform="win"] #AltLeft,
-                  #MetaLeft  { transform: translate(160px, 0); }
+                   #MetaLeft  { transform: translate(160px, 0); }
   [platform="gnu"] #AltRight,
   [platform="win"] #AltRight,
-                  #MetaRight { transform: translate(600px, 0); }
+                   #MetaRight { transform: translate(600px, 0); }
   [platform="gnu"] #MetaRight,
   [platform="win"] #MetaRight,
-                  #AltRight  { transform: translate(680px, 0); }
+                   #AltRight  { transform: translate(680px, 0); }
 
   /**
    * Ortholinear
@@ -535,7 +535,7 @@ const dkClass = label => (isDeadKey(label) ? 'deadKey' : '');
 const keyText = label => (label || '').slice(-1);
 const keyLevel = (level, label, className, position) => text(label,
   `level${level} ${className}`,
-  Object.assign(position, { 'text-anchor': 'middle' }));
+  Object.assign({ 'text-anchor': 'middle' }, position));
 
 // In order not to overload the `alt` layers visually (AltGr & dead keys),
 // the `shift` key is displayed only if its lowercase is not `base`.
@@ -706,16 +706,13 @@ class Keyboard extends HTMLElement {
   }
 
   set platform(value) {
-    const platform = value.toLowerCase() || guessPlatform();
     const supportedPlatforms = {
       win: 'win',
       mac: 'mac',
       linux: 'gnu',
     };
-    if (!(value in supportedPlatforms)) {
-      return;
-    }
-    this._state.platform = platform;
+    this._state.platform = value in supportedPlatforms ? value : '';
+    const platform = this._state.platform || guessPlatform();
     this.layout.platform = platform;
     this.root.querySelector('svg')
       .setAttribute('platform', supportedPlatforms[platform]);
