@@ -48,30 +48,42 @@ window.addEventListener('DOMContentLoaded', () => {
   applyHashState();
 
   // highlight keyboard keys and emulate the keyboard
-  let previousValue = '';
   input.onkeyup = event => keyboard.keyUp(event.code);
   input.onkeydown = (event) => {
     const value = keyboard.keyDown(event.code);
-    if (event.code === 'Enter') {
-      previousValue = '';
-      input.value = '';
+    if (event.code === 'Enter') { // clear text input on <Enter>
+      event.target.value = '';
       return false;
     }
-    if (!state.layout) {
-      return true;
+    if (!state.layout || event.code.startsWith('F')
+      || event.ctrlKey || event.altKey || event.metaKey) {
+      return true; // don't steal F1-12 keys or Ctrl/Alt/Super-* shortcuts
     }
-    if (previousValue !== input.value) {
-      // working around a weird bug with dead keys on Firefox + Linux
-      input.value = previousValue;
-    }
-    if (value) {
-      input.value += value;
+    if (event.code === 'Tab') { // make the Tab key great again
+      document.getElementById('layout').focus();
+    } else if (value) {
+      event.target.value += value;
     } else if (event.code === 'Backspace') {
-      input.value = input.value.slice(0, -1);
+      event.target.value = event.target.value.slice(0, -1);
     }
-    previousValue = input.value;
     return false;
   };
+
+  /**
+   * When pressing a "real" dead key + key sequence:
+   *  - Chromium does not raise any event until the key sequence is complete
+   *    => "real" dead keys are unusable for this emulation, unfortunately;
+   *  - Firefox triggers two `keydown` events (as expected),
+   *    but also adds the composed character directly to the text input
+   *    (and nicely triggers an `insertCompositionText` input event)
+   *    => the code below works around that.
+   */
+  input.oninput = (event) => {
+    if (state.layout) {
+      event.target.value = event.target.value.slice(0, -event.data.length);
+    }
+  };
+
   window.addEventListener('focusout', () => keyboard.clearStyle());
 
   // ready to type!
