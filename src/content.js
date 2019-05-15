@@ -227,24 +227,25 @@ const letterRow3 = g('left', [
   ]),
 ]);
 
+const nonIcon = { x: 10, 'text-anchor': 'start' };
 const baseRow = g('left', [
   key('specialKey', 'l5', 0, 'ControlLeft', [
     rect('', { width: 70 }),
     rect('ergo'),
-    text('Ctrl', 'win gnu', { x: 10, 'text-anchor': 'left' }),
+    text('Ctrl', 'win gnu', nonIcon),
     text('⌃',    'mac'),
   ]),
   key('specialKey', 'l1', 80, 'MetaLeft', [
     rect('',     { width: 70 }),
     rect('ergo', { width: 80 }),
-    text('Win',   'win', { x: 10, 'text-anchor': 'left' }),
-    text('Super', 'gnu', { x: 10, 'text-anchor': 'left' }),
+    text('Win',   'win', nonIcon),
+    text('Super', 'gnu', nonIcon),
     text('⌘',     'mac'),
   ]),
   key('specialKey', 'l1', 160, 'AltLeft', [
     rect('',     { width: 70 }),
     rect('ergo', { width: 80 }),
-    text('Alt', 'win gnu', { x: 10, 'text-anchor': 'left' }),
+    text('Alt', 'win gnu', nonIcon),
     text('⌥',   'mac'),
   ]),
   key('specialKey', 'l1', 240, 'Lang2', [
@@ -279,14 +280,14 @@ const baseRow = g('left', [
   key('specialKey', 'r1', 600, 'AltRight', [
     rect('',     { width: 70 }),
     rect('ergo', { width: 80 }),
-    text('Alt', 'win gnu', { x: 10, 'text-anchor': 'left' }),
+    text('Alt', 'win gnu', nonIcon),
     text('⌥',   'mac'),
   ]),
   key('specialKey', 'r1', 680, 'MetaRight', [
     rect('',     { width: 70 }),
     rect('ergo', { width: 80 }),
-    text('Win',   'win', { x: 10, 'text-anchor': 'left' }),
-    text('Super', 'gnu', { x: 10, 'text-anchor': 'left' }),
+    text('Win',   'win', nonIcon),
+    text('Super', 'gnu', nonIcon),
     text('⌘',     'mac'),
   ]),
   key('specialKey', 'r5', 760, 'ContextMenu', [
@@ -298,7 +299,7 @@ const baseRow = g('left', [
   key('specialKey', 'r5', 820, 'ControlRight', [
     rect('', { width: 70 }),
     rect('ergo'),
-    text('Ctrl', 'win gnu', { x: 10, 'text-anchor': 'left' }),
+    text('Ctrl', 'win gnu', nonIcon),
     text('⌃',    'mac'),
   ]),
 ]);
