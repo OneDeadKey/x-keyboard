@@ -83,7 +83,7 @@ const KEYNAMES = {
 };
 
 // turn Kalamine IDs (xkb) into DOM IDs
-function parseKalamineLayout(keyMap) {
+function parseKalamineLayout(keyMap = {}) {
   const rv = {};
   Object.entries(keyMap).forEach(([ id, value ]) => {
     rv[KEYNAMES[id]] = value;
@@ -101,7 +101,7 @@ function checkKalamineDeadKey(key) {
 }
 
 // parse Kalamine dead keys, return a easier-to-use dictionary
-function parseKalamineDeadKeys(deadKeys) {
+function parseKalamineDeadKeys(deadKeys = []) {
   const rv = {};
   // sorting the dead key array ensures '1dk' comes up first
   deadKeys.filter(checkKalamineDeadKey).sort((a, b) => a.name > b.name)
@@ -152,9 +152,9 @@ function getDeadKeyDict(deadKeys) {
 }
 
 // return a sequence of keys that can output the requested string
-function getKeySequence(keyMap, dkDict, str) {
+function getKeySequence(keyMap, dkDict, str = '') {
   const rv = [];
-  Array.from(str || '').forEach((char) => {
+  Array.from(str).forEach((char) => {
     const keys = getKeyList(keyMap, char);
     if (keys.length) { // direct access (possibly with Shift / AltGr)
       rv.push(keys[0]);
@@ -210,11 +210,7 @@ function getModifierLevel(modifiers, platform) {
  * Public API
  */
 
-export function newKeyboardLayout(aKeyMap, aDeadKeys, aGeometry) {
-  const keyMap   = aKeyMap   || {};
-  const deadKeys = aDeadKeys || {};
-  const geometry = aGeometry || '';
-
+export function newKeyboardLayout(keyMap = {}, deadKeys = {}, geometry = '') {
   const modifiers = Object.assign({}, MODIFIERS);
   const deadKeyDict = getDeadKeyDict(deadKeys);
   let pendingDK;
@@ -271,7 +267,7 @@ export function newKeyboardLayout(aKeyMap, aDeadKeys, aGeometry) {
 }
 
 export function newKalamineLayout(kalamineKeyMap, kalamineDeadKeys, geometry) {
-  const keyMap   = parseKalamineLayout(kalamineKeyMap     || {});
-  const deadKeys = parseKalamineDeadKeys(kalamineDeadKeys || []);
-  return newKeyboardLayout(keyMap, deadKeys, (geometry || '').toLowerCase());
+  const keyMap   = parseKalamineLayout(kalamineKeyMap);
+  const deadKeys = parseKalamineDeadKeys(kalamineDeadKeys);
+  return newKeyboardLayout(keyMap, deadKeys, geometry.toLowerCase());
 }

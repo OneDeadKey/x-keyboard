@@ -242,7 +242,7 @@ class Keyboard extends HTMLElement {
       });
   }
 
-  pressKeys(str, duration) {
+  pressKeys(str, duration = 250) {
     function* pressKeys(keys) {
       for (const key of keys) { // eslint-disable-line
         yield key;
@@ -256,7 +256,7 @@ class Keyboard extends HTMLElement {
       if (done) {
         clearInterval(send);
       }
-    }, duration || 250);
+    }, duration);
   }
 }
 
