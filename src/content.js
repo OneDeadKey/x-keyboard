@@ -1,4 +1,43 @@
 import { isDeadKey } from './x-keyboard-layout.js';
+import { KEY_WIDTH, KEY_PADDING, KEY_RADIUS } from './constants.js';
+
+
+/**
+ * Enter Key: ISO & ALT
+ */
+
+const arc = (xAxisRotation, x, y) => [
+  `a${KEY_RADIUS},${KEY_RADIUS}`,
+  xAxisRotation ? '1 0 0' : '0 0 1',
+  `${KEY_RADIUS * x},${KEY_RADIUS * y}`,
+].join(' ');
+
+const lineLength = (length, gap) => {
+  const offset = 2 * (KEY_PADDING + KEY_RADIUS) - 2 * gap * KEY_PADDING;
+  return KEY_WIDTH * length - Math.sign(length) * offset;
+};
+
+const h = (length, gap = 0, ccw = 0) => {
+  const l = lineLength(length, gap);
+  const sign = Math.sign(length);
+  return `h${l} ${ccw ? arc(1, sign, -sign) : arc(0, sign, sign)}`;
+};
+
+const v = (length, gap = 0, ccw = 0) => {
+  const l = lineLength(length, gap);
+  const sign = Math.sign(length);
+  return `v${l} ${ccw ? arc(1, sign, sign) : arc(0, -sign, sign)}`;
+};
+
+const M = `M${0.75 * KEY_WIDTH + KEY_RADIUS},-${KEY_WIDTH}`;
+
+const altEnterPath = [
+  M, h(1.5), v(2.0), h(-2.25), v(-1.0), h(0.75, 1, 1), v(-1.0, 1), 'z',
+].join(' ');
+
+const isoEnterPath = [
+  M, h(1.5), v(2.0), h(-1.25), v(-1.0, 1, 1), h(-0.25, 1), v(-1.0), 'z',
+].join(' ');
 
 
 /**
@@ -7,26 +46,46 @@ import { isDeadKey } from './x-keyboard-layout.js';
 
 const sgml = (nodeName, attributes = {}, children = []) => `<${nodeName} ${
   Object.entries(attributes)
-    .map(([ id, value ]) => `${id}="${value}"`)
+    .map(([ id, value ]) => {
+      let scaledValue;
+      switch (id) {
+        case 'x':
+        case 'y':
+          scaledValue = KEY_WIDTH * Number(value);
+          break;
+        case 'width':
+        case 'height':
+          scaledValue = KEY_WIDTH * Number(value) - 2 * KEY_PADDING;
+          break;
+        default:
+          scaledValue = value;
+      }
+      return `${id}="${scaledValue}"`;
+    })
     .join(' ')
 }>${children.join('\n')}</${nodeName}>`;
 
 const path = (cname = '', d) => sgml('path', { class: cname, d });
 
 const rect = (cname = '', attributes) => sgml('rect', Object.assign({
-  class: cname, width: 50, height: 50, rx: 5, ry: 5,
+  class: cname, width: 1, height: 1, rx: KEY_RADIUS, ry: KEY_RADIUS,
 }, attributes));
 
 const text = (content, cname = '', attributes) => sgml('text', Object.assign({
-  class: cname, width: 25, height: 25, x: 15, y: 42, 'text-anchor': 'middle',
+  class: cname,
+  width: 0.42,
+  height: 0.42,
+  x: 0.25,
+  y: 0.7,
+  'text-anchor': 'middle',
 }, attributes), [content]);
 
 const g = (className, children) => sgml('g', { class: className }, children);
 
 const emptyKey = [ rect(), g('key') ];
 
-const key = (className, finger, offset, id, children = emptyKey) => sgml('g', {
-  class: className, finger, id, transform: `translate(${offset}, 0)`,
+const key = (className, finger, x, id, children = emptyKey) => sgml('g', {
+  class: className, finger, id, transform: `translate(${x * KEY_WIDTH}, 0)`,
 }, children);
 
 
@@ -68,17 +127,17 @@ export function drawKey(element, keyMap) {
    * So if the lowercase version of the `shift` layer does not match the `base`
    * layer, we'll show the lowercase letter (e.g. Greek 'ς').
    */
-  const [ base, shift, alt, salt ] = keyChars;
-  const baseLabel = base.toUpperCase() !== shift ? base : '';
-  const shiftLabel = baseLabel || shift.toLowerCase() === base ? shift : base;
-  const saltLabel = altUpperChar(alt, salt);
+  const [ l1, l2, l3, l4 ] = keyChars;
+  const base = l1.toUpperCase() !== l2 ? l1 : '';
+  const shift = base || l2.toLowerCase() === l1 ? l2 : l1;
+  const salt = altUpperChar(l3, l4);
   element.innerHTML = `
-    ${keyLevel(1, keyText(baseLabel),  dkClass(baseLabel),  { x: 12, y: 42 })}
-    ${keyLevel(2, keyText(shiftLabel), dkClass(shiftLabel), { x: 12, y: 20 })}
-    ${keyLevel(3, keyText(alt),        dkClass(alt),        { x: 38, y: 42 })}
-    ${keyLevel(4, keyText(saltLabel),  dkClass(salt),       { x: 38, y: 20 })}
-    ${keyLevel(5, '',                  'dk',                { x: 38, y: 42 })}
-    ${keyLevel(6, '',                  'dk',                { x: 38, y: 20 })}
+    ${keyLevel(1, keyText(base),  dkClass(base),  { x: 0.20, y: 0.70 })}
+    ${keyLevel(2, keyText(shift), dkClass(shift), { x: 0.20, y: 0.33 })}
+    ${keyLevel(3, keyText(l3),    dkClass(l3),    { x: 0.63, y: 0.70 })}
+    ${keyLevel(4, keyText(salt),  dkClass(l4),    { x: 0.63, y: 0.33 })}
+    ${keyLevel(5, '',             'dk',           { x: 0.63, y: 0.70 })}
+    ${keyLevel(6, '',             'dk',           { x: 0.63, y: 0.33 })}
   `;
 }
 
@@ -108,58 +167,58 @@ const numberRow = g('left', [
   key('pinkyKey', 'l5', 0, 'Backquote', [
     rect('specialKey jis'),
     rect('ansi alt iso ergo'),
-    text('半角', 'jis', { x: 25, y: 18 }), // half-width (hankaku)
-    text('全角', 'jis', { x: 25, y: 30 }), // full-width (zenkaku)
-    text('漢字', 'jis', { x: 25, y: 42 }), // kanji
+    text('半角', 'jis', { x: 0.4, y: 0.3 }), // half-width (hankaku)
+    text('全角', 'jis', { x: 0.4, y: 0.5 }), // full-width (zenkaku)
+    text('漢字', 'jis', { x: 0.4, y: 0.7 }), // kanji
     g('ansi key'),
   ]),
-  key('numberKey', 'l5',  60, 'Digit1'),
-  key('numberKey', 'l4', 120, 'Digit2'),
-  key('numberKey', 'l3', 180, 'Digit3'),
-  key('numberKey', 'l2', 240, 'Digit4'),
-  key('numberKey', 'l2', 300, 'Digit5'),
+  key('numberKey', 'l5', 1, 'Digit1'),
+  key('numberKey', 'l4', 2, 'Digit2'),
+  key('numberKey', 'l3', 3, 'Digit3'),
+  key('numberKey', 'l2', 4, 'Digit4'),
+  key('numberKey', 'l2', 5, 'Digit5'),
 ]) + g('right', [
-  key('numberKey',  'r2', 360, 'Digit6'),
-  key('numberKey',  'r2', 420, 'Digit7'),
-  key('numberKey',  'r3', 480, 'Digit8'),
-  key('numberKey',  'r4', 540, 'Digit9'),
-  key('numberKey',  'r5', 600, 'Digit0'),
-  key('pinkyKey',   'r5', 660, 'Minus'),
-  key('pinkyKey',   'r5', 720, 'Equal'),
-  key('pinkyKey',   'r5', 780, 'IntlYen'),
-  key('specialKey', 'r5', 780, 'Backspace', [
-    rect('ansi', { width: 110 }),
-    rect('ol60', { height: 110, y: -60 }),
+  key('numberKey',  'r2',  6, 'Digit6'),
+  key('numberKey',  'r2',  7, 'Digit7'),
+  key('numberKey',  'r3',  8, 'Digit8'),
+  key('numberKey',  'r4',  9, 'Digit9'),
+  key('numberKey',  'r5', 10, 'Digit0'),
+  key('pinkyKey',   'r5', 11, 'Minus'),
+  key('pinkyKey',   'r5', 12, 'Equal'),
+  key('pinkyKey',   'r5', 13, 'IntlYen'),
+  key('specialKey', 'r5', 13, 'Backspace', [
+    rect('ansi', { width: 2 }),
+    rect('ol60', { height: 2, y: -1 }),
     rect('ol40 ol50'),
-    rect('alt', { x: 60 }),
+    rect('alt', { x: 1 }),
     text('⌫', 'ansi'),
     text('⌫', 'ergo'),
-    text('⌫', 'alt', { x: 75 }),
+    text('⌫', 'alt', { x: 1.25 }),
   ]),
 ]);
 
 const letterRow1 = g('left', [
   key('specialKey', 'l5', 0, 'Tab', [
-    rect('', { width: 80 }),
+    rect('', { width: 1.5 }),
     rect('ergo'),
     text('↹'),
     text('↹', 'ergo'),
   ]),
-  key('letterKey', 'l5',  90, 'KeyQ'),
-  key('letterKey', 'l4', 150, 'KeyW'),
-  key('letterKey', 'l3', 210, 'KeyE'),
-  key('letterKey', 'l2', 270, 'KeyR'),
-  key('letterKey', 'l2', 330, 'KeyT'),
+  key('letterKey', 'l5', 1.5, 'KeyQ'),
+  key('letterKey', 'l4', 2.5, 'KeyW'),
+  key('letterKey', 'l3', 3.5, 'KeyE'),
+  key('letterKey', 'l2', 4.5, 'KeyR'),
+  key('letterKey', 'l2', 5.5, 'KeyT'),
 ]) + g('right', [
-  key('letterKey', 'r2', 390, 'KeyY'),
-  key('letterKey', 'r2', 450, 'KeyU'),
-  key('letterKey', 'r3', 510, 'KeyI'),
-  key('letterKey', 'r4', 570, 'KeyO'),
-  key('letterKey', 'r5', 630, 'KeyP'),
-  key('pinkyKey',  'r5', 690, 'BracketLeft'),
-  key('pinkyKey',  'r5', 750, 'BracketRight'),
-  key('pinkyKey',  'r5', 810, 'Backslash', [
-    rect('ansi', { width: 80 }),
+  key('letterKey', 'r2',  6.5, 'KeyY'),
+  key('letterKey', 'r2',  7.5, 'KeyU'),
+  key('letterKey', 'r3',  8.5, 'KeyI'),
+  key('letterKey', 'r4',  9.5, 'KeyO'),
+  key('letterKey', 'r5', 10.5, 'KeyP'),
+  key('pinkyKey',  'r5', 11.5, 'BracketLeft'),
+  key('pinkyKey',  'r5', 12.5, 'BracketRight'),
+  key('pinkyKey',  'r5', 13.5, 'Backslash', [
+    rect('ansi', { width: 1.5 }),
     rect('iso ol60'),
     g('key'),
   ]),
@@ -167,137 +226,137 @@ const letterRow1 = g('left', [
 
 const letterRow2 = g('left', [
   key('specialKey', 'l5', 0, 'CapsLock', [
-    rect('', { width: 95 }),
+    rect('', { width: 1.75 }),
     text('⇪', 'ansi'),
-    text('英数', 'jis', { x: 25 }), // alphanumeric (eisū)
+    text('英数', 'jis', { x: 0.4 }), // alphanumeric (eisū)
   ]),
-  key('letterKey homeKey', 'l5', 105, 'KeyA'),
-  key('letterKey homeKey', 'l4', 165, 'KeyS'),
-  key('letterKey homeKey', 'l3', 225, 'KeyD'),
-  key('letterKey homeKey', 'l2', 285, 'KeyF'),
-  key('letterKey',         'l2', 345, 'KeyG'),
+  key('letterKey homeKey', 'l5',  1.75, 'KeyA'),
+  key('letterKey homeKey', 'l4',  2.75, 'KeyS'),
+  key('letterKey homeKey', 'l3',  3.75, 'KeyD'),
+  key('letterKey homeKey', 'l2',  4.75, 'KeyF'),
+  key('letterKey',         'l2',  5.75, 'KeyG'),
 ]) + g('right', [
-  key('letterKey',         'r2', 405, 'KeyH'),
-  key('letterKey homeKey', 'r2', 465, 'KeyJ'),
-  key('letterKey homeKey', 'r3', 525, 'KeyK'),
-  key('letterKey homeKey', 'r4', 585, 'KeyL'),
-  key('letterKey homeKey', 'r5', 645, 'Semicolon'),
-  key('pinkyKey',          'r5', 705, 'Quote'),
-  key('specialKey',        'r5', 765, 'Enter', [
-    path('alt', 'M50,-60 h70 a5,5 0 0 1 5,5 v100 a5,5 0 0 1 -5,5 h-115 a5,5 0 0 1 -5,-5 v-40 a5,5 0 0 1 5,-5 h35 a5,5 1 0 0 5,-5 v-50 a5,5 0 0 1 5,-5 z'),
-    path('iso', 'M50,-60 h70 a5,5 0 0 1 5,5 v100 a5,5 0 0 1 -5,5 h-55 a5,5 0 0 1 -5,-5 v-50 a5,5 1 0 0 -5,-5 h-5 a5,5 0 0 1 -5,-5 v-40 a5,5 0 0 1 5,-5 z'),
-    rect('ansi', { width: 125 }),
-    rect('ol60', { height: 110, y: -60 }),
+  key('letterKey',         'r2',  6.75, 'KeyH'),
+  key('letterKey homeKey', 'r2',  7.75, 'KeyJ'),
+  key('letterKey homeKey', 'r3',  8.75, 'KeyK'),
+  key('letterKey homeKey', 'r4',  9.75, 'KeyL'),
+  key('letterKey homeKey', 'r5', 10.75, 'Semicolon'),
+  key('pinkyKey',          'r5', 11.75, 'Quote'),
+  key('specialKey',        'r5', 12.75, 'Enter', [
+    path('alt', altEnterPath),
+    path('iso', isoEnterPath),
+    rect('ansi', { width: 2.25 }),
+    rect('ol60', { height: 2, y: -1 }),
     rect('ol40 ol50'),
     text('⏎', 'ansi alt ergo'),
-    text('⏎', 'iso', { x: 75 }),
+    text('⏎', 'iso', { x: 1.25 }),
   ]),
 ]);
 
 const letterRow3 = g('left', [
   key('specialKey', 'l5', 0, 'ShiftLeft', [
-    rect('ansi alt',  { width: 125 }),
-    rect('iso',       { width:  65 }),
-    rect('ol50 ol60', { height: 110, y: -60 }),
+    rect('ansi alt',  { width: 2.25 }),
+    rect('iso',       { width: 1.25 }),
+    rect('ol50 ol60', { height: 2, y: -1 }),
     rect('ol40'),
     text('⇧'),
     text('⇧', 'ergo'),
   ]),
-  key('letterKey', 'l5',  75, 'IntlBackslash'),
-  key('letterKey', 'l5', 135, 'KeyZ'),
-  key('letterKey', 'l4', 195, 'KeyX'),
-  key('letterKey', 'l3', 255, 'KeyC'),
-  key('letterKey', 'l2', 315, 'KeyV'),
-  key('letterKey', 'l2', 375, 'KeyB'),
+  key('letterKey', 'l5', 1.25, 'IntlBackslash'),
+  key('letterKey', 'l5', 2.25, 'KeyZ'),
+  key('letterKey', 'l4', 3.25, 'KeyX'),
+  key('letterKey', 'l3', 4.25, 'KeyC'),
+  key('letterKey', 'l2', 5.25, 'KeyV'),
+  key('letterKey', 'l2', 6.25, 'KeyB'),
 ]) + g('right', [
-  key('letterKey',  'r2', 435, 'KeyN'),
-  key('letterKey',  'r2', 495, 'KeyM'),
-  key('letterKey',  'r3', 555, 'Comma'),
-  key('letterKey',  'r4', 615, 'Period'),
-  key('letterKey',  'r5', 675, 'Slash'),
-  key('pinkyKey',   'r5', 735, 'IntlRo'),
-  key('specialKey', 'r5', 735, 'ShiftRight', [
-    rect('ansi',      { width: 155 }),
-    rect('abnt',      { width:  95,  x:  60 }),
-    rect('ol50 ol60', { height: 110, y: -60 }),
+  key('letterKey',  'r2',  7.25, 'KeyN'),
+  key('letterKey',  'r2',  8.25, 'KeyM'),
+  key('letterKey',  'r3',  9.25, 'Comma'),
+  key('letterKey',  'r4', 10.25, 'Period'),
+  key('letterKey',  'r5', 11.25, 'Slash'),
+  key('pinkyKey',   'r5', 12.25, 'IntlRo'),
+  key('specialKey', 'r5', 12.25, 'ShiftRight', [
+    rect('ansi',      { width: 2.75 }),
+    rect('abnt',      { width: 1.75,  x:  1 }),
+    rect('ol50 ol60', { height: 2, y: -1 }),
     rect('ol40'),
     text('⇧', 'ansi'),
     text('⇧', 'ergo'),
-    text('⇧', 'abnt', { x: 75 }),
+    text('⇧', 'abnt', { x: 1.25 }),
   ]),
 ]);
 
-const nonIcon = { x: 10, 'text-anchor': 'start' };
+const nonIcon = { x: 0.17, 'text-anchor': 'start' };
 const baseRow = g('left', [
   key('specialKey', 'l5', 0, 'ControlLeft', [
-    rect('', { width: 70 }),
+    rect('', { width: 1.25 }),
     rect('ergo'),
     text('Ctrl', 'win gnu', nonIcon),
     text('⌃',    'mac'),
   ]),
-  key('specialKey', 'l1', 80, 'MetaLeft', [
-    rect('',     { width: 70 }),
-    rect('ergo', { width: 80 }),
+  key('specialKey', 'l1', 1.25, 'MetaLeft', [
+    rect('',     { width: 1.25 }),
+    rect('ergo', { width: 1.50 }),
     text('Win',   'win', nonIcon),
     text('Super', 'gnu', nonIcon),
     text('⌘',     'mac'),
   ]),
-  key('specialKey', 'l1', 160, 'AltLeft', [
-    rect('',     { width: 70 }),
-    rect('ergo', { width: 80 }),
+  key('specialKey', 'l1', 2.50, 'AltLeft', [
+    rect('',     { width: 1.25 }),
+    rect('ergo', { width: 1.50 }),
     text('Alt', 'win gnu', nonIcon),
     text('⌥',   'mac'),
   ]),
-  key('specialKey', 'l1', 240, 'Lang2', [
+  key('specialKey', 'l1', 3.75, 'Lang2', [
     rect(),
-    text('한자', '', { x: 25 }), // hanja
+    text('한자', '', { x: 0.4 }), // hanja
   ]),
-  key('specialKey', 'l1', 240, 'NonConvert', [
+  key('specialKey', 'l1', 3.75, 'NonConvert', [
     rect(),
-    text('無変換', '', { x: 25 }), // muhenkan
+    text('無変換', '', { x: 0.4 }), // muhenkan
   ]),
-]) + key('homeKey', 'm1', 240, 'Space', [
-  rect('ansi',      { width: 350 }),
-  rect('ol60',      { width: 290, x: -60 }),
-  rect('ol50 ol40', { width: 230 }),
-  rect('ks',        { width: 230, x: 60 }),
-  rect('jis',       { width: 170, x: 60 }),
+]) + key('homeKey', 'm1', 3.75, 'Space', [
+  rect('ansi',      { width: 6.25 }),
+  rect('ol60',      { width: 5.00, x: -1 }),
+  rect('ol50 ol40', { width: 4.00 }),
+  rect('ks',        { width: 4.25, x: 1 }),
+  rect('jis',       { width: 3.25, x: 1 }),
 ]) + g('right', [
-  key('specialKey', 'r1', 480, 'Convert', [
+  key('specialKey', 'r1', 8.00, 'Convert', [
     rect(),
-    text('変換', '', { x: 25 }), // henkan
+    text('変換', '', { x: 0.4 }), // henkan
   ]),
-  key('specialKey', 'r1', 540, 'KanaMode', [
+  key('specialKey', 'r1', 9.00, 'KanaMode', [
     rect(),
-    text('カタカナ', '', { x: 25, y: 18 }), // katakana
-    text('ひらがな', '', { x: 25, y: 30 }), // hiragana
-    text('ローマ字', '', { x: 25, y: 42 }), // romaji
+    text('カタカナ', '', { x: 0.4, y: 0.3 }), // katakana
+    text('ひらがな', '', { x: 0.4, y: 0.5 }), // hiragana
+    text('ローマ字', '', { x: 0.4, y: 0.7 }), // romaji
   ]),
-  key('specialKey', 'r1', 540, 'Lang1', [
+  key('specialKey', 'r1', 9.00, 'Lang1', [
     rect(),
-    text('한/영', '', { x: 25 }), // han/yeong
+    text('한/영', '', { x: 0.4 }), // han/yeong
   ]),
-  key('specialKey', 'r1', 600, 'AltRight', [
-    rect('',     { width: 70 }),
-    rect('ergo', { width: 80 }),
+  key('specialKey', 'r1', 10.00, 'AltRight', [
+    rect('',     { width: 1.25 }),
+    rect('ergo', { width: 1.50 }),
     text('Alt', 'win gnu', nonIcon),
     text('⌥',   'mac'),
   ]),
-  key('specialKey', 'r1', 680, 'MetaRight', [
-    rect('',     { width: 70 }),
-    rect('ergo', { width: 80 }),
+  key('specialKey', 'r1', 11.50, 'MetaRight', [
+    rect('',     { width: 1.25 }),
+    rect('ergo', { width: 1.50 }),
     text('Win',   'win', nonIcon),
     text('Super', 'gnu', nonIcon),
     text('⌘',     'mac'),
   ]),
-  key('specialKey', 'r5', 760, 'ContextMenu', [
-    rect(),
+  key('specialKey', 'r5', 12.50, 'ContextMenu', [
+    rect('',     { width: 1.25 }),
     rect('ergo'),
     text('☰'),
     text('☰', 'ol60'),
   ]),
-  key('specialKey', 'r5', 820, 'ControlRight', [
-    rect('', { width: 70 }),
+  key('specialKey', 'r5', 13.75, 'ControlRight', [
+    rect('', { width: 1.25 }),
     rect('ergo'),
     text('Ctrl', 'win gnu', nonIcon),
     text('⌃',    'mac'),
@@ -305,11 +364,12 @@ const baseRow = g('left', [
 ]);
 
 export const svgContent = `
-  <svg viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg">
-    <g id="row_AE" transform="translate(5,  5)"> ${numberRow}  </g>
-    <g id="row_AD" transform="translate(5, 65)"> ${letterRow1} </g>
-    <g id="row_AC" transform="translate(5,125)"> ${letterRow2} </g>
-    <g id="row_AB" transform="translate(5,185)"> ${letterRow3} </g>
-    <g id="row_AA" transform="translate(5,245)"> ${baseRow}    </g>
+  <svg viewBox="0 0 ${KEY_WIDTH * 15} ${KEY_WIDTH * 5}"
+      xmlns="http://www.w3.org/2000/svg">
+    <g id="row_AE"> ${numberRow}  </g>
+    <g id="row_AD"> ${letterRow1} </g>
+    <g id="row_AC"> ${letterRow2} </g>
+    <g id="row_AB"> ${letterRow3} </g>
+    <g id="row_AA"> ${baseRow}    </g>
   </svg>
 `;

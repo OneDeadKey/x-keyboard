@@ -1,16 +1,24 @@
-const keyBG = 'none';
-const specialKeyBG = '#e4e4e4';
+import { KEY_WIDTH, KEY_PADDING } from './constants.js';
+
+const KEY_BG = 'none';
+const SPECIAL_KEY_BG = '#e4e4e4';
+
+const translate = (x = 0, y = 0, offset) => {
+  const dx = KEY_WIDTH * x + (offset ? KEY_PADDING : 0);
+  const dy = KEY_WIDTH * y + (offset ? KEY_PADDING : 0);
+  return `{ transform: translate(${dx}px, ${dy}px); }`;
+};
 
 const main = `
   rect, path {
     stroke: #666;
     stroke-width: .5px;
-    fill: ${keyBG};
+    fill: ${KEY_BG};
   }
   .specialKey,
   .specialKey rect,
   .specialKey path {
-    fill: ${specialKeyBG};
+    fill: ${SPECIAL_KEY_BG};
   }
   text {
     fill: #333;
@@ -23,6 +31,12 @@ const main = `
 // keyboard geometry: ANSI, ISO, ABNT, ALT
 const classicGeometry = `
   #Escape { display: none; }
+
+  #row_AE ${translate(0, 0, true)}
+  #row_AD ${translate(0, 1, true)}
+  #row_AC ${translate(0, 2, true)}
+  #row_AB ${translate(0, 3, true)}
+  #row_AA ${translate(0, 4, true)}
 
   /* Backslash & Enter */
   #Enter path.alt,
@@ -38,9 +52,7 @@ const classicGeometry = `
   .iso #Enter     .iso,
   .iso #Backslash .iso { display: block; }
   .iso #Backslash,
-  .alt #Backslash {
-    transform: translate(765px, 60px);
-  }
+  .alt #Backslash ${translate(12.75, 1)}
 
   /* Backspace & IntlYen */
   #IntlYen, #Backspace .alt,
@@ -90,35 +102,35 @@ const orthoGeometry = `
   .ol40 .pinkyKey, .ol40 #ContextMenu,
   .ol40 #row_AE .numberKey { display: none; }
 
-  .ergo #row_AE       { transform: translate(  95px,   5px ); }
-  .ergo #row_AD       { transform: translate(  65px,  65px ); }
-  .ergo #row_AC       { transform: translate(  50px, 125px ); }
-  .ergo #row_AB       { transform: translate(  20px, 185px ); }
+  .ergo #row_AE       ${translate(1.50, 0, true)}
+  .ergo #row_AD       ${translate(1.00, 1, true)}
+  .ergo #row_AC       ${translate(0.75, 2, true)}
+  .ergo #row_AB       ${translate(0.25, 3, true)}
 
-  .ergo #Tab          { transform: translate(  30px,   0px ); }
-  .ergo #ShiftLeft    { transform: translate(  75px,   0px ); }
-  .ergo #ControlLeft  { transform: translate(  90px,   0px ); }
-  .ergo #MetaLeft     { transform: translate( 150px,   0px ); }
-  .ergo #AltLeft      { transform: translate( 240px,   0px ); }
-  .ergo #Space        { transform: translate( 330px,   0px ); }
-  .ergo #AltRight     { transform: translate( 570px,   0px ); }
-  .ergo #MetaRight    { transform: translate( 660px,   0px ); }
-  .ergo #ControlRight { transform: translate( 750px,   0px ); }
+  .ergo #Tab          ${translate(0.50)}
+  .ergo #ShiftLeft    ${translate(1.25)}
+  .ergo #ControlLeft  ${translate(1.50)}
+  .ergo #MetaLeft     ${translate(2.50)}
+  .ergo #AltLeft      ${translate(4.00)}
+  .ergo #Space        ${translate(5.50)}
+  .ergo #AltRight     ${translate(9.00)}
+  .ergo #MetaRight    ${translate(10.5)}
+  .ergo #ControlRight ${translate(12.5)}
 
-  .ol60 .left         { transform: translate(-60px,    0px ); }
-  .ol60 #ControlRight { transform: translate( 810px,   0px ); }
-  .ol60 #ShiftRight   { transform: translate( 795px,   0px ); }
-  .ol60 #ContextMenu  { transform: translate( 750px,   0px ); }
-  .ol60 #Backslash    { transform: translate( 690px, 120px ); }
-  .ol60 #Backspace    { transform: translate( 300px,  60px ); }
-  .ol60 #Enter        { transform: translate( 345px,  60px ); }
+  .ol60 .left         ${translate(-1.00)}
+  .ol60 #ControlRight ${translate(13.50)}
+  .ol60 #ShiftRight   ${translate(13.25)}
+  .ol60 #ContextMenu  ${translate(12.50)}
+  .ol60 #Backslash    ${translate(11.50, 2)}
+  .ol60 #Backspace    ${translate(5.00, 1)}
+  .ol60 #Enter        ${translate(5.75, 1)}
 
-  .ol50 #Backspace    { transform: translate( 660px,   0px ); }
-  .ol50 #Enter        { transform: translate( 705px, -60px ); }
+  .ol50 #Backspace    ${translate(11.00)}
+  .ol50 #Enter        ${translate(11.75, -1)}
 
-  .ol40 #Escape       { transform: translate(   0px, 120px ); }
-  .ol40 #Backspace    { transform: translate( 660px,  60px ); }
-  .ol40 #Enter        { transform: translate( 705px,   0px ); }
+  .ol40 #Escape       ${translate(0, 2)}
+  .ol40 #Backspace    ${translate(11.00, 1)}
+  .ol40 #Enter        ${translate(11.75, 0)}
 
   [platform="gnu"].ergo .specialKey .win,
   [platform="gnu"].ergo .specialKey .mac,
@@ -131,16 +143,16 @@ const orthoGeometry = `
   /* swap Alt/Meta for MacOSX */
   [platform="gnu"].ergo #MetaLeft,
   [platform="win"].ergo #MetaLeft,
-                  .ergo #AltLeft   { transform: translate(150px, 0); }
+                  .ergo #AltLeft   ${translate(2.5)}
   [platform="gnu"].ergo #AltLeft,
   [platform="win"].ergo #AltLeft,
-                  .ergo #MetaLeft  { transform: translate(240px, 0); }
+                  .ergo #MetaLeft  ${translate(4.0)}
   [platform="gnu"].ergo #AltRight,
   [platform="win"].ergo #AltRight,
-                  .ergo #MetaRight { transform: translate(570px, 0); }
+                  .ergo #MetaRight ${translate(9.5)}
   [platform="gnu"].ergo #MetaRight,
   [platform="win"].ergo #MetaRight,
-                  .ergo #AltRight  { transform: translate(660px, 0); }
+                  .ergo #AltRight  ${translate(11.0)}
 `;
 
 // Korean & Japanese input systems
@@ -193,13 +205,13 @@ const modifiers = `
 
   /* swap Alt/Meta for MacOSX */
   [platform="gnu"] #MetaLeft,
-  [platform="win"] #MetaLeft,  #AltLeft   { transform: translate( 80px, 0); }
+  [platform="win"] #MetaLeft,  #AltLeft   ${translate(1.25)}
   [platform="gnu"] #AltLeft,
-  [platform="win"] #AltLeft,   #MetaLeft  { transform: translate(160px, 0); }
+  [platform="win"] #AltLeft,   #MetaLeft  ${translate(2.50)}
   [platform="gnu"] #AltRight,
-  [platform="win"] #AltRight,  #MetaRight { transform: translate(600px, 0); }
+  [platform="win"] #AltRight,  #MetaRight ${translate(10.00)}
   [platform="gnu"] #MetaRight,
-  [platform="win"] #MetaRight, #AltRight  { transform: translate(680px, 0); }
+  [platform="win"] #MetaRight, #AltRight  ${translate(11.25)}
 `;
 
 // color themes
@@ -225,7 +237,7 @@ const themes = `
   [theme="hints"] [finger="l5"] rect,
   [theme="hints"] [finger="r5"] rect { fill: hsl(230, 100%, 85%); }
   [theme="hints"] .specialKey   rect,
-  [theme="hints"] .specialKey   path { fill: ${specialKeyBG}; }
+  [theme="hints"] .specialKey   path { fill: ${SPECIAL_KEY_BG}; }
   [theme="hints"] .hint         rect { fill: #a33; }
   [theme="hints"] .press        rect { fill: #335; }
   [theme="hints"] .press        text { fill: #fff; }
