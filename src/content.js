@@ -47,20 +47,17 @@ const isoEnterPath = [
 const sgml = (nodeName, attributes = {}, children = []) => `<${nodeName} ${
   Object.entries(attributes)
     .map(([ id, value ]) => {
-      let scaledValue;
-      switch (id) {
-        case 'x':
-        case 'y':
-          scaledValue = KEY_WIDTH * Number(value);
-          break;
-        case 'width':
-        case 'height':
-          scaledValue = KEY_WIDTH * Number(value) - 2 * KEY_PADDING;
-          break;
-        default:
-          scaledValue = value;
+      if (id === 'x' || id === 'y') {
+        return `${id}="${KEY_WIDTH * Number(value)
+            - (nodeName === 'text' ? KEY_PADDING : 0)}"`;
       }
-      return `${id}="${scaledValue}"`;
+      if (id === 'width' || id === 'height') {
+        return `${id}="${KEY_WIDTH * Number(value) - 2 * KEY_PADDING}"`;
+      }
+      if (id === 'translateX') {
+        return `transform="translate(${KEY_WIDTH * Number(value)}, 0)"`;
+      }
+      return `${id}="${value}"`;
     })
     .join(' ')
 }>${children.join('\n')}</${nodeName}>`;
@@ -73,10 +70,10 @@ const rect = (cname = '', attributes) => sgml('rect', Object.assign({
 
 const text = (content, cname = '', attributes) => sgml('text', Object.assign({
   class: cname,
-  width: 0.42,
-  height: 0.42,
-  x: 0.25,
-  y: 0.7,
+  width: 0.50,
+  height: 0.50,
+  x: 0.34,
+  y: 0.78,
   'text-anchor': 'middle',
 }, attributes), [content]);
 
@@ -132,12 +129,12 @@ export function drawKey(element, keyMap) {
   const shift = base || l2.toLowerCase() === l1 ? l2 : l1;
   const salt = altUpperChar(l3, l4);
   element.innerHTML = `
-    ${keyLevel(1, keyText(base),  dkClass(base),  { x: 0.20, y: 0.70 })}
-    ${keyLevel(2, keyText(shift), dkClass(shift), { x: 0.20, y: 0.33 })}
-    ${keyLevel(3, keyText(l3),    dkClass(l3),    { x: 0.63, y: 0.70 })}
-    ${keyLevel(4, keyText(salt),  dkClass(l4),    { x: 0.63, y: 0.33 })}
-    ${keyLevel(5, '',             'dk',           { x: 0.63, y: 0.70 })}
-    ${keyLevel(6, '',             'dk',           { x: 0.63, y: 0.33 })}
+    ${keyLevel(1, keyText(base),  dkClass(base),  { x: 0.28, y: 0.79 })}
+    ${keyLevel(2, keyText(shift), dkClass(shift), { x: 0.28, y: 0.41 })}
+    ${keyLevel(3, keyText(l3),    dkClass(l3),    { x: 0.70, y: 0.79 })}
+    ${keyLevel(4, keyText(salt),  dkClass(l4),    { x: 0.70, y: 0.41 })}
+    ${keyLevel(5, '',             'dk',           { x: 0.70, y: 0.79 })}
+    ${keyLevel(6, '',             'dk',           { x: 0.70, y: 0.41 })}
   `;
 }
 
@@ -167,9 +164,9 @@ const numberRow = g('left', [
   key('pinkyKey', 'l5', 0, 'Backquote', [
     rect('specialKey jis'),
     rect('ansi alt iso ergo'),
-    text('半角', 'jis', { x: 0.4, y: 0.3 }), // half-width (hankaku)
-    text('全角', 'jis', { x: 0.4, y: 0.5 }), // full-width (zenkaku)
-    text('漢字', 'jis', { x: 0.4, y: 0.7 }), // kanji
+    text('半角', 'jis', { x: 0.5, y: 0.4 }), // half-width (hankaku)
+    text('全角', 'jis', { x: 0.5, y: 0.6 }), // full-width (zenkaku)
+    text('漢字', 'jis', { x: 0.5, y: 0.8 }), // kanji
     g('ansi key'),
   ]),
   key('numberKey', 'l5', 1, 'Digit1'),
@@ -193,7 +190,7 @@ const numberRow = g('left', [
     rect('alt', { x: 1 }),
     text('⌫', 'ansi'),
     text('⌫', 'ergo'),
-    text('⌫', 'alt', { x: 1.25 }),
+    text('⌫', 'alt', { translateX: 1 }),
   ]),
 ]);
 
@@ -228,7 +225,7 @@ const letterRow2 = g('left', [
   key('specialKey', 'l5', 0, 'CapsLock', [
     rect('', { width: 1.75 }),
     text('⇪', 'ansi'),
-    text('英数', 'jis', { x: 0.4 }), // alphanumeric (eisū)
+    text('英数', 'jis', { x: 0.45 }), // alphanumeric (eisū)
   ]),
   key('letterKey homeKey', 'l5',  1.75, 'KeyA'),
   key('letterKey homeKey', 'l4',  2.75, 'KeyS'),
@@ -249,7 +246,7 @@ const letterRow2 = g('left', [
     rect('ol60', { height: 2, y: -1 }),
     rect('ol40 ol50'),
     text('⏎', 'ansi alt ergo'),
-    text('⏎', 'iso', { x: 1.25 }),
+    text('⏎', 'iso', { translateX: 1 }),
   ]),
 ]);
 
@@ -277,16 +274,16 @@ const letterRow3 = g('left', [
   key('pinkyKey',   'r5', 12.25, 'IntlRo'),
   key('specialKey', 'r5', 12.25, 'ShiftRight', [
     rect('ansi',      { width: 2.75 }),
-    rect('abnt',      { width: 1.75,  x:  1 }),
+    rect('abnt',      { width: 1.75,  x: 1 }),
     rect('ol50 ol60', { height: 2, y: -1 }),
     rect('ol40'),
     text('⇧', 'ansi'),
     text('⇧', 'ergo'),
-    text('⇧', 'abnt', { x: 1.25 }),
+    text('⇧', 'abnt', { translateX: 1 }),
   ]),
 ]);
 
-const nonIcon = { x: 0.17, 'text-anchor': 'start' };
+const nonIcon = { x: 0.25, 'text-anchor': 'start' };
 const baseRow = g('left', [
   key('specialKey', 'l5', 0, 'ControlLeft', [
     rect('', { width: 1.25 }),
@@ -313,7 +310,7 @@ const baseRow = g('left', [
   ]),
   key('specialKey', 'l1', 3.75, 'NonConvert', [
     rect(),
-    text('無変換', '', { x: 0.4 }), // muhenkan
+    text('無変換', '', { x: 0.5 }), // muhenkan
   ]),
 ]) + key('homeKey', 'm1', 3.75, 'Space', [
   rect('ansi',      { width: 6.25 }),
@@ -324,13 +321,13 @@ const baseRow = g('left', [
 ]) + g('right', [
   key('specialKey', 'r1', 8.00, 'Convert', [
     rect(),
-    text('変換', '', { x: 0.4 }), // henkan
+    text('変換', '', { x: 0.5 }), // henkan
   ]),
   key('specialKey', 'r1', 9.00, 'KanaMode', [
     rect(),
-    text('カタカナ', '', { x: 0.4, y: 0.3 }), // katakana
-    text('ひらがな', '', { x: 0.4, y: 0.5 }), // hiragana
-    text('ローマ字', '', { x: 0.4, y: 0.7 }), // romaji
+    text('カタカナ', '', { x: 0.5, y: 0.4 }), // katakana
+    text('ひらがな', '', { x: 0.5, y: 0.6 }), // hiragana
+    text('ローマ字', '', { x: 0.5, y: 0.8 }), // romaji
   ]),
   key('specialKey', 'r1', 9.00, 'Lang1', [
     rect(),
