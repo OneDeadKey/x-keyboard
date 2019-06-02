@@ -2,6 +2,10 @@ import {
   KEY_WIDTH,
   KEY_PADDING,
   KEY_BG,
+  KEY_COLOR,
+  KEY_COLOR_L3,
+  KEY_COLOR_L5,
+  DEAD_KEY_COLOR,
   SPECIAL_KEY_BG,
 } from './constants.js';
 
@@ -23,7 +27,7 @@ const main = `
     fill: ${SPECIAL_KEY_BG};
   }
   text {
-    fill: #333;
+    fill: ${KEY_COLOR};
     font: normal 20px sans-serif;
     text-align: center;
   }
@@ -249,10 +253,10 @@ const themes = `
   }
 
   /* dimmed AltGr & bold dead keys */
-  .level3, .level4 { fill: blue; opacity: .4; }
-  .level5, .level6 { fill: red; }
+  .level3, .level4 { fill: ${KEY_COLOR_L3}; opacity: .4; }
+  .level5, .level6 { fill: ${KEY_COLOR_L5}; }
   .deadKey {
-    fill: red;
+    fill: ${DEAD_KEY_COLOR};
     font-weight: bold;
   }
 
