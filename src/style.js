@@ -1,7 +1,9 @@
-import { KEY_WIDTH, KEY_PADDING } from './constants.js';
-
-const KEY_BG = 'none';
-const SPECIAL_KEY_BG = '#e4e4e4';
+import {
+  KEY_WIDTH,
+  KEY_PADDING,
+  KEY_BG,
+  SPECIAL_KEY_BG,
+} from './constants.js';
 
 const translate = (x = 0, y = 0, offset) => {
   const dx = KEY_WIDTH * x + (offset ? KEY_PADDING : 0);
