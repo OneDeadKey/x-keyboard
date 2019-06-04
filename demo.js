@@ -5,18 +5,18 @@ window.addEventListener('DOMContentLoaded', () => {
   const input    = document.querySelector('input');
 
   // keyboard state: these <select> element IDs match the x-keyboard properties
-  // -- but the `layout` property requires a bit more work (JSON fetch)
+  // -- but the `layout` property requires a JSON fetch
   const IDs = [ 'layout', 'geometry', 'platform', 'theme' ];
   const setProp = (key, value) => {
     if (key === 'layout') {
       if (value) {
         fetch(`layouts/${value}.json`)
           .then(response => response.json())
-          .then(data => keyboard.setKalamineLayout(data.layout, data.dead_keys,
-            data.geometry.replace('ERGO', 'ISO')));
+          .then(data => keyboard.setKeyboardLayout(data.keymap, data.deadkeys,
+            data.geometry.replace('ergo', 'iso')));
         input.placeholder = 'type here';
       } else {
-        keyboard.setKalamineLayout();
+        keyboard.setKeyboardLayout();
         input.placeholder = 'select a keyboard layout';
       }
     } else {
@@ -55,18 +55,27 @@ window.addEventListener('DOMContentLoaded', () => {
       event.target.value = '';
       return false;
     }
-    if (!state.layout || event.code.startsWith('F')
-      || event.ctrlKey || event.altKey || event.metaKey) {
-      return true; // don't steal F1-12 keys or Ctrl/Alt/Super-* shortcuts
-    }
-    if (event.code === 'Tab') { // make the Tab key great again
-      document.getElementById('layout').focus();
-    } else if (value) {
+    if (value && state.layout
+        && !(event.ctrlKey || event.altKey || event.metaKey)) {
       event.target.value += value;
-    } else if (event.code === 'Backspace') {
-      event.target.value = event.target.value.slice(0, -1);
+      return false;
     }
-    return false;
+    if (event.code === 'Tab') { // focus the layout selector
+      document.getElementById('layout').focus();
+    }
+    return true;
+    // if (!state.layout || event.code.startsWith('F')
+    //   || event.ctrlKey || event.altKey || event.metaKey) {
+    //   return true; // don't steal F1-12 keys or Ctrl/Alt/Super-* shortcuts
+    // }
+    // if (event.code === 'Tab') { // make the Tab key great again
+    //   document.getElementById('layout').focus();
+    // } else if (value) {
+    //   event.target.value += value;
+    // } else if (event.code === 'Backspace') {
+    //   event.target.value = event.target.value.slice(0, -1);
+    // }
+    // return false;
   };
 
   /**

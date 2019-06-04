@@ -22,104 +22,6 @@ export function isDeadKey(value) {
  *   }
  */
 
-// map XKB names to DOM/KeyboardEvent names
-const KEYNAMES = {
-  SPCE: 'Space',
-  // numbers
-  AE01: 'Digit1',
-  AE02: 'Digit2',
-  AE03: 'Digit3',
-  AE04: 'Digit4',
-  AE05: 'Digit5',
-  AE06: 'Digit6',
-  AE07: 'Digit7',
-  AE08: 'Digit8',
-  AE09: 'Digit9',
-  AE10: 'Digit0',
-  // letters: 1st row
-  AD01: 'KeyQ',
-  AD02: 'KeyW',
-  AD03: 'KeyE',
-  AD04: 'KeyR',
-  AD05: 'KeyT',
-  AD06: 'KeyY',
-  AD07: 'KeyU',
-  AD08: 'KeyI',
-  AD09: 'KeyO',
-  AD10: 'KeyP',
-  // letters: 2nd row
-  AC01: 'KeyA',
-  AC02: 'KeyS',
-  AC03: 'KeyD',
-  AC04: 'KeyF',
-  AC05: 'KeyG',
-  AC06: 'KeyH',
-  AC07: 'KeyJ',
-  AC08: 'KeyK',
-  AC09: 'KeyL',
-  AC10: 'Semicolon',
-  // letters: 3rd row
-  AB01: 'KeyZ',
-  AB02: 'KeyX',
-  AB03: 'KeyC',
-  AB04: 'KeyV',
-  AB05: 'KeyB',
-  AB06: 'KeyN',
-  AB07: 'KeyM',
-  AB08: 'Comma',
-  AB09: 'Period',
-  AB10: 'Slash',
-  // pinky keys
-  TLDE: 'Backquote',
-  AE11: 'Minus',
-  AE12: 'Equal',
-  AE13: 'IntlYen',
-  AD11: 'BracketLeft',
-  AD12: 'BracketRight',
-  BKSL: 'Backslash',
-  AC11: 'Quote',
-  AB11: 'IntlRo',
-  LSGT: 'IntlBackslash',
-};
-
-// turn Kalamine IDs (xkb) into DOM IDs
-function parseKalamineLayout(keyMap = {}) {
-  const rv = {};
-  Object.entries(keyMap).forEach(([ id, value ]) => {
-    rv[KEYNAMES[id]] = value;
-  });
-  rv.IntlBackslash = rv.IntlBackslash || rv.Backslash;
-  rv.IntlYen       = rv.IntlYen       || rv.Backslash;
-  return rv;
-}
-
-// return true if the Kalamine deadKey object has all expected properties
-function checkKalamineDeadKey(key) {
-  return isDeadKey(key.char) && key.alt_self && key.alt_space && key.name
-    && key.base && key.base.length && key.alt && key.alt.length
-    && key.base.length === key.alt.length;
-}
-
-// parse Kalamine dead keys, return a easier-to-use dictionary
-function parseKalamineDeadKeys(deadKeys = []) {
-  const rv = {};
-  // sorting the dead key array ensures '1dk' comes up first
-  deadKeys.filter(checkKalamineDeadKey).sort((a, b) => a.name > b.name)
-    .forEach((dk) => {
-      const deadKey = {};
-      Array.from(dk.base).forEach((base, i) => {
-        deadKey[base] = dk.alt[i];
-      });
-      deadKey['\u0020'] = dk.alt_space;
-      deadKey['\u00a0'] = dk.alt_space;
-      deadKey['\u202f'] = dk.alt_space;
-      deadKey[dk.char] = dk.alt_self;
-      rv[dk.char] = deadKey;
-    });
-  return rv;
-}
-
-
 /**
  * Keyboard hints:
  * suggest the most efficient way to type a character or a string.
@@ -264,10 +166,4 @@ export function newKeyboardLayout(keyMap = {}, deadKeys = {}, geometry = '') {
       return value || '';
     },
   };
-}
-
-export function newKalamineLayout(kalamineKeyMap, kalamineDeadKeys, geometry) {
-  const keyMap   = parseKalamineLayout(kalamineKeyMap);
-  const deadKeys = parseKalamineDeadKeys(kalamineDeadKeys);
-  return newKeyboardLayout(keyMap, deadKeys, geometry.toLowerCase());
 }
