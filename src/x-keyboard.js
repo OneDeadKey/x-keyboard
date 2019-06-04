@@ -1,4 +1,4 @@
-import { newKeyboardLayout, newKalamineLayout } from './x-keyboard-layout.js';
+import { newKeyboardLayout } from './x-keyboard-layout.js';
 import { svgContent, drawKey, drawDK } from './content.js';
 import css from './style.js';
 
@@ -109,8 +109,11 @@ class Keyboard extends HTMLElement {
       ol50: 'ergo ol50',
       ol40: 'ergo ol40',
     };
-    this._state.geometry = value in supportedShapes ? value : '';
-    const geometry = this._state.geometry || this.layout.geometry || 'ansi';
+    if (!(value in supportedShapes)) {
+      return;
+    }
+    this._state.geometry = value;
+    const geometry = value || this.layout.geometry || 'ansi';
     const shape = supportedShapes[geometry];
     this.root.querySelector('svg').className.baseVal = shape;
     setFingerAssignment(this.root, !shape.startsWith('iso'));
@@ -143,10 +146,6 @@ class Keyboard extends HTMLElement {
     this.geometry = this._state.geometry;
     Array.from(this.root.querySelectorAll('.key'))
       .forEach(key => drawKey(key, value.keyMap));
-  }
-
-  setKalamineLayout(keyMap, deadKeys, geometry) {
-    this.layout = newKalamineLayout(keyMap, deadKeys, geometry);
   }
 
   setKeyboardLayout(keyMap, deadKeys, geometry) {
