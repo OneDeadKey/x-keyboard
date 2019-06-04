@@ -1,26 +1,24 @@
-// dead keys are identified with a `*` prefix + the diacritic sign
-export function isDeadKey(value) {
-  return value && value.length === 2 && value[0] === '*';
-}
-
 /**
- * Parse Kalamine data:
- * these layouts are designed to create keyboard drivers but are not opmitized
- * for our use case. Here's what we need:
+ * Expected Kalamine data:
  *
- *   keyMap: {
+ *   keymap: {
  *     'KeyQ': [ 'q', 'Q' ],
  *     'KeyP': [ 'p', 'P' ],
- *     'Quote': [ '*´', '*¨' ], // dead keys (acute, diaeresis)
+ *     'Quote': [ '*´', '*¨' ], // dead keys: acute, diaeresis
  *     ...
- *   }
+ *   },
  *
- *   deadKeys: {
+ *   deadkeys: {
  *     '*´': { 'a': 'á', 'A': 'Á', ...  },
  *     '*¨': { 'a': 'ä', 'A': 'Ä', ...  },
  *     ...
  *   }
  */
+
+// dead keys are identified with a `*` prefix + the diacritic sign
+export function isDeadKey(value) {
+  return value && value.length === 2 && value[0] === '*';
+}
 
 /**
  * Keyboard hints:

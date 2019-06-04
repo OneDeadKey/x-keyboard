@@ -47,35 +47,21 @@ window.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('hashchange', applyHashState);
   applyHashState();
 
-  // highlight keyboard keys and emulate the keyboard
+  // highlight keyboard keys and emulate the selected layout
   input.onkeyup = event => keyboard.keyUp(event.code);
   input.onkeydown = (event) => {
     const value = keyboard.keyDown(event.code);
-    if (event.code === 'Enter') { // clear text input on <Enter>
-      event.target.value = '';
-      return false;
-    }
     if (value && state.layout
         && !(event.ctrlKey || event.altKey || event.metaKey)) {
       event.target.value += value;
-      return false;
+    } else if (event.code === 'Enter') { // clear text input on <Enter>
+      event.target.value = '';
+    } else if (event.code === 'Tab') { // focus the layout selector
+      setTimeout(() => document.getElementById('layout').focus(), 100);
+    } else {
+      return true; // don't intercept special keys or key shortcuts
     }
-    if (event.code === 'Tab') { // focus the layout selector
-      document.getElementById('layout').focus();
-    }
-    return true;
-    // if (!state.layout || event.code.startsWith('F')
-    //   || event.ctrlKey || event.altKey || event.metaKey) {
-    //   return true; // don't steal F1-12 keys or Ctrl/Alt/Super-* shortcuts
-    // }
-    // if (event.code === 'Tab') { // make the Tab key great again
-    //   document.getElementById('layout').focus();
-    // } else if (value) {
-    //   event.target.value += value;
-    // } else if (event.code === 'Backspace') {
-    //   event.target.value = event.target.value.slice(0, -1);
-    // }
-    // return false;
+    return false; // event has been consumed, stop propagation
   };
 
   /**
@@ -88,7 +74,7 @@ window.addEventListener('DOMContentLoaded', () => {
    *    => the code below works around that.
    */
   input.oninput = (event) => {
-    if (state.layout) {
+    if (state.layout && event.data) {
       event.target.value = event.target.value.slice(0, -event.data.length);
     }
   };
