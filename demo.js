@@ -74,7 +74,7 @@ window.addEventListener('DOMContentLoaded', () => {
    *    => the code below works around that.
    */
   input.oninput = (event) => {
-    if (state.layout && event.data) {
+    if (state.layout && event.inputType === 'insertCompositionText') {
       event.target.value = event.target.value.slice(0, -event.data.length);
     }
   };
