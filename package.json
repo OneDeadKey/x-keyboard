@@ -1,10 +1,13 @@
 {
   "name": "x-keyboard",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A web component to display and emulate keyboard layouts.",
-  "main": "x-keyboard.js",
+  "files": [
+    "index.js"
+  ],
   "scripts": {
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "build": "rollup main.js --format esm --file index.js"
   },
   "repository": {
     "type": "git",
@@ -25,7 +28,8 @@
   "devDependencies": {
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.17.2"
+    "eslint-plugin-import": "^2.17.2",
+    "rollup": "^1.14.2"
   },
   "eslintConfig": {
     "env": {
@@ -41,14 +45,29 @@
       "no-multi-spaces": "off",
       "array-bracket-spacing": "off",
       "key-spacing": "off",
-      "import/extensions":    [ "error", { "js": "always" } ],
-      "no-param-reassign":    [ "error", { "props": false } ],
-      "no-underscore-dangle": [ "error", { "allowAfterThis": true } ]
+      "import/extensions": [
+        "error",
+        {
+          "js": "always"
+        }
+      ],
+      "no-param-reassign": [
+        "error",
+        {
+          "props": false
+        }
+      ],
+      "no-underscore-dangle": [
+        "error",
+        {
+          "allowAfterThis": true
+        }
+      ]
     }
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint"
+      "pre-commit": "npm run build && npm run lint"
     }
   }
 }

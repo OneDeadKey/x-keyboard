@@ -1,24 +1,27 @@
 /**
- * Expected Kalamine data:
- *
+ * Keyboard Layout Data
+ * {
  *   keymap: {
- *     'KeyQ': [ 'q', 'Q' ],
+ *     'KeyQ': [ 'q', 'Q' ],    // normal, shift, [altGr], [shift+altGr]
  *     'KeyP': [ 'p', 'P' ],
  *     'Quote': [ '*´', '*¨' ], // dead keys: acute, diaeresis
  *     ...
  *   },
- *
  *   deadkeys: {
  *     '*´': { 'a': 'á', 'A': 'Á', ...  },
  *     '*¨': { 'a': 'ä', 'A': 'Ä', ...  },
  *     ...
- *   }
+ *   },
+ *   geometry: 'ansi' // 'ansi', 'iso', 'alt', 'abnt', 'jis', 'ks' (standard)
+ *                    // or 'ol60', 'ol50', 'ol40' (ortholinear)
+ * }
  */
 
 // dead keys are identified with a `*` prefix + the diacritic sign
 export function isDeadKey(value) {
   return value && value.length === 2 && value[0] === '*';
 }
+
 
 /**
  * Keyboard hints:
@@ -107,7 +110,7 @@ function getModifierLevel(modifiers, platform) {
 
 
 /**
- * Public API
+ * Keyboard Layout API
  */
 
 export function newKeyboardLayout(keyMap = {}, deadKeys = {}, geometry = '') {

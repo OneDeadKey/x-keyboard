@@ -81,7 +81,7 @@ const g = (className, children) => sgml('g', { class: className }, children);
 
 const emptyKey = [ rect(), g('key') ];
 
-const key = (className, finger, x, id, children = emptyKey) => sgml('g', {
+const gKey = (className, finger, x, id, children = emptyKey) => sgml('g', {
   class: className, finger, id, transform: `translate(${x * KEY_WIDTH}, 0)`,
 }, children);
 
@@ -157,33 +157,33 @@ export function drawDK(element, keyMap, deadKey) {
  */
 
 const numberRow = g('left', [
-  key('specialKey', 'l5', 0, 'Escape', [
+  gKey('specialKey', 'l5', 0, 'Escape', [
     rect('ergo'),
     text('⎋', 'ergo'),
   ]),
-  key('pinkyKey', 'l5', 0, 'Backquote', [
+  gKey('pinkyKey', 'l5', 0, 'Backquote', [
     rect('specialKey jis'),
     rect('ansi alt iso ergo'),
     text('半角', 'jis', { x: 0.5, y: 0.4 }), // half-width (hankaku)
     text('全角', 'jis', { x: 0.5, y: 0.6 }), // full-width (zenkaku)
     text('漢字', 'jis', { x: 0.5, y: 0.8 }), // kanji
-    g('ansi key'),
+    g('ansi gKey'),
   ]),
-  key('numberKey', 'l5', 1, 'Digit1'),
-  key('numberKey', 'l4', 2, 'Digit2'),
-  key('numberKey', 'l3', 3, 'Digit3'),
-  key('numberKey', 'l2', 4, 'Digit4'),
-  key('numberKey', 'l2', 5, 'Digit5'),
+  gKey('numberKey', 'l5', 1, 'Digit1'),
+  gKey('numberKey', 'l4', 2, 'Digit2'),
+  gKey('numberKey', 'l3', 3, 'Digit3'),
+  gKey('numberKey', 'l2', 4, 'Digit4'),
+  gKey('numberKey', 'l2', 5, 'Digit5'),
 ]) + g('right', [
-  key('numberKey',  'r2',  6, 'Digit6'),
-  key('numberKey',  'r2',  7, 'Digit7'),
-  key('numberKey',  'r3',  8, 'Digit8'),
-  key('numberKey',  'r4',  9, 'Digit9'),
-  key('numberKey',  'r5', 10, 'Digit0'),
-  key('pinkyKey',   'r5', 11, 'Minus'),
-  key('pinkyKey',   'r5', 12, 'Equal'),
-  key('pinkyKey',   'r5', 13, 'IntlYen'),
-  key('specialKey', 'r5', 13, 'Backspace', [
+  gKey('numberKey',  'r2',  6, 'Digit6'),
+  gKey('numberKey',  'r2',  7, 'Digit7'),
+  gKey('numberKey',  'r3',  8, 'Digit8'),
+  gKey('numberKey',  'r4',  9, 'Digit9'),
+  gKey('numberKey',  'r5', 10, 'Digit0'),
+  gKey('pinkyKey',   'r5', 11, 'Minus'),
+  gKey('pinkyKey',   'r5', 12, 'Equal'),
+  gKey('pinkyKey',   'r5', 13, 'IntlYen'),
+  gKey('specialKey', 'r5', 13, 'Backspace', [
     rect('ansi', { width: 2 }),
     rect('ol60', { height: 2, y: -1 }),
     rect('ol40 ol50'),
@@ -195,26 +195,26 @@ const numberRow = g('left', [
 ]);
 
 const letterRow1 = g('left', [
-  key('specialKey', 'l5', 0, 'Tab', [
+  gKey('specialKey', 'l5', 0, 'Tab', [
     rect('', { width: 1.5 }),
     rect('ergo'),
     text('↹'),
     text('↹', 'ergo'),
   ]),
-  key('letterKey', 'l5', 1.5, 'KeyQ'),
-  key('letterKey', 'l4', 2.5, 'KeyW'),
-  key('letterKey', 'l3', 3.5, 'KeyE'),
-  key('letterKey', 'l2', 4.5, 'KeyR'),
-  key('letterKey', 'l2', 5.5, 'KeyT'),
+  gKey('letterKey', 'l5', 1.5, 'KeyQ'),
+  gKey('letterKey', 'l4', 2.5, 'KeyW'),
+  gKey('letterKey', 'l3', 3.5, 'KeyE'),
+  gKey('letterKey', 'l2', 4.5, 'KeyR'),
+  gKey('letterKey', 'l2', 5.5, 'KeyT'),
 ]) + g('right', [
-  key('letterKey', 'r2',  6.5, 'KeyY'),
-  key('letterKey', 'r2',  7.5, 'KeyU'),
-  key('letterKey', 'r3',  8.5, 'KeyI'),
-  key('letterKey', 'r4',  9.5, 'KeyO'),
-  key('letterKey', 'r5', 10.5, 'KeyP'),
-  key('pinkyKey',  'r5', 11.5, 'BracketLeft'),
-  key('pinkyKey',  'r5', 12.5, 'BracketRight'),
-  key('pinkyKey',  'r5', 13.5, 'Backslash', [
+  gKey('letterKey', 'r2',  6.5, 'KeyY'),
+  gKey('letterKey', 'r2',  7.5, 'KeyU'),
+  gKey('letterKey', 'r3',  8.5, 'KeyI'),
+  gKey('letterKey', 'r4',  9.5, 'KeyO'),
+  gKey('letterKey', 'r5', 10.5, 'KeyP'),
+  gKey('pinkyKey',  'r5', 11.5, 'BracketLeft'),
+  gKey('pinkyKey',  'r5', 12.5, 'BracketRight'),
+  gKey('pinkyKey',  'r5', 13.5, 'Backslash', [
     rect('ansi', { width: 1.5 }),
     rect('iso ol60'),
     g('key'),
@@ -222,24 +222,24 @@ const letterRow1 = g('left', [
 ]);
 
 const letterRow2 = g('left', [
-  key('specialKey', 'l5', 0, 'CapsLock', [
+  gKey('specialKey', 'l5', 0, 'CapsLock', [
     rect('', { width: 1.75 }),
     text('⇪', 'ansi'),
     text('英数', 'jis', { x: 0.45 }), // alphanumeric (eisū)
   ]),
-  key('letterKey homeKey', 'l5',  1.75, 'KeyA'),
-  key('letterKey homeKey', 'l4',  2.75, 'KeyS'),
-  key('letterKey homeKey', 'l3',  3.75, 'KeyD'),
-  key('letterKey homeKey', 'l2',  4.75, 'KeyF'),
-  key('letterKey',         'l2',  5.75, 'KeyG'),
+  gKey('letterKey homeKey', 'l5',  1.75, 'KeyA'),
+  gKey('letterKey homeKey', 'l4',  2.75, 'KeyS'),
+  gKey('letterKey homeKey', 'l3',  3.75, 'KeyD'),
+  gKey('letterKey homeKey', 'l2',  4.75, 'KeyF'),
+  gKey('letterKey',         'l2',  5.75, 'KeyG'),
 ]) + g('right', [
-  key('letterKey',         'r2',  6.75, 'KeyH'),
-  key('letterKey homeKey', 'r2',  7.75, 'KeyJ'),
-  key('letterKey homeKey', 'r3',  8.75, 'KeyK'),
-  key('letterKey homeKey', 'r4',  9.75, 'KeyL'),
-  key('letterKey homeKey', 'r5', 10.75, 'Semicolon'),
-  key('pinkyKey',          'r5', 11.75, 'Quote'),
-  key('specialKey',        'r5', 12.75, 'Enter', [
+  gKey('letterKey',         'r2',  6.75, 'KeyH'),
+  gKey('letterKey homeKey', 'r2',  7.75, 'KeyJ'),
+  gKey('letterKey homeKey', 'r3',  8.75, 'KeyK'),
+  gKey('letterKey homeKey', 'r4',  9.75, 'KeyL'),
+  gKey('letterKey homeKey', 'r5', 10.75, 'Semicolon'),
+  gKey('pinkyKey',          'r5', 11.75, 'Quote'),
+  gKey('specialKey',        'r5', 12.75, 'Enter', [
     path('alt', altEnterPath),
     path('iso', isoEnterPath),
     rect('ansi', { width: 2.25 }),
@@ -251,7 +251,7 @@ const letterRow2 = g('left', [
 ]);
 
 const letterRow3 = g('left', [
-  key('specialKey', 'l5', 0, 'ShiftLeft', [
+  gKey('specialKey', 'l5', 0, 'ShiftLeft', [
     rect('ansi alt',  { width: 2.25 }),
     rect('iso',       { width: 1.25 }),
     rect('ol50 ol60', { height: 2, y: -1 }),
@@ -259,20 +259,20 @@ const letterRow3 = g('left', [
     text('⇧'),
     text('⇧', 'ergo'),
   ]),
-  key('letterKey', 'l5', 1.25, 'IntlBackslash'),
-  key('letterKey', 'l5', 2.25, 'KeyZ'),
-  key('letterKey', 'l4', 3.25, 'KeyX'),
-  key('letterKey', 'l3', 4.25, 'KeyC'),
-  key('letterKey', 'l2', 5.25, 'KeyV'),
-  key('letterKey', 'l2', 6.25, 'KeyB'),
+  gKey('letterKey', 'l5', 1.25, 'IntlBackslash'),
+  gKey('letterKey', 'l5', 2.25, 'KeyZ'),
+  gKey('letterKey', 'l4', 3.25, 'KeyX'),
+  gKey('letterKey', 'l3', 4.25, 'KeyC'),
+  gKey('letterKey', 'l2', 5.25, 'KeyV'),
+  gKey('letterKey', 'l2', 6.25, 'KeyB'),
 ]) + g('right', [
-  key('letterKey',  'r2',  7.25, 'KeyN'),
-  key('letterKey',  'r2',  8.25, 'KeyM'),
-  key('letterKey',  'r3',  9.25, 'Comma'),
-  key('letterKey',  'r4', 10.25, 'Period'),
-  key('letterKey',  'r5', 11.25, 'Slash'),
-  key('pinkyKey',   'r5', 12.25, 'IntlRo'),
-  key('specialKey', 'r5', 12.25, 'ShiftRight', [
+  gKey('letterKey',  'r2',  7.25, 'KeyN'),
+  gKey('letterKey',  'r2',  8.25, 'KeyM'),
+  gKey('letterKey',  'r3',  9.25, 'Comma'),
+  gKey('letterKey',  'r4', 10.25, 'Period'),
+  gKey('letterKey',  'r5', 11.25, 'Slash'),
+  gKey('pinkyKey',   'r5', 12.25, 'IntlRo'),
+  gKey('specialKey', 'r5', 12.25, 'ShiftRight', [
     rect('ansi',      { width: 2.75 }),
     rect('abnt',      { width: 1.75,  x: 1 }),
     rect('ol50 ol60', { height: 2, y: -1 }),
@@ -285,74 +285,74 @@ const letterRow3 = g('left', [
 
 const nonIcon = { x: 0.25, 'text-anchor': 'start' };
 const baseRow = g('left', [
-  key('specialKey', 'l5', 0, 'ControlLeft', [
+  gKey('specialKey', 'l5', 0, 'ControlLeft', [
     rect('', { width: 1.25 }),
     rect('ergo'),
     text('Ctrl', 'win gnu', nonIcon),
     text('⌃',    'mac'),
   ]),
-  key('specialKey', 'l1', 1.25, 'MetaLeft', [
+  gKey('specialKey', 'l1', 1.25, 'MetaLeft', [
     rect('',     { width: 1.25 }),
     rect('ergo', { width: 1.50 }),
     text('Win',   'win', nonIcon),
     text('Super', 'gnu', nonIcon),
     text('⌘',     'mac'),
   ]),
-  key('specialKey', 'l1', 2.50, 'AltLeft', [
+  gKey('specialKey', 'l1', 2.50, 'AltLeft', [
     rect('',     { width: 1.25 }),
     rect('ergo', { width: 1.50 }),
     text('Alt', 'win gnu', nonIcon),
     text('⌥',   'mac'),
   ]),
-  key('specialKey', 'l1', 3.75, 'Lang2', [
+  gKey('specialKey', 'l1', 3.75, 'Lang2', [
     rect(),
     text('한자', '', { x: 0.4 }), // hanja
   ]),
-  key('specialKey', 'l1', 3.75, 'NonConvert', [
+  gKey('specialKey', 'l1', 3.75, 'NonConvert', [
     rect(),
     text('無変換', '', { x: 0.5 }), // muhenkan
   ]),
-]) + key('homeKey', 'm1', 3.75, 'Space', [
+]) + gKey('homeKey', 'm1', 3.75, 'Space', [
   rect('ansi',      { width: 6.25 }),
   rect('ol60',      { width: 5.00, x: -1 }),
   rect('ol50 ol40', { width: 4.00 }),
   rect('ks',        { width: 4.25, x: 1 }),
   rect('jis',       { width: 3.25, x: 1 }),
 ]) + g('right', [
-  key('specialKey', 'r1', 8.00, 'Convert', [
+  gKey('specialKey', 'r1', 8.00, 'Convert', [
     rect(),
     text('変換', '', { x: 0.5 }), // henkan
   ]),
-  key('specialKey', 'r1', 9.00, 'KanaMode', [
+  gKey('specialKey', 'r1', 9.00, 'KanaMode', [
     rect(),
     text('カタカナ', '', { x: 0.5, y: 0.4 }), // katakana
     text('ひらがな', '', { x: 0.5, y: 0.6 }), // hiragana
     text('ローマ字', '', { x: 0.5, y: 0.8 }), // romaji
   ]),
-  key('specialKey', 'r1', 9.00, 'Lang1', [
+  gKey('specialKey', 'r1', 9.00, 'Lang1', [
     rect(),
     text('한/영', '', { x: 0.4 }), // han/yeong
   ]),
-  key('specialKey', 'r1', 10.00, 'AltRight', [
+  gKey('specialKey', 'r1', 10.00, 'AltRight', [
     rect('',     { width: 1.25 }),
     rect('ergo', { width: 1.50 }),
     text('Alt', 'win gnu', nonIcon),
     text('⌥',   'mac'),
   ]),
-  key('specialKey', 'r1', 11.50, 'MetaRight', [
+  gKey('specialKey', 'r1', 11.50, 'MetaRight', [
     rect('',     { width: 1.25 }),
     rect('ergo', { width: 1.50 }),
     text('Win',   'win', nonIcon),
     text('Super', 'gnu', nonIcon),
     text('⌘',     'mac'),
   ]),
-  key('specialKey', 'r5', 12.50, 'ContextMenu', [
+  gKey('specialKey', 'r5', 12.50, 'ContextMenu', [
     rect('',     { width: 1.25 }),
     rect('ergo'),
     text('☰'),
     text('☰', 'ol60'),
   ]),
-  key('specialKey', 'r5', 13.75, 'ControlRight', [
+  gKey('specialKey', 'r5', 13.75, 'ControlRight', [
     rect('', { width: 1.25 }),
     rect('ergo'),
     text('Ctrl', 'win gnu', nonIcon),

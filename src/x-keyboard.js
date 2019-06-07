@@ -2,6 +2,11 @@ import { newKeyboardLayout } from './x-keyboard-layout.js';
 import { svgContent, drawKey, drawDK } from './content.js';
 import css from './style.js';
 
+
+/**
+ * Custom Element
+ */
+
 const setFingerAssignment = (root, ansiStyle) => {
   (ansiStyle
     ? ['l5', 'l4', 'l3', 'l2', 'l2', 'r2', 'r2', 'r3', 'r4', 'r5']
@@ -40,11 +45,6 @@ const guessPlatform = () => {
   }
   return '';
 };
-
-
-/**
- * Custom Element
- */
 
 const template = document.createElement('template');
 template.innerHTML = `<style>${css}</style>${svgContent}`;
