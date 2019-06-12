@@ -110,7 +110,7 @@ function getModifierLevel(modifiers, platform) {
 
 
 /**
- * Keyboard Layout API
+ * Keyboard Layout API (public)
  */
 
 export function newKeyboardLayout(keyMap = {}, deadKeys = {}, geometry = '') {

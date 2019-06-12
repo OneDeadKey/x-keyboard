@@ -1,5 +1,6 @@
-import { isDeadKey } from './x-keyboard-layout.js';
 import { KEY_WIDTH, KEY_PADDING, KEY_RADIUS } from './constants.js';
+import { isDeadKey } from './x-keyboard-layout.js';
+import dkSymbols from './symbols.js';
 
 
 /**
@@ -90,11 +91,18 @@ const gKey = (className, finger, x, id, children = emptyKey) => sgml('g', {
  * Keyboard Layout Utils
  */
 
-const dkClass = label => (isDeadKey(label) ? 'deadKey' : '');
-const keyText = label => (label || '').slice(-1);
-const keyLevel = (level, label, className, position) => text(label,
-  `level${level} ${className}`,
-  Object.assign({ 'text-anchor': 'middle' }, position));
+const keyLevel = (level, label, position) => {
+  const attrs = Object.assign({ 'text-anchor': 'middle' }, position);
+  const symbol = dkSymbols[label] || '';
+  const content = symbol || (label || '').slice(-1);
+  let className = '';
+  if (level > 4) {
+    className = 'dk';
+  } else if (isDeadKey(label)) {
+    className = `deadKey ${symbol.startsWith(' ') ? 'diacritic' : ''}`;
+  }
+  return text(content, `level${level} ${className}`, attrs);
+};
 
 // In order not to overload the `alt` layers visually (AltGr & dead keys),
 // the `shift` key is displayed only if its lowercase is not `base`.
@@ -129,12 +137,12 @@ export function drawKey(element, keyMap) {
   const shift = base || l2.toLowerCase() === l1 ? l2 : l1;
   const salt = altUpperChar(l3, l4);
   element.innerHTML = `
-    ${keyLevel(1, keyText(base),  dkClass(base),  { x: 0.28, y: 0.79 })}
-    ${keyLevel(2, keyText(shift), dkClass(shift), { x: 0.28, y: 0.41 })}
-    ${keyLevel(3, keyText(l3),    dkClass(l3),    { x: 0.70, y: 0.79 })}
-    ${keyLevel(4, keyText(salt),  dkClass(l4),    { x: 0.70, y: 0.41 })}
-    ${keyLevel(5, '',             'dk',           { x: 0.70, y: 0.79 })}
-    ${keyLevel(6, '',             'dk',           { x: 0.70, y: 0.41 })}
+    ${keyLevel(1, base,  { x: 0.28, y: 0.79 })}
+    ${keyLevel(2, shift, { x: 0.28, y: 0.41 })}
+    ${keyLevel(3, l3,    { x: 0.70, y: 0.79 })}
+    ${keyLevel(4, salt,  { x: 0.70, y: 0.41 })}
+    ${keyLevel(5, '',    { x: 0.70, y: 0.79 })}
+    ${keyLevel(6, '',    { x: 0.70, y: 0.41 })}
   `;
 }
 
@@ -167,7 +175,7 @@ const numberRow = g('left', [
     text('半角', 'jis', { x: 0.5, y: 0.4 }), // half-width (hankaku)
     text('全角', 'jis', { x: 0.5, y: 0.6 }), // full-width (zenkaku)
     text('漢字', 'jis', { x: 0.5, y: 0.8 }), // kanji
-    g('ansi gKey'),
+    g('ansi key'),
   ]),
   gKey('numberKey', 'l5', 1, 'Digit1'),
   gKey('numberKey', 'l4', 2, 'Digit2'),

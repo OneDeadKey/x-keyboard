@@ -1,3 +1,4 @@
+import dkSymbols from './symbols.js';
 import {
   KEY_WIDTH,
   KEY_PADDING,
@@ -31,7 +32,9 @@ const main = `
     font: normal 20px sans-serif;
     text-align: center;
   }
-  #Backspace text { font-size: 12px; }
+  #Backspace text {
+    font-size: 12px;
+  }
 `;
 
 // keyboard geometry: ANSI, ISO, ABNT, ALT
@@ -257,7 +260,11 @@ const themes = `
   .level5, .level6 { fill: ${KEY_COLOR_L5}; }
   .deadKey {
     fill: ${DEAD_KEY_COLOR};
-    font-weight: bold;
+    font-size: 14px;
+  }
+  .diacritic  {
+    font-size: 20px;
+    font-weight: bolder;
   }
 
   /* hide Level4 (Shift+AltGr) unless AltGr is pressed */
@@ -274,7 +281,7 @@ const themes = `
 `;
 
 // export full stylesheet
-const style = `
+export default `
   ${main}
   ${classicGeometry}
   ${orthoGeometry}
@@ -282,4 +289,3 @@ const style = `
   ${modifiers}
   ${themes}
 `;
-export default style;
