@@ -4,7 +4,7 @@
  * identifiers -> symbols dictionary, for presentation purposes
  */
 
-export default {
+const symbols = {
   // diacritics, represented by a space + a combining character
   '*`': ' \u0300', // grave
   '*´': ' \u0301', // acute
@@ -31,3 +31,4 @@ export default {
   // other dead key identifiers (= two-char string starting with a `*`) are not
   // supported by Kalamine, but can still be used with <x-keyboard>
 };
+export default symbols;

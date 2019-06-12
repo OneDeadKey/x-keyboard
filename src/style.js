@@ -1,4 +1,3 @@
-import dkSymbols from './symbols.js';
 import {
   KEY_WIDTH,
   KEY_PADDING,
@@ -281,7 +280,7 @@ const themes = `
 `;
 
 // export full stylesheet
-export default `
+const style = `
   ${main}
   ${classicGeometry}
   ${orthoGeometry}
@@ -289,3 +288,4 @@ export default `
   ${modifiers}
   ${themes}
 `;
+export default style;
