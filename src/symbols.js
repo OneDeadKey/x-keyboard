@@ -23,12 +23,12 @@ const symbols = {
   '*,': ' \u0326', // comma below
   '*¸': ' \u0327', // cedilla
   '*˛': ' \u0328', // ogonek
-  '*/': ' \u0335', // stroke
-  // special keys, represented by a single character
-  '*¤': '\u00a4', // currency
-  '*µ': '\u00b5', // greek
+  // special keys, represented by a smaller single character
+  // '*/': stroke   (no special glyph needed)
+  // '*µ': greek    (no special glyph needed)
+  // '*¤': currency (no special glyph needed)
   '**': '\u2605', // 1dk = Kalamine "one dead key" = multi-purpose dead key
-  // other dead key identifiers (= two-char string starting with a `*`) are not
-  // supported by Kalamine, but can still be used with <x-keyboard>
+  // other dead key identifiers (= two-char strings starting with a `*` sign)
+  // are not supported by Kalamine, but can still be used with <x-keyboard>
 };
 export default symbols;
