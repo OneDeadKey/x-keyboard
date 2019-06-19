@@ -109,7 +109,7 @@ class Keyboard extends HTMLElement {
       ol50: 'ergo ol50',
       ol40: 'ergo ol40',
     };
-    if (!(value in supportedShapes)) {
+    if (value && !(value in supportedShapes)) {
       return;
     }
     this._state.geometry = value;
