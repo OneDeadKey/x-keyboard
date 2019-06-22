@@ -156,8 +156,8 @@ class Keyboard extends HTMLElement {
    * KeyboardEvent helpers
    */
 
-  keyDown(keyCode) {
-    const code = keyCode.replace(/^OS/, 'Meta'); // https://bugzil.la/1264150
+  keyDown(event) {
+    const code = event.code.replace(/^OS/, 'Meta'); // https://bugzil.la/1264150
     if (!code) {
       return '';
     }
@@ -166,9 +166,10 @@ class Keyboard extends HTMLElement {
       return '';
     }
     element.classList.add('press');
-    const dk = this.layout.pendingDK;
-    const rv = this.layout.keyDown(code);
-    if (this.layout.modifiers.altgr) {
+    const dk  = this.layout.pendingDK;
+    const rv  = this.layout.keyDown(code); // updates `this.layout.pendingDK`
+    const alt = this.layout.modifiers.altgr;
+    if (alt) {
       this.root.querySelector('svg').classList.add('altgr');
     }
     if (dk) { // a dead key has just been unlatched, hide all key hints
@@ -184,11 +185,12 @@ class Keyboard extends HTMLElement {
         .forEach(key => drawDK(key, this.layout.keyMap, this.layout.pendingDK));
       this.root.querySelector('svg').classList.add('dk');
     }
-    return rv;
+    return (!alt && (event.ctrlKey || event.altKey || event.metaKey))
+      ? '' : rv; // don't steal ctrl/alt/meta shortcuts
   }
 
-  keyUp(keyCode) {
-    const code = keyCode.replace(/^OS/, 'Meta'); // https://bugzil.la/1264150
+  keyUp(event) {
+    const code = event.code.replace(/^OS/, 'Meta'); // https://bugzil.la/1264150
     if (!code) {
       return;
     }
