@@ -26,10 +26,10 @@
   },
   "homepage": "https://fabi1cazenave.github.io/x-keyboard",
   "devDependencies": {
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.17.2",
-    "rollup": "^1.14.2"
+    "eslint": "^7.9.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "rollup": "^2.27.1"
   },
   "eslintConfig": {
     "env": {
@@ -38,7 +38,7 @@
     },
     "extends": "airbnb-base",
     "parserOptions": {
-      "ecmaVersion": 2015,
+      "ecmaVersion": 2018,
       "sourceType": "module"
     },
     "rules": {

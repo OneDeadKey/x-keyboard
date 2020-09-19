@@ -2,7 +2,6 @@ import { KEY_WIDTH, KEY_PADDING, KEY_RADIUS } from './constants.js';
 import { isDeadKey } from './x-keyboard-layout.js';
 import dkSymbols from './symbols.js';
 
-
 /**
  * Enter Key: ISO & ALT
  */
@@ -40,7 +39,6 @@ const isoEnterPath = [
   M, h(1.5), v(2.0), h(-1.25), v(-1.0, 1, 1), h(-0.25, 1), v(-1.0), 'z',
 ].join(' ');
 
-
 /**
  * DOM-to-Text Utils
  */
@@ -65,18 +63,24 @@ const sgml = (nodeName, attributes = {}, children = []) => `<${nodeName} ${
 
 const path = (cname = '', d) => sgml('path', { class: cname, d });
 
-const rect = (cname = '', attributes) => sgml('rect', Object.assign({
-  class: cname, width: 1, height: 1, rx: KEY_RADIUS, ry: KEY_RADIUS,
-}, attributes));
+const rect = (cname = '', attributes) => sgml('rect', {
+  class: cname,
+  width: 1,
+  height: 1,
+  rx: KEY_RADIUS,
+  ry: KEY_RADIUS,
+  ...attributes,
+});
 
-const text = (content, cname = '', attributes) => sgml('text', Object.assign({
+const text = (content, cname = '', attributes) => sgml('text', {
   class: cname,
   width: 0.50,
   height: 0.50,
   x: 0.34,
   y: 0.78,
   'text-anchor': 'middle',
-}, attributes), [content]);
+  ...attributes,
+}, [content]);
 
 const g = (className, children) => sgml('g', { class: className }, children);
 
@@ -86,13 +90,12 @@ const gKey = (className, finger, x, id, children = emptyKey) => sgml('g', {
   class: className, finger, id, transform: `translate(${x * KEY_WIDTH}, 0)`,
 }, children);
 
-
 /**
  * Keyboard Layout Utils
  */
 
 const keyLevel = (level, label, position) => {
-  const attrs = Object.assign({ 'text-anchor': 'middle' }, position);
+  const attrs = { 'text-anchor': 'middle', ...position };
   const symbol = dkSymbols[label] || '';
   const content = symbol || (label || '').slice(-1);
   let className = '';
@@ -156,7 +159,6 @@ export function drawDK(element, keyMap, deadKey) {
   element.querySelector('.level5').textContent = alt0 || '';
   element.querySelector('.level6').textContent = altUpperChar(alt0, alt1);
 }
-
 
 /**
  * SVG Content
