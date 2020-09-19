@@ -22,7 +22,6 @@ export function isDeadKey(value) {
   return value && value.length === 2 && value[0] === '*';
 }
 
-
 /**
  * Keyboard hints:
  * suggest the most efficient way to type a character or a string.
@@ -73,7 +72,6 @@ function getKeySequence(keyMap, dkDict, str = '') {
   return rv;
 }
 
-
 /**
  * Modifiers
  */
@@ -108,13 +106,12 @@ function getModifierLevel(modifiers, platform) {
     + (getAltGrState(modifiers, platform) ? 2 : 0);
 }
 
-
 /**
  * Keyboard Layout API (public)
  */
 
 export function newKeyboardLayout(keyMap = {}, deadKeys = {}, geometry = '') {
-  const modifiers = Object.assign({}, MODIFIERS);
+  const modifiers = { ...MODIFIERS };
   const deadKeyDict = getDeadKeyDict(deadKeys);
   let pendingDK;
   let platform = '';
@@ -137,8 +134,8 @@ export function newKeyboardLayout(keyMap = {}, deadKeys = {}, geometry = '') {
     },
 
     // keyboard hints
-    getKey: char => getKeyList(keyMap, char)[0],
-    getKeySequence: str => getKeySequence(keyMap, deadKeyDict, str),
+    getKey: (char) => getKeyList(keyMap, char)[0],
+    getKeySequence: (str) => getKeySequence(keyMap, deadKeyDict, str),
 
     // keyboard emulation
     keyUp: (keyCode) => {
