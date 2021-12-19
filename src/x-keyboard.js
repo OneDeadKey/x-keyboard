@@ -77,6 +77,15 @@ class Keyboard extends HTMLElement {
     this.root.querySelector('svg').setAttribute('theme', value);
   }
 
+  setCustomColors(keymap) {
+    Object.entries(keymap).forEach(([id, color]) => {
+      const key = this.root.getElementById(id).querySelector('rect');
+      if (key) {
+        key.style.fill = color;
+      }
+    });
+  }
+
   get geometry() {
     return this._state.geometry;
   }
@@ -149,6 +158,16 @@ class Keyboard extends HTMLElement {
 
   setKeyboardLayout(keyMap, deadKeys, geometry) {
     this.layout = newKeyboardLayout(keyMap, deadKeys, geometry);
+  }
+
+  get fingerAssignments() {
+    const fingers = ['l5', 'l4', 'l3', 'l2', 'r2', 'r2', 'r3', 'r4', 'r5'];
+    const keys = {};
+    fingers.forEach((f) => {
+      keys[f] = Array.from(this.root.querySelectorAll(`[finger=${f}]`))
+        .map(element => element.id);
+    });
+    return keys;
   }
 
   /**

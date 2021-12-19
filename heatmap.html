@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title> x-keyboard </title>
+  <style>
+    html {
+      height: 100%;
+      width: 100%;
+      font-family: sans-serif;
+      background-color: #ddd;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 0 25px;
+      margin: auto;
+      max-width: 51em;
+      height: 100%;
+      border-left: 1px solid #aaa;
+      border-right: 1px solid #aaa;
+      box-shadow: 0px 1px 10px #888;
+      background-color: #fff;
+    }
+    header {
+      font-size: 1rem;
+      color: brown;
+    }
+    h1 {
+      margin-bottom: 0.2em;
+      font-size: 1.4rem;
+      border-bottom: 1px solid brown;
+    }
+    div {
+      text-align: center;
+    }
+    input {
+      box-sizing: border-box;
+      width: 100%;
+      margin-bottom: .5em;
+      text-align: center;
+      font-size: 1.3em;
+    }
+    canvas {
+      width: 100%;
+    }
+    table {
+      width: 100%;
+      font-size: small;
+    }
+    th {
+      width: 11%;
+      font-weight: normal;
+    }
+    footer {
+      border-top: 1px solid brown;
+      text-align: right;
+      padding: 0.2rem 0 0.5rem;
+    }
+    footer a {
+      color: brown;
+    }
+  </style>
+  <script src="main.js" type="module"></script>
+  <script src="heatmap.js"></script>
+</head>
+<body>
+  <header>
+    <h1>&lt;x-keyboard&gt;</h1>
+    <small>
+      Zero-dependency web component to display and emulate keyboard layouts.
+    </small>
+  </header>
+
+  <div id="selector">
+    <x-keyboard id="keyboard"></x-keyboard>
+    <form>
+      <select id="layout">
+        <option value="" selected>(no layout)</option>
+        <option>be</option>
+        <option>bg</option>
+        <option>br</option>
+        <option>ch</option>
+        <option>ch(fr)</option>
+        <option>de</option>
+        <option>dk</option>
+        <option>es</option>
+        <option>fr</option>
+        <option>fr(afnor)</option>
+        <option>fr(bepo)</option>
+        <option>fr(dvorak)</option>
+        <option>fr(ergol)</option>
+        <option>ergol_test</option>
+        <option>fr(lafayette)</option>
+        <option>fr(qwerty42)</option>
+        <option>gb</option>
+        <option>gb(dvorak)</option>
+        <option>gr</option>
+        <option>it</option>
+        <option>latam</option>
+        <option>no</option>
+        <option>pt</option>
+        <option>ru</option>
+        <option>ru(legacy)</option>
+        <option>se</option>
+        <option>ua</option>
+        <option>us</option>
+        <option>us(intl)</option>
+        <option>us(colemak)</option>
+        <option>us(dvorak)</option>
+        <option>us(workman)</option>
+      </select>
+      <select id="geometry">
+        <option value="" selected> (auto) </option>
+        <option value="alt">        ALT   </option>
+        <option value="ks">         KS    </option>
+        <option value="jis">        JIS   </option>
+        <option value="abnt">       ABNT  </option>
+        <option value="iso">        ISO   </option>
+        <option value="ansi">       ANSI  </option>
+        <option value="ol60">       60%   </option>
+        <option value="ol50">       50%   </option>
+        <option value="ol40">       40%   </option>
+      </select>
+      <select id="platform">
+        <option value="" selected> (auto) </option>
+        <option value="win">        win   </option>
+        <option value="mac">        mac   </option>
+        <option value="linux">      linux </option>
+      </select>
+      <select id="corpus">
+        <option value="" selected>(no corpus)</option>
+        <option>en+fr(cervantes+balzac)</option>
+        <option>en(cervantes)</option>
+        <option>es(cervantes)</option>
+        <option>fr(cervantes)</option>
+        <option>fr(balzac)</option>
+        <option>fr(proust)</option>
+      </select>
+    </form>
+  </div>
+
+  <div id="load">
+    <canvas></canvas>
+    <table>
+      <tr>
+        <th id="l5" title="l5"></th>
+        <th id="l4" title="l4"></th>
+        <th id="l3" title="l3"></th>
+        <th id="l2" title="l2"></th>
+        <td></td>
+        <th id="r2" title="r2"></th>
+        <th id="r3" title="r3"></th>
+        <th id="r4" title="r4"></th>
+        <th id="r5" title="r5"></th>
+      </tr>
+      <tr>
+        <td colspan="4" id="left"></td>
+        <td></td>
+        <td colspan="4" id="right"></td>
+      </tr>
+    </table>
+  </div>
+
+  <footer>
+    <a href="https://github.com/fabi1cazenave/x-keyboard">project page</a>
+  </footer>
+</body>
+</html>
