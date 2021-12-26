@@ -18,8 +18,7 @@ window.addEventListener('DOMContentLoaded', () => {
         if (!(char in charTable)) {
           if (char.length === 1) {
             charTable[char] = [key];
-          }
-          else if (!(char in deadTable)) {
+          } else if (!(char in deadTable)) {
             deadTable[char] = key;
           }
         }
@@ -67,46 +66,46 @@ window.addEventListener('DOMContentLoaded', () => {
     const total = Object.values(corpus).reduce((acc, n) => n + acc);
     Object.entries(keyCount).forEach(([key, count]) => {
       if (key !== 'Space') {
-        const lvl = 255 - Math.floor(255 * contrast * count / total);
+        const lvl = 255 - Math.floor((255 * contrast * count) / total);
         colormap[key] = `rgb(${lvl}, ${lvl}, 255)`; // blue scale
       }
     });
     keyboard.setCustomColors(colormap);
 
     // give some metrics
-    const loadTable = document.querySelector('#load table');
     const fingerCount = {};
     const fingerLoad = {};
     let keystrokes = 0;
     Object.entries(keyboard.fingerAssignments).forEach(([f, keys]) => {
-      fingerCount[f] = keys.filter(id => id in keyCount)
+      fingerCount[f] = keys.filter((id) => id in keyCount)
         .reduce((acc, id) => acc + keyCount[id], 0);
       keystrokes += fingerCount[f];
     });
-    const percent = num => `${Math.round(10 * num) / 10}%`;
+    const percent = (num) => `${Math.round(10 * num) / 10}%`;
     Object.entries(fingerCount).forEach(([f, count]) => {
-      fingerLoad[f] = 100 * count / keystrokes;
+      fingerLoad[f] = (100 * count) / keystrokes;
       document.getElementById(f).innerText = percent(fingerLoad[f]);
     });
     const totalLoad = (acc, id) => fingerLoad[id] + acc;
-    const left = ["l2", "l3", "l4", "l5"].reduce(totalLoad, 0);
-    const right = ["r2", "r3", "r4", "r5"].reduce(totalLoad, 0);
-    document.getElementById("left").innerText = percent(left);
-    document.getElementById("right").innerText = percent(right);
+    const left = ['l2', 'l3', 'l4', 'l5'].reduce(totalLoad, 0);
+    const right = ['r2', 'r3', 'r4', 'r5'].reduce(totalLoad, 0);
+    document.getElementById('left').innerText = percent(left);
+    document.getElementById('right').innerText = percent(right);
 
     // display metrics
-    const canvas = document.querySelector("#load canvas")
+    const canvas = document.querySelector('#load canvas');
     canvas.width = 1000;
     canvas.height = 100;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     ctx.save();
-    ctx.fillStyle = "#88f";
+    ctx.fillStyle = '#88f';
     const width = canvas.width / 9;
     const margin = 20;
     // for (const [f, load] of Object.entries(fingerLoad)) {
-    Object.entries(fingerLoad).forEach(([f, load], i) => {
+    Object.values(fingerLoad).forEach((load, i) => {
       const idx = i >= 4 ? i + 1 : i;
-      ctx.fillRect(idx * width + margin / 2, canvas.height - load * 4, width - margin / 2, load * 4);
+      ctx.fillRect(idx * width + margin / 2, canvas.height - load * 4,
+        width - margin / 2, load * 4);
     });
     ctx.restore();
   };
@@ -118,13 +117,12 @@ window.addEventListener('DOMContentLoaded', () => {
     if (key === 'layout') {
       if (value) {
         fetch(`layouts/${value}.json`)
-          .then(response => response.json())
+          .then((response) => response.json())
           .then((data) => {
             keyboard.setKeyboardLayout(data.keymap, data.deadkeys,
               data.geometry.replace('ergo', 'iso'));
             data.keymap.Enter = [ '\r', '\n' ];
             keyChars = supportedChars(data.keymap, data.deadkeys);
-            // console.log(keyChars);
             if (Object.keys(corpus).length > 0) {
               heatmap();
             }
@@ -134,45 +132,19 @@ window.addEventListener('DOMContentLoaded', () => {
         keyChars = {};
         // input.placeholder = 'select a keyboard layout';
       }
-    }
-    else if (key === 'corpus') {
+    } else if (key === 'corpus') {
       if (value && value !== corpusName) {
-        fetch(`corpus/${value}.txt`)
-          .then(response => response.text())
-          .then((text) => {
-            corpus = {};
-            const t0 = performance.now();
-
-            // an old-school loop is our fastest option
-            for (let i = 0; i < text.length; i += 1) {
-              const char = text[i];
-              if (char in corpus) {
-                corpus[char] += 1;
-              } else {
-                corpus[char] = 0;
-              }
-            }
-
-            // // fancy but significantly slower
-            // [...text].forEach((char) => {
-            //   if (char in corpus) {
-            //     corpus[char] += 1;
-            //   } else {
-            //     corpus[char] = 0;
-            //   }
-            // });
-
-            const t1 = performance.now();
-            console.log(`${text.length} chars parsed in ${t1 - t0} milliseconds`);
-            // console.log(corpus);
+        fetch(`corpus/${value}.json`)
+          .then((response) => response.json())
+          .then((data) => {
+            corpus = data.symbols;
             if (Object.keys(keyChars).length > 0) {
               heatmap();
             }
           });
         corpusName = value;
       }
-    }
-    else {
+    } else {
       keyboard[key] = value;
     }
     document.getElementById(key).value = value;
@@ -195,7 +167,7 @@ window.addEventListener('DOMContentLoaded', () => {
   };
   IDs.forEach((key) => {
     document.getElementById(key).addEventListener('change',
-      event => updateHashState(key, event.target.value));
+      (event) => updateHashState(key, event.target.value));
   });
   window.addEventListener('hashchange', applyHashState);
   applyHashState();

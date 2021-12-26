@@ -165,7 +165,7 @@ class Keyboard extends HTMLElement {
     const keys = {};
     fingers.forEach((f) => {
       keys[f] = Array.from(this.root.querySelectorAll(`[finger=${f}]`))
-        .map(element => element.id);
+        .map((element) => element.id);
     });
     return keys;
   }
