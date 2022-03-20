@@ -13,8 +13,10 @@ def parse_corpus(file_path):
 
     symbols = {}
     digrams = {}
+    trigrams = {}
     char_count = 0
     prev_symbol = None
+    prev_prev_symbol = None
 
     # get a dictionary of all symbols (letters, punctuation marks...)
     file = open(file_path, "r")
@@ -30,6 +32,12 @@ def parse_corpus(file_path):
                 if digram not in digrams:
                     digrams[digram] = 0
                 digrams[digram] += 1
+                if prev_prev_symbol is not None:
+                    trigram = prev_prev_symbol + digram
+                    if trigram not in trigrams:
+                        trigrams[trigram] = 0
+                    trigrams[trigram] += 1
+            prev_prev_symbol = prev_symbol
             prev_symbol = symbol
         else:
             prev_symbol = None
@@ -40,14 +48,15 @@ def parse_corpus(file_path):
         sorted_dict = {}
         for (key, count) in sorted(table.items(), key=lambda x: -x[1]):
             freq = round(100 * count / char_count, precision)
-            if freq > 0:
+            if freq >= 0.01:
                 sorted_dict[key] = freq
         return sorted_dict
 
     results = {}
     results["corpus"] = file_path
     results["symbols"] = sort_by_frequency(symbols)
-    results["digrams"] = sort_by_frequency(digrams)
+    results["digrams"] = sort_by_frequency(digrams, 3)
+    results["trigrams"] = sort_by_frequency(trigrams, 3)
     return results
 
 
