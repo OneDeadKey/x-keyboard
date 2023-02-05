@@ -59,8 +59,8 @@ const classicGeometry = `
   .alt #Enter     .alt,
   .iso #Enter     .iso,
   .iso #Backslash .iso { display: block; }
-  .iso #Backslash,
-  .alt #Backslash ${translate(12.75, 1)}
+  .iso #Backslash ${translate(12.75, 1)}
+  .alt #Backslash ${translate(13.0, -1)}
 
   /* Backspace & IntlYen */
   #IntlYen, #Backspace .alt,
