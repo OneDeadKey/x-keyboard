@@ -297,6 +297,31 @@ const themes = `
     .level3, .level4 { fill: #99f; }
     .level5, .level6 { fill: #6d6; }
     .deadKey { fill: #f44; }
+
+    [theme="reach"] .pinkyKey  rect { fill: hsl(  0, 60%, 25%); }
+    [theme="reach"] .numberKey rect { fill: hsl( 42, 60%, 27%); }
+    [theme="reach"] .letterKey rect { fill: hsl(122, 75%, 20%); }
+    [theme="reach"] .homeKey   rect { fill: hsl(122, 70%, 25%); }
+    [theme="reach"] .press     rect { fill: #449; }
+
+    [theme="hints"] [finger="m1"] rect { fill: hsl(  0, 100%, 95%); }
+    [theme="hints"] [finger="l2"] rect { fill: hsl( 42, 100%, 85%); }
+    [theme="hints"] [finger="r2"] rect { fill: hsl( 61, 100%, 85%); }
+    [theme="hints"] [finger="l3"] rect,
+    [theme="hints"] [finger="r3"] rect { fill: hsl(136, 100%, 85%); }
+    [theme="hints"] [finger="l4"] rect,
+    [theme="hints"] [finger="r4"] rect { fill: hsl(200, 100%, 85%); }
+    [theme="hints"] [finger="l5"] rect,
+    [theme="hints"] [finger="r5"] rect { fill: hsl(230, 100%, 85%); }
+    [theme="hints"] .specialKey   rect,
+    [theme="hints"] .specialKey   path { fill: ${SPECIAL_KEY_BG}; }
+    [theme="hints"] .hint         rect { fill: #a33; }
+    [theme="hints"] .press        rect { fill: #335; }
+    [theme="hints"] .press        text { fill: #fff; }
+    [theme="hints"] .hint text {
+      font-weight: bold;
+      fill: white;
+    }
   }
 `;
 
