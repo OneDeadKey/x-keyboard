@@ -134,8 +134,8 @@ export function newKeyboardLayout(keyMap = {}, deadKeys = {}, geometry = '') {
     },
 
     // keyboard hints
-    getKey: (char) => getKeyList(keyMap, char)[0],
-    getKeySequence: (str) => getKeySequence(keyMap, deadKeyDict, str),
+    getKey: char => getKeyList(keyMap, char)[0],
+    getKeySequence: str => getKeySequence(keyMap, deadKeyDict, str),
 
     // keyboard emulation
     keyUp: (keyCode) => {

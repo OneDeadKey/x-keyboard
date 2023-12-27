@@ -144,7 +144,7 @@ class Keyboard extends HTMLElement {
     this._state.layout.platform = this.platform;
     this.geometry = this._state.geometry;
     Array.from(this.root.querySelectorAll('.key'))
-      .forEach((key) => drawKey(key, value.keyMap));
+      .forEach(key => drawKey(key, value.keyMap));
   }
 
   setKeyboardLayout(keyMap, deadKeys, geometry) {
@@ -211,9 +211,9 @@ class Keyboard extends HTMLElement {
 
   clearStyle() {
     Array.from(this.root.querySelectorAll('[style]'))
-      .forEach((element) => element.removeAttribute('style'));
+      .forEach(element => element.removeAttribute('style'));
     Array.from(this.root.querySelectorAll('.press'))
-      .forEach((element) => element.classList.remove('press'));
+      .forEach(element => element.classList.remove('press'));
   }
 
   showKeys(chars, cssText) {
@@ -227,7 +227,7 @@ class Keyboard extends HTMLElement {
   showHint(keyObj) {
     let hintClass = '';
     Array.from(this.root.querySelectorAll('.hint'))
-      .forEach((key) => key.classList.remove('hint'));
+      .forEach(key => key.classList.remove('hint'));
     getKeyChord(this.root, keyObj).forEach((key) => {
       key.classList.add('hint');
       hintClass += `${key.getAttribute('finger')} `;

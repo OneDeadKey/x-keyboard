@@ -11,8 +11,8 @@ window.addEventListener('DOMContentLoaded', () => {
     if (key === 'layout') {
       if (value) {
         fetch(`layouts/${value}.json`)
-          .then((response) => response.json())
-          .then((data) => keyboard.setKeyboardLayout(data.keymap, data.deadkeys,
+          .then(response => response.json())
+          .then(data => keyboard.setKeyboardLayout(data.keymap, data.deadkeys,
             data.geometry.replace('ergo', 'iso')));
         input.placeholder = 'type here';
       } else {
@@ -42,7 +42,7 @@ window.addEventListener('DOMContentLoaded', () => {
   };
   IDs.forEach((key) => {
     document.getElementById(key).addEventListener('change',
-      (event) => updateHashState(key, event.target.value));
+      event => updateHashState(key, event.target.value));
   });
   window.addEventListener('hashchange', applyHashState);
   applyHashState();
