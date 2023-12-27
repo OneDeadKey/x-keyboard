@@ -168,12 +168,13 @@ export function drawDK(element, keyMap, deadKey) {
 
 const numberRow = g('left', [
   gKey('specialKey', 'l5', 0, 'Escape', [
-    rect('ergo'),
+    rect('ergo', { width: 1.25 }),
     text('⎋', 'ergo'),
   ]),
   gKey('pinkyKey', 'l5', 0, 'Backquote', [
-    rect('specialKey jis'),
-    rect('ansi alt iso ergo'),
+    rect('specialKey jis', { width: 1 }),
+    rect('ansi alt iso',   { width: 1 }),
+    rect('ol60',           { width: 1.25 }),
     text('半角', 'jis', { x: 0.5, y: 0.4 }), // half-width (hankaku)
     text('全角', 'jis', { x: 0.5, y: 0.6 }), // full-width (zenkaku)
     text('漢字', 'jis', { x: 0.5, y: 0.8 }), // kanji
@@ -191,12 +192,16 @@ const numberRow = g('left', [
   gKey('numberKey',  'r4',  9, 'Digit9'),
   gKey('numberKey',  'r5', 10, 'Digit0'),
   gKey('pinkyKey',   'r5', 11, 'Minus'),
-  gKey('pinkyKey',   'r5', 12, 'Equal'),
+  gKey('pinkyKey',   'r5', 12, 'Equal', [
+    rect('ansi', { width: 1.00 }),
+    rect('ol60', { width: 1.25 }),
+    g('key'),
+  ]),
   gKey('pinkyKey',   'r5', 13, 'IntlYen'),
   gKey('specialKey', 'r5', 13, 'Backspace', [
-    rect('ansi', { width: 2 }),
-    rect('ol60', { height: 2, y: -1 }),
-    rect('ol40 ol50'),
+    rect('ansi',      { width: 2 }),
+    rect('ol60',      { width: 1.25, height: 2, y: -1 }),
+    rect('ol40 ol50', { width: 1.25 }),
     rect('alt', { x: 1 }),
     text('⌫', 'ansi'),
     text('⌫', 'ergo'),
@@ -207,7 +212,7 @@ const numberRow = g('left', [
 const letterRow1 = g('left', [
   gKey('specialKey', 'l5', 0, 'Tab', [
     rect('', { width: 1.5 }),
-    rect('ergo'),
+    rect('ergo', { width: 1.25 }),
     text('↹'),
     text('↹', 'ergo'),
   ]),
@@ -223,7 +228,11 @@ const letterRow1 = g('left', [
   gKey('letterKey', 'r4',  9.5, 'KeyO'),
   gKey('letterKey', 'r5', 10.5, 'KeyP'),
   gKey('pinkyKey',  'r5', 11.5, 'BracketLeft'),
-  gKey('pinkyKey',  'r5', 12.5, 'BracketRight'),
+  gKey('pinkyKey',  'r5', 12.5, 'BracketRight', [
+    rect('ansi', { width: 1.00 }),
+    rect('ol60', { width: 1.25 }),
+    g('key'),
+  ]),
   gKey('pinkyKey',  'r5', 13.5, 'Backslash', [
     rect('ansi', { width: 1.5 }),
     rect('iso ol60'),
@@ -252,9 +261,9 @@ const letterRow2 = g('left', [
   gKey('specialKey',        'r5', 12.75, 'Enter', [
     path('alt', altEnterPath),
     path('iso', isoEnterPath),
-    rect('ansi', { width: 2.25 }),
-    rect('ol60', { height: 2, y: -1 }),
-    rect('ol40 ol50'),
+    rect('ansi',      { width: 2.25 }),
+    rect('ol60',      { width: 1.25, height: 2, y: -1 }),
+    rect('ol40 ol50', { width: 1.25 }),
     text('⏎', 'ansi alt ergo'),
     text('⏎', 'iso', { translateX: 1 }),
   ]),
@@ -264,8 +273,8 @@ const letterRow3 = g('left', [
   gKey('specialKey', 'l5', 0, 'ShiftLeft', [
     rect('ansi alt',  { width: 2.25 }),
     rect('iso',       { width: 1.25 }),
-    rect('ol50 ol60', { height: 2, y: -1 }),
-    rect('ol40'),
+    rect('ol50 ol60', { width: 1.25, height: 2, y: -1 }),
+    rect('ol40',      { width: 1.25 }),
     text('⇧'),
     text('⇧', 'ergo'),
   ]),
@@ -285,8 +294,8 @@ const letterRow3 = g('left', [
   gKey('specialKey', 'r5', 12.25, 'ShiftRight', [
     rect('ansi',      { width: 2.75 }),
     rect('abnt',      { width: 1.75,  x: 1 }),
-    rect('ol50 ol60', { height: 2, y: -1 }),
-    rect('ol40'),
+    rect('ol50 ol60', { width: 1.25, height: 2, y: -1 }),
+    rect('ol40',      { width: 1.25 }),
     text('⇧', 'ansi'),
     text('⇧', 'ergo'),
     text('⇧', 'abnt', { translateX: 1 }),
@@ -297,7 +306,7 @@ const nonIcon = { x: 0.25, 'text-anchor': 'start' };
 const baseRow = g('left', [
   gKey('specialKey', 'l5', 0, 'ControlLeft', [
     rect('', { width: 1.25 }),
-    rect('ergo'),
+    rect('ergo', { width: 1.25 }),
     text('Ctrl', 'win gnu', nonIcon),
     text('⌃',    'mac'),
   ]),
@@ -324,8 +333,8 @@ const baseRow = g('left', [
   ]),
 ]) + gKey('homeKey', 'm1', 3.75, 'Space', [
   rect('ansi',      { width: 6.25 }),
-  rect('ol60',      { width: 5.00, x: -1 }),
-  rect('ol50 ol40', { width: 4.00 }),
+  rect('ol60',      { width: 5.50, x: -1 }),
+  rect('ol50 ol40', { width: 4.50 }),
   rect('ks',        { width: 4.25, x: 1 }),
   rect('jis',       { width: 3.25, x: 1 }),
 ]) + g('right', [
@@ -364,7 +373,7 @@ const baseRow = g('left', [
   ]),
   gKey('specialKey', 'r5', 13.75, 'ControlRight', [
     rect('', { width: 1.25 }),
-    rect('ergo'),
+    rect('ergo', { width: 1.25 }),
     text('Ctrl', 'win gnu', nonIcon),
     text('⌃',    'mac'),
   ]),
