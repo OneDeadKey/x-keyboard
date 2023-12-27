@@ -46,7 +46,7 @@ const classicGeometry = `
   #row_AB ${translate(0, 3, true)}
   #row_AA ${translate(0, 4, true)}
 
-  /* Backslash & Enter */
+  /* Backslash + Enter */
   #Enter path.alt,
   #Enter     .iso,
   #Backslash .iso,
@@ -62,19 +62,19 @@ const classicGeometry = `
   .iso #Backslash ${translate(12.75, 1)}
   .alt #Backslash ${translate(13.0, -1)}
 
-  /* Backspace & IntlYen */
+  /* Backspace + IntlYen */
   #IntlYen, #Backspace .alt,
   .intlYen  #Backspace .ansi { display: none; }
   .intlYen  #Backspace .alt,
   .intlYen  #IntlYen { display: block; }
 
-  /* ShiftLeft & IntlBackslash */
+  /* ShiftLeft + IntlBackslash */
   #IntlBackslash, #ShiftLeft .iso,
   .intlBackslash  #ShiftLeft .ansi { display: none; }
   .intlBackslash  #ShiftLeft .iso,
   .intlBackslash  #IntlBackslash { display: block; }
 
-  /* ShiftRight & IntlRo */
+  /* ShiftRight + IntlRo */
   #IntlRo, #ShiftRight .abnt,
   .intlRo  #ShiftRight .ansi { display: none; }
   .intlRo  #ShiftRight .abnt,
@@ -83,13 +83,16 @@ const classicGeometry = `
 
 // ortholinear geometry: TypeMatrix (60%), OLKB (50%, 40%)
 const orthoGeometry = `
-  .specialKey .ergo,
-  .specialKey .ol60,
-  .specialKey .ol50,
-  .specialKey .ol40,
-  #Space      .ol60,
-  #Space      .ol50,
-  #Space      .ol40,
+  .specialKey   .ergo,
+  .specialKey   .ol60,
+  .specialKey   .ol50,
+  .specialKey   .ol40,
+  #Space        .ol60,
+  #Space        .ol50,
+  #Space        .ol40,
+  #Backquote    .ol60,
+  #BracketRight .ol60,
+  #Equal        .ol60,
   .ergo #CapsLock,
   .ergo #Space      rect,
   .ergo #Backslash  rect,
@@ -97,14 +100,17 @@ const orthoGeometry = `
   .ergo .specialKey text { display: none; }
   .ol50 #Escape,
   .ol40 #Escape,
-  .ol60 #Space      .ol60,
-  .ol50 #Space      .ol50,
-  .ol40 #Space      .ol40,
-  .ol60 #Backslash  .ol60,
-  .ol60 .specialKey .ol60,
-  .ol50 .specialKey .ol50,
-  .ol40 .specialKey .ol40,
-  .ergo .specialKey .ergo { display: block; }
+  .ol60 #Space        .ol60,
+  .ol50 #Space        .ol50,
+  .ol40 #Space        .ol40,
+  .ol60 #Backquote    .ol60,
+  .ol60 #BracketRight .ol60,
+  .ol60 #Backslash    .ol60,
+  .ol60 #Equal        .ol60,
+  .ol60 .specialKey   .ol60,
+  .ol50 .specialKey   .ol50,
+  .ol40 .specialKey   .ol40,
+  .ergo .specialKey   .ergo { display: block; }
 
   .ol50 .pinkyKey, .ol50 #ContextMenu,
   .ol40 .pinkyKey, .ol40 #ContextMenu,
@@ -115,28 +121,33 @@ const orthoGeometry = `
   .ergo #row_AC       ${translate(0.75, 2, true)}
   .ergo #row_AB       ${translate(0.25, 3, true)}
 
-  .ergo #Tab          ${translate(0.50)}
-  .ergo #ShiftLeft    ${translate(1.25)}
-  .ergo #ControlLeft  ${translate(1.50)}
+  .ergo #Tab          ${translate(0.25)}
+  .ergo #ShiftLeft    ${translate(1.00)}
+  .ergo #ControlLeft  ${translate(1.25)}
   .ergo #MetaLeft     ${translate(2.50)}
   .ergo #AltLeft      ${translate(4.00)}
-  .ergo #Space        ${translate(5.50)}
+  .ergo #Space        ${translate(5.25)}
   .ergo #AltRight     ${translate(9.00)}
   .ergo #MetaRight    ${translate(10.5)}
   .ergo #ControlRight ${translate(12.5)}
 
-  .ol60 .left         ${translate(-1.00)}
+  .ergo .left         ${translate(-0.25)}
+  .ergo .right        ${translate(0.25)}
+
+  .ol60 .left         ${translate(-1.25)}
   .ol60 #ControlRight ${translate(13.50)}
+  .ol60 #Backquote    ${translate(-0.25)}
   .ol60 #ShiftRight   ${translate(13.25)}
   .ol60 #ContextMenu  ${translate(12.50)}
   .ol60 #Backslash    ${translate(11.50, 2)}
-  .ol60 #Backspace    ${translate(5.00, 1)}
-  .ol60 #Enter        ${translate(5.75, 1)}
+  .ol60 #Backspace    ${translate(4.625, 1)}
+  .ol60 #Enter        ${translate(5.375, 1)}
 
+  .ol50 #Escape       ${translate(-0.25)}
   .ol50 #Backspace    ${translate(11.00)}
   .ol50 #Enter        ${translate(11.75, -1)}
 
-  .ol40 #Escape       ${translate(0, 2)}
+  .ol40 #Escape       ${translate(-0.25, 2)}
   .ol40 #Backspace    ${translate(11.00, 1)}
   .ol40 #Enter        ${translate(11.75, 0)}
 
@@ -163,7 +174,7 @@ const orthoGeometry = `
                   .ergo #AltRight  ${translate(11.0)}
 `;
 
-// Korean & Japanese input systems
+// Korean + Japanese input systems
 const cjkKeys = `
   #NonConvert, #Convert, #KanaMode,
   #Lang1, #Lang2,
@@ -254,8 +265,8 @@ const themes = `
     fill: white;
   }
 
-  /* dimmed AltGr & bold dead keys */
-  .level3, .level4 { fill: ${KEY_COLOR_L3}; opacity: .4; }
+  /* dimmed AltGr + bold dead keys */
+  .level3, .level4 { fill: ${KEY_COLOR_L3}; opacity: .5; }
   .level5, .level6 { fill: ${KEY_COLOR_L5}; }
   .deadKey {
     fill: ${DEAD_KEY_COLOR};
@@ -270,13 +281,23 @@ const themes = `
   .level4        { display: none; }
   .altgr .level4 { display: block; }
 
-  /* highlight AltGr & Dead Keys */
+  /* highlight AltGr + Dead Keys */
   .dk .level1, .altgr .level1,
   .dk .level2, .altgr .level2 { opacity: 0.25; }
   .dk .level5, .altgr .level3,
   .dk .level6, .altgr .level4 { opacity: 1; }
   .dk .level3,
   .dk .level4 { display: none; }
+
+  @media (prefers-color-scheme: dark) {
+    rect, path { stroke: #777; fill: #444; }
+    .specialKey, .specialKey rect, .specialKey path { fill: #333; }
+    g:target rect, .press rect, g:target path, .press path { fill: #558; }
+    text { fill: #999; }
+    .level3, .level4 { fill: #99f; }
+    .level5, .level6 { fill: #6d6; }
+    .deadKey { fill: #f44; }
+  }
 `;
 
 // export full stylesheet

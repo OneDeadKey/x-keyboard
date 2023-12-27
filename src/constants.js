@@ -2,7 +2,7 @@
  * Styling: colors & dimensions
  */
 
-export const KEY_BG         = '#fff';
+export const KEY_BG         = '#f8f8f8';
 export const SPECIAL_KEY_BG = '#e4e4e4';
 export const KEY_COLOR      = '#333';
 export const KEY_COLOR_L3   = 'blue';
