@@ -50,6 +50,21 @@
     footer a {
       color: brown;
     }
+    input, select { color-scheme: light dark; }
+    @media (prefers-color-scheme: dark) {
+      html {
+        background-color: #333;
+      }
+      body {
+        background-color: #222;
+        border-color: #111;
+        box-shadow: 0px 1px 10px #111;
+        color: #ccc;
+      }
+      h1, h2, header, footer a { color: #e74; }
+      h1, h2, footer { border-color: #e74; }
+      h1 + p { color: #e74b; }
+    }
   </style>
   <script src="main.js" type="module"></script>
   <script src="demo.js"></script>

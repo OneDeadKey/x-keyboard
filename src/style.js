@@ -255,7 +255,7 @@ const themes = `
   }
 
   /* dimmed AltGr & bold dead keys */
-  .level3, .level4 { fill: ${KEY_COLOR_L3}; opacity: .4; }
+  .level3, .level4 { fill: ${KEY_COLOR_L3}; opacity: .5; }
   .level5, .level6 { fill: ${KEY_COLOR_L5}; }
   .deadKey {
     fill: ${DEAD_KEY_COLOR};
@@ -277,6 +277,16 @@ const themes = `
   .dk .level6, .altgr .level4 { opacity: 1; }
   .dk .level3,
   .dk .level4 { display: none; }
+
+  @media (prefers-color-scheme: dark) {
+    rect, path { stroke: #777; fill: #444; }
+    .specialKey, .specialKey rect, .specialKey path { fill: #333; }
+    g:target rect, .press rect, g:target path, .press path { fill: #558; }
+    text { fill: #999; }
+    .level3, .level4 { fill: #99f; }
+    .level5, .level6 { fill: #6d6; }
+    .deadKey { fill: #f44; }
+  }
 `;
 
 // export full stylesheet
