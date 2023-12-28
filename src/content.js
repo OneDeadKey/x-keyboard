@@ -78,7 +78,6 @@ const text = (content, cname = '', attributes) => sgml('text', {
   height: 0.50,
   x: 0.34,
   y: 0.78,
-  'text-anchor': 'middle',
   ...attributes,
 }, [content]);
 
@@ -95,7 +94,7 @@ const gKey = (className, finger, x, id, children = emptyKey) => sgml('g', {
  */
 
 const keyLevel = (level, label, position) => {
-  const attrs = { 'text-anchor': 'middle', ...position };
+  const attrs = { ...position };
   const symbol = dkSymbols[label] || '';
   const content = symbol || (label || '').slice(-1);
   let className = '';
@@ -382,10 +381,10 @@ const baseRow = g('left', [
 export const svgContent = `
   <svg viewBox="0 0 ${KEY_WIDTH * 15} ${KEY_WIDTH * 5}"
       xmlns="http://www.w3.org/2000/svg">
-    <g id="row_AE"> ${numberRow}  </g>
-    <g id="row_AD"> ${letterRow1} </g>
-    <g id="row_AC"> ${letterRow2} </g>
-    <g id="row_AB"> ${letterRow3} </g>
-    <g id="row_AA"> ${baseRow}    </g>
+    <g id="row_AE" text-anchor="middle"> ${numberRow}  </g>
+    <g id="row_AD" text-anchor="middle"> ${letterRow1} </g>
+    <g id="row_AC" text-anchor="middle"> ${letterRow2} </g>
+    <g id="row_AB" text-anchor="middle"> ${letterRow3} </g>
+    <g id="row_AA" text-anchor="middle"> ${baseRow}    </g>
   </svg>
 `;

@@ -3,7 +3,7 @@
 
 A zero-dependency web component to display and emulate keyboard layouts.
 
-![screenshot](screenshot.png)
+![screenshot](keyboard.svg)
 
 [Online demo here.](https://fabi1cazenave.github.io/x-keyboard/)
 
