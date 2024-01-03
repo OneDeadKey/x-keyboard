@@ -151,11 +151,11 @@ export function newKeyboardLayout(keyMap = {}, deadKeys = {}, geometry = '') {
       if (!key) {
         return '';
       }
-      const value = key[getModifierLevel(modifiers, platform)];
+      let value = key[getModifierLevel(modifiers, platform)];
       if (pendingDK) {
         const dk = pendingDK;
         pendingDK = undefined;
-        return dk[value] || '';
+        value = dk[value] || '';
       }
       if (isDeadKey(value)) {
         pendingDK = deadKeys[value];
