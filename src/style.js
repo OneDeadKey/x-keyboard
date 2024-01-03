@@ -293,10 +293,35 @@ const themes = `
     rect, path { stroke: #777; fill: #444; }
     .specialKey, .specialKey rect, .specialKey path { fill: #333; }
     g:target rect, .press rect, g:target path, .press path { fill: #558; }
-    text { fill: #999; }
+    text { fill: #bbb; }
     .level3, .level4 { fill: #99f; }
     .level5, .level6 { fill: #6d6; }
     .deadKey { fill: #f44; }
+
+    [theme="reach"] .pinkyKey  rect { fill: hsl(  0, 20%, 30%); }
+    [theme="reach"] .numberKey rect { fill: hsl( 35, 25%, 30%); }
+    [theme="reach"] .letterKey rect { fill: hsl( 61, 30%, 30%); }
+    [theme="reach"] .homeKey   rect { fill: hsl(136, 30%, 30%); }
+    [theme="reach"] .press     rect { fill: #449; }
+
+    [theme="hints"] [finger="m1"] rect { fill: hsl(  0, 25%, 30%); }
+    [theme="hints"] [finger="l2"] rect { fill: hsl( 31, 30%, 30%); }
+    [theme="hints"] [finger="r2"] rect { fill: hsl( 61, 30%, 30%); }
+    [theme="hints"] [finger="l3"] rect,
+    [theme="hints"] [finger="r3"] rect { fill: hsl(136, 30%, 30%); }
+    [theme="hints"] [finger="l4"] rect,
+    [theme="hints"] [finger="r4"] rect { fill: hsl(200, 30%, 30%); }
+    [theme="hints"] [finger="l5"] rect,
+    [theme="hints"] [finger="r5"] rect { fill: hsl(230, 30%, 30%); }
+    [theme="hints"] .specialKey   rect,
+    [theme="hints"] .specialKey   path { fill: #333; }
+    [theme="hints"] .hint         rect { fill: #a33; }
+    [theme="hints"] .press        rect { fill: #335; }
+    [theme="hints"] .press        text { fill: #fff; }
+    [theme="hints"] .hint text {
+      font-weight: bold;
+      fill: white;
+    }
   }
 `;
 
