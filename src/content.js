@@ -155,8 +155,13 @@ export function drawDK(element, keyMap, deadKey) {
   }
   const alt0 = deadKey[keyChars[0]];
   const alt1 = deadKey[keyChars[1]];
-  element.querySelector('.level5').textContent = alt0 || '';
-  element.querySelector('.level6').textContent = altUpperChar(alt0, alt1);
+  if (isDeadKey(alt0)) {
+    element.querySelector('.level5').classList.add('deadKey', 'diacritic');
+    element.querySelector('.level5').textContent = alt0[1];
+  } else {
+    element.querySelector('.level5').textContent = alt0 || '';
+    element.querySelector('.level6').textContent = altUpperChar(alt0, alt1);
+  }
 }
 
 /**

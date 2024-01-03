@@ -179,7 +179,8 @@ class Keyboard extends HTMLElement {
             span.textContent = '';
           });
       }
-    } else if (this.layout.pendingDK) { // show hints for this dead key
+    }
+    if (this.layout.pendingDK) { // show hints for this dead key
       Array.from(this.root.querySelectorAll('.key')).forEach((key) => {
         drawDK(key, this.layout.keyMap, this.layout.pendingDK);
       });
