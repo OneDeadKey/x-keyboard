@@ -90,8 +90,8 @@ window.addEventListener('DOMContentLoaded', () => {
    * want for a keyboard layout emulation. The code below works around that.
    */
   input.addEventListener('input', (event) => {
-    if (event.inputType === 'insertCompositionText'
-      || event.inputType === 'insertText') {
+    if ((event.inputType === 'insertCompositionText'
+      || event.inputType === 'insertText') && event.isComposing) {
       event.target.value = event.target.value.slice(0, -event.data.length);
     }
   });
