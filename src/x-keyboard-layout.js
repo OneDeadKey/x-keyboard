@@ -153,9 +153,8 @@ export function newKeyboardLayout(keyMap = {}, deadKeys = {}, geometry = '') {
       }
       let value = key[getModifierLevel(modifiers, platform)];
       if (pendingDK) {
-        const dk = pendingDK;
+        value = pendingDK[value] || '';
         pendingDK = undefined;
-        value = dk[value] || '';
       }
       if (isDeadKey(value)) {
         pendingDK = deadKeys[value];

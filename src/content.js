@@ -149,19 +149,24 @@ export function drawKey(element, keyMap) {
 }
 
 export function drawDK(element, keyMap, deadKey) {
-  const keyChars = keyMap[element.parentNode.id];
-  if (!keyChars) {
-    return;
+  const drawChar = (element, content) => {
+    if (isDeadKey(content)) {
+      element.classList.add('deadKey', 'diacritic');
+      element.textContent = content[1];
+    } else {
+      element.classList.remove('deadKey', 'diacritic');
+      element.textContent = content || '';
+    }
   }
+
+  const keyChars = keyMap[element.parentNode.id];
+  if (!keyChars) return;
+
   const alt0 = deadKey[keyChars[0]];
   const alt1 = deadKey[keyChars[1]];
-  if (isDeadKey(alt0)) {
-    element.querySelector('.level5').classList.add('deadKey', 'diacritic');
-    element.querySelector('.level5').textContent = alt0[1];
-  } else {
-    element.querySelector('.level5').textContent = alt0 || '';
-    element.querySelector('.level6').textContent = altUpperChar(alt0, alt1);
-  }
+
+  drawChar(element.querySelector('.level5'), alt0);
+  drawChar(element.querySelector('.level6'), altUpperChar(alt0, alt1));
 }
 
 /**
