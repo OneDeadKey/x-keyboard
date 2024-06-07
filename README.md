@@ -5,7 +5,7 @@ A zero-dependency web component to display and emulate keyboard layouts.
 
 ![screenshot](keyboard.svg)
 
-[Online demo here.](https://fabi1cazenave.github.io/x-keyboard/)
+[Online demo here.](https://onedeadkey.github.io/x-keyboard/)
 
 
 Keyboard Layouts
