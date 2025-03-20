@@ -145,14 +145,22 @@ export function drawKey(element, keyMap) {
     ${keyLevel(4, salt,  { x: 0.70, y: 0.41 })}
     ${keyLevel(5, '',    { x: 0.70, y: 0.79 })}
     ${keyLevel(6, '',    { x: 0.70, y: 0.41 })}
+    ${keyLevel(7, '',    { x: 0.70, y: 0.79 })}
+    ${keyLevel(8, '',    { x: 0.70, y: 0.41 })}
   `;
 }
 
 export function drawDK(element, keyMap, deadKey) {
   const drawChar = (element, content) => {
     if (isDeadKey(content)) {
-      element.classList.add('deadKey', 'diacritic');
-      element.textContent = content[1];
+      let symbol = dkSymbols[content] || '';
+      symbol = symbol || (content || '').slice(-1);
+      element.textContent = symbol;
+      if(symbol.startsWith(' ')){
+        element.classList.add('deadKey', 'diacritic');
+      } else {
+        element.classList.add('deadKey');
+      }
     } else {
       element.classList.remove('deadKey', 'diacritic');
       element.textContent = content || '';
@@ -164,9 +172,13 @@ export function drawDK(element, keyMap, deadKey) {
 
   const alt0 = deadKey[keyChars[0]];
   const alt1 = deadKey[keyChars[1]];
+  const alt2 = deadKey[keyChars[2]];
+  const alt3 = deadKey[keyChars[3]];
 
   drawChar(element.querySelector('.level5'), alt0);
-  drawChar(element.querySelector('.level6'), altUpperChar(alt0, alt1));
+  drawChar(element.querySelector('.level6'), isDeadKey(alt1) ? alt1 : altUpperChar(alt0, alt1));
+  drawChar(element.querySelector('.level7'), alt2);
+  drawChar(element.querySelector('.level8'), isDeadKey(alt3) ? alt3 : altUpperChar(alt2, alt3));
 }
 
 /**
