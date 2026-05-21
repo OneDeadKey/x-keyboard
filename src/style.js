@@ -267,7 +267,7 @@ const themes = `
 
   /* dimmed AltGr + bold dead keys */
   .level3, .level4 { fill: ${KEY_COLOR_L3}; opacity: .5; }
-  .level5, .level6 { fill: ${KEY_COLOR_L5}; }
+  .level5, .level6, .level7, .level8 { fill: ${KEY_COLOR_L5}; }
   .deadKey {
     fill: ${DEAD_KEY_COLOR};
     font-size: 14px;
@@ -284,10 +284,16 @@ const themes = `
   /* highlight AltGr + Dead Keys */
   .dk .level1, .altgr .level1,
   .dk .level2, .altgr .level2 { opacity: 0.25; }
-  .dk .level5, .altgr .level3,
-  .dk .level6, .altgr .level4 { opacity: 1; }
-  .dk .level3,
-  .dk .level4 { display: none; }
+  .altgr .level3, .altgr .level4 { opacity: 1; }
+  .dk .level3, .dk .level4 { display: none; }
+
+  /* shift dead keys to the left when AltGr is pressed */
+  .level5, .level6 { transform: translate(0); }
+  .level7, .level8 { transform: translate(1.2em); opacity: 0; }
+  .dk .level5, .dk .level6 { transform: translate(0); transition-duration: 0.3s; }
+  .altgr .level5, .altgr .level6 { transform: translate(-1.2em); transition-duration: 0.3s; }
+  .dk .level7, .dk .level8 { opacity: 0; transform: translate(1.2em); transition-duration: 0.3s; }
+  .altgr .level7, .altgr .level8 { opacity: 1; transform: translate(0); transition-duration: 0.3s; }
 
   @media (prefers-color-scheme: dark) {
     rect, path { stroke: #777; fill: #444; }
