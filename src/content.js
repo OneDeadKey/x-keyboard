@@ -14,11 +14,12 @@ import {
  * Enter Key: ISO & ALT
  */
 
-const arc = (xAxisRotation, x, y) => [
-  `a${KEY_RADIUS},${KEY_RADIUS}`,
-  xAxisRotation ? '1 0 0' : '0 0 1',
-  `${KEY_RADIUS * x},${KEY_RADIUS * y}`,
-].join(' ');
+const arc = (xAxisRotation, x, y) =>
+  [
+    `a${KEY_RADIUS},${KEY_RADIUS}`,
+    xAxisRotation ? '1 0 0' : '0 0 1',
+    `${KEY_RADIUS * x},${KEY_RADIUS * y}`,
+  ].join(' ');
 
 const lineLength = (length, gap) => {
   const offset = 2 * (KEY_PADDING + KEY_RADIUS) - 2 * gap * KEY_PADDING;
@@ -40,23 +41,38 @@ const v = (length, gap = 0, ccw = 0) => {
 const M = `M${0.75 * KEY_WIDTH + KEY_RADIUS},-${KEY_WIDTH}`;
 
 const altEnterPath = [
-  M, h(1.5), v(2.0), h(-2.25), v(-1.0), h(0.75, 1, 1), v(-1.0, 1), 'z',
+  M,
+  h(1.5),
+  v(2.0),
+  h(-2.25),
+  v(-1.0),
+  h(0.75, 1, 1),
+  v(-1.0, 1),
+  'z',
 ].join(' ');
 
 const isoEnterPath = [
-  M, h(1.5), v(2.0), h(-1.25), v(-1.0, 1, 1), h(-0.25, 1), v(-1.0), 'z',
+  M,
+  h(1.5),
+  v(2.0),
+  h(-1.25),
+  v(-1.0, 1, 1),
+  h(-0.25, 1),
+  v(-1.0),
+  'z',
 ].join(' ');
 
 /**
  * DOM-to-Text Utils
  */
 
-const sgml = (nodeName, attributes = {}, children = []) => `<${nodeName} ${
-  Object.entries(attributes)
-    .map(([ id, value ]) => {
+const sgml = (nodeName, attributes = {}, children = []) =>
+  `<${nodeName} ${Object.entries(attributes)
+    .map(([id, value]) => {
       if (id === 'x' || id === 'y') {
-        return `${id}="${KEY_WIDTH * Number(value)
-            - (nodeName === 'text' ? KEY_PADDING : 0)}"`;
+        return `${id}="${
+          KEY_WIDTH * Number(value) - (nodeName === 'text' ? KEY_PADDING : 0)
+        }"`;
       }
       if (id === 'width' || id === 'height') {
         return `${id}="${KEY_WIDTH * Number(value) - 2 * KEY_PADDING}"`;
@@ -66,36 +82,49 @@ const sgml = (nodeName, attributes = {}, children = []) => `<${nodeName} ${
       }
       return `${id}="${value}"`;
     })
-    .join(' ')
-}>${children.join('\n')}</${nodeName}>`;
+    .join(' ')}>${children.join('\n')}</${nodeName}>`;
 
 const path = (cname = '', d) => sgml('path', { class: cname, d });
 
-const rect = (cname = '', attributes) => sgml('rect', {
-  class: cname,
-  width: 1,
-  height: 1,
-  rx: KEY_RADIUS,
-  ry: KEY_RADIUS,
-  ...attributes,
-});
+const rect = (cname = '', attributes) =>
+  sgml('rect', {
+    class: cname,
+    width: 1,
+    height: 1,
+    rx: KEY_RADIUS,
+    ry: KEY_RADIUS,
+    ...attributes,
+  });
 
-const text = (content, cname = '', attributes) => sgml('text', {
-  class: cname,
-  width: 0.50,
-  height: 0.50,
-  x: 0.34,
-  y: 0.78,
-  ...attributes,
-}, [content]);
+const text = (content, cname = '', attributes) =>
+  sgml(
+    'text',
+    {
+      class: cname,
+      width: 0.5,
+      height: 0.5,
+      x: 0.34,
+      y: 0.78,
+      ...attributes,
+    },
+    [content],
+  );
 
 const g = (className, children) => sgml('g', { class: className }, children);
 
-const emptyKey = [ rect(), g('key') ];
+const emptyKey = [rect(), g('key')];
 
-const gKey = (className, finger, x, id, children = emptyKey) => sgml('g', {
-  class: className, finger, id, transform: `translate(${x * KEY_WIDTH}, 0)`,
-}, children);
+const gKey = (className, finger, x, id, children = emptyKey) =>
+  sgml(
+    'g',
+    {
+      class: className,
+      finger,
+      id,
+      transform: `translate(${x * KEY_WIDTH}, 0)`,
+    },
+    children,
+  );
 
 /**
  * Keyboard Layout Utils
@@ -116,8 +145,8 @@ const keyLevel = (level, label, position) => {
 
 // In order not to overload the `alt` layers visually (AltGr & dead keys),
 // the `shift` key is displayed only if its lowercase is not `base`.
-const altUpperChar = (base, shift) => (shift && base !== shift.toLowerCase()
-  ? shift : '');
+const altUpperChar = (base, shift) =>
+  shift && base !== shift.toLowerCase() ? shift : '';
 
 export function drawKey(element, keyMap) {
   const keyChars = keyMap[element.parentNode.id];
@@ -142,17 +171,17 @@ export function drawKey(element, keyMap) {
    * So if the lowercase version of the `shift` layer does not match the `base`
    * layer, we'll show the lowercase letter (e.g. Greek 'ς').
    */
-  const [ l1, l2, l3, l4 ] = keyChars;
+  const [l1, l2, l3, l4] = keyChars;
   const base = l1.toUpperCase() !== l2 ? l1 : '';
   const shift = base || l2.toLowerCase() === l1 ? l2 : l1;
   const salt = altUpperChar(l3, l4);
   element.innerHTML = `
-    ${keyLevel(1, base,  { x: 0.28, y: 0.79 })}
+    ${keyLevel(1, base, { x: 0.28, y: 0.79 })}
     ${keyLevel(2, shift, { x: 0.28, y: 0.41 })}
-    ${keyLevel(3, l3,    { x: 0.70, y: 0.79 })}
-    ${keyLevel(4, salt,  { x: 0.70, y: 0.41 })}
-    ${keyLevel(5, '',    { x: 0.70, y: 0.79 })}
-    ${keyLevel(6, '',    { x: 0.70, y: 0.41 })}
+    ${keyLevel(3, l3, { x: 0.7, y: 0.79 })}
+    ${keyLevel(4, salt, { x: 0.7, y: 0.41 })}
+    ${keyLevel(5, '', { x: 0.7, y: 0.79 })}
+    ${keyLevel(6, '', { x: 0.7, y: 0.41 })}
   `;
 }
 
@@ -165,7 +194,7 @@ export function drawDK(element, keyMap, deadKey) {
       element.classList.remove('deadKey', 'diacritic');
       element.textContent = content || '';
     }
-  }
+  };
 
   const keyChars = keyMap[element.parentNode.id];
   if (!keyChars) return;
@@ -320,81 +349,84 @@ const letterRow3 = g('left', [
 ]);
 
 const nonIcon = { x: 0.25, 'text-anchor': 'start' };
-const baseRow = g('left', [
-  gKey('specialKey', 'l5', 0, 'ControlLeft', [
-    rect('', { width: 1.25 }),
-    rect('ergo', { width: 1.25 }),
-    text('Ctrl', 'win gnu', nonIcon),
-    text('⌃',    'mac'),
-  ]),
-  gKey('specialKey', 'l1', 1.25, 'MetaLeft', [
-    rect('',     { width: 1.25 }),
-    rect('ergo', { width: 1.50 }),
-    text('Win',   'win', nonIcon),
-    text('Super', 'gnu', nonIcon),
-    text('⌘',     'mac'),
-  ]),
-  gKey('specialKey', 'l1', 2.50, 'AltLeft', [
-    rect('',     { width: 1.25 }),
-    rect('ergo', { width: 1.50 }),
-    text('Alt', 'win gnu', nonIcon),
-    text('⌥',   'mac'),
-  ]),
-  gKey('specialKey', 'l1', 3.75, 'Lang2', [
-    rect(),
-    text('한자', '', { x: 0.4 }), // hanja
-  ]),
-  gKey('specialKey', 'l1', 3.75, 'NonConvert', [
-    rect(),
-    text('無変換', '', { x: 0.5 }), // muhenkan
-  ]),
-]) + gKey('homeKey', 'm1', 3.75, 'Space', [
-  rect('ansi',      { width: 6.25 }),
-  rect('ol60',      { width: 5.50, x: -1 }),
-  rect('ol50 ol40', { width: 4.50 }),
-  rect('ks',        { width: 4.25, x: 1 }),
-  rect('jis',       { width: 3.25, x: 1 }),
-]) + g('right', [
-  gKey('specialKey', 'r1', 8.00, 'Convert', [
-    rect(),
-    text('変換', '', { x: 0.5 }), // henkan
-  ]),
-  gKey('specialKey', 'r1', 9.00, 'KanaMode', [
-    rect(),
-    text('カタカナ', '', { x: 0.5, y: 0.4 }), // katakana
-    text('ひらがな', '', { x: 0.5, y: 0.6 }), // hiragana
-    text('ローマ字', '', { x: 0.5, y: 0.8 }), // romaji
-  ]),
-  gKey('specialKey', 'r1', 9.00, 'Lang1', [
-    rect(),
-    text('한/영', '', { x: 0.4 }), // han/yeong
-  ]),
-  gKey('specialKey', 'r1', 10.00, 'AltRight', [
-    rect('',     { width: 1.25 }),
-    rect('ergo', { width: 1.50 }),
-    text('Alt', 'win gnu', nonIcon),
-    text('⌥',   'mac'),
-  ]),
-  gKey('specialKey', 'r1', 11.50, 'MetaRight', [
-    rect('',     { width: 1.25 }),
-    rect('ergo', { width: 1.50 }),
-    text('Win',   'win', nonIcon),
-    text('Super', 'gnu', nonIcon),
-    text('⌘',     'mac'),
-  ]),
-  gKey('specialKey', 'r5', 12.50, 'ContextMenu', [
-    rect('',     { width: 1.25 }),
-    rect('ergo'),
-    text('☰'),
-    text('☰', 'ol60'),
-  ]),
-  gKey('specialKey', 'r5', 13.75, 'ControlRight', [
-    rect('', { width: 1.25 }),
-    rect('ergo', { width: 1.25 }),
-    text('Ctrl', 'win gnu', nonIcon),
-    text('⌃',    'mac'),
-  ]),
-]);
+const baseRow =
+  g('left', [
+    gKey('specialKey', 'l5', 0, 'ControlLeft', [
+      rect('', { width: 1.25 }),
+      rect('ergo', { width: 1.25 }),
+      text('Ctrl', 'win gnu', nonIcon),
+      text('⌃', 'mac'),
+    ]),
+    gKey('specialKey', 'l1', 1.25, 'MetaLeft', [
+      rect('', { width: 1.25 }),
+      rect('ergo', { width: 1.5 }),
+      text('Win', 'win', nonIcon),
+      text('Super', 'gnu', nonIcon),
+      text('⌘', 'mac'),
+    ]),
+    gKey('specialKey', 'l1', 2.5, 'AltLeft', [
+      rect('', { width: 1.25 }),
+      rect('ergo', { width: 1.5 }),
+      text('Alt', 'win gnu', nonIcon),
+      text('⌥', 'mac'),
+    ]),
+    gKey('specialKey', 'l1', 3.75, 'Lang2', [
+      rect(),
+      text('한자', '', { x: 0.4 }), // hanja
+    ]),
+    gKey('specialKey', 'l1', 3.75, 'NonConvert', [
+      rect(),
+      text('無変換', '', { x: 0.5 }), // muhenkan
+    ]),
+  ]) +
+  gKey('homeKey', 'm1', 3.75, 'Space', [
+    rect('ansi', { width: 6.25 }),
+    rect('ol60', { width: 5.5, x: -1 }),
+    rect('ol50 ol40', { width: 4.5 }),
+    rect('ks', { width: 4.25, x: 1 }),
+    rect('jis', { width: 3.25, x: 1 }),
+  ]) +
+  g('right', [
+    gKey('specialKey', 'r1', 8.0, 'Convert', [
+      rect(),
+      text('変換', '', { x: 0.5 }), // henkan
+    ]),
+    gKey('specialKey', 'r1', 9.0, 'KanaMode', [
+      rect(),
+      text('カタカナ', '', { x: 0.5, y: 0.4 }), // katakana
+      text('ひらがな', '', { x: 0.5, y: 0.6 }), // hiragana
+      text('ローマ字', '', { x: 0.5, y: 0.8 }), // romaji
+    ]),
+    gKey('specialKey', 'r1', 9.0, 'Lang1', [
+      rect(),
+      text('한/영', '', { x: 0.4 }), // han/yeong
+    ]),
+    gKey('specialKey', 'r1', 10.0, 'AltRight', [
+      rect('', { width: 1.25 }),
+      rect('ergo', { width: 1.5 }),
+      text('Alt', 'win gnu', nonIcon),
+      text('⌥', 'mac'),
+    ]),
+    gKey('specialKey', 'r1', 11.5, 'MetaRight', [
+      rect('', { width: 1.25 }),
+      rect('ergo', { width: 1.5 }),
+      text('Win', 'win', nonIcon),
+      text('Super', 'gnu', nonIcon),
+      text('⌘', 'mac'),
+    ]),
+    gKey('specialKey', 'r5', 12.5, 'ContextMenu', [
+      rect('', { width: 1.25 }),
+      rect('ergo'),
+      text('☰'),
+      text('☰', 'ol60'),
+    ]),
+    gKey('specialKey', 'r5', 13.75, 'ControlRight', [
+      rect('', { width: 1.25 }),
+      rect('ergo', { width: 1.25 }),
+      text('Ctrl', 'win gnu', nonIcon),
+      text('⌃', 'mac'),
+    ]),
+  ]);
 
 const gradient = (id, start, stop) => `
       <linearGradient id="${id}" x1="0%" x2="100%" y1="0%" y2="0%">

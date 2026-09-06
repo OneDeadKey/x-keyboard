@@ -30,7 +30,7 @@ export function isDeadKey(value) {
 // return the list of all keys that can output the requested char
 function getKeyList(keyMap, char) {
   const rv = [];
-  Object.entries(keyMap).forEach(([ keyID, value ]) => {
+  Object.entries(keyMap).forEach(([keyID, value]) => {
     const level = value.indexOf(char);
     if (level >= 0) {
       rv.push({ id: keyID, level });
@@ -42,8 +42,8 @@ function getKeyList(keyMap, char) {
 // return a dictionary of all characters that can be done with a dead key
 function getDeadKeyDict(deadKeys) {
   const dict = {};
-  Object.entries(deadKeys).forEach(([ id, dkObj ]) => {
-    Object.entries(dkObj).forEach(([ base, alt ]) => {
+  Object.entries(deadKeys).forEach(([id, dkObj]) => {
+    Object.entries(dkObj).forEach(([base, alt]) => {
       if (!(alt in dict)) {
         dict[alt] = [];
       }
@@ -56,15 +56,18 @@ function getDeadKeyDict(deadKeys) {
 // return a sequence of keys that can output the requested string
 function getKeySequence(keyMap, dkDict, str = '') {
   const rv = [];
-  Array.from(str).forEach((char) => {
+  Array.from(str).forEach(char => {
     const keys = getKeyList(keyMap, char);
-    if (keys.length) { // direct access (possibly with Shift / AltGr)
+    if (keys.length) {
+      // direct access (possibly with Shift / AltGr)
       rv.push(keys[0]);
-    } else if (char in dkDict) { // available with a dead key
+    } else if (char in dkDict) {
+      // available with a dead key
       const dk = dkDict[char][0];
       rv.push(getKeyList(keyMap, dk.id)[0]);
       rv.push(getKeyList(keyMap, dk.base)[0]);
-    } else { // not available
+    } else {
+      // not available
       rv.push({});
       console.error('char not found:', char); // eslint-disable-line
     }
@@ -77,14 +80,14 @@ function getKeySequence(keyMap, dkDict, str = '') {
  */
 
 const MODIFIERS = {
-  ShiftLeft:    false,
-  ShiftRight:   false,
-  ControlLeft:  false,
+  ShiftLeft: false,
+  ShiftRight: false,
+  ControlLeft: false,
   ControlRight: false,
-  AltLeft:      false,
-  AltRight:     false,
-  OSLeft:       false,
-  OSRight:      false,
+  AltLeft: false,
+  AltRight: false,
+  OSLeft: false,
+  OSRight: false,
 };
 
 function getShiftState(modifiers) {
@@ -102,8 +105,10 @@ function getAltGrState(modifiers, platform) {
 }
 
 function getModifierLevel(modifiers, platform) {
-  return (getShiftState(modifiers) ? 1 : 0)
-    + (getAltGrState(modifiers, platform) ? 2 : 0);
+  return (
+    (getShiftState(modifiers) ? 1 : 0) +
+    (getAltGrState(modifiers, platform) ? 2 : 0)
+  );
 }
 
 /**
@@ -117,19 +122,37 @@ export function newKeyboardLayout(keyMap = {}, deadKeys = {}, geometry = '') {
   let platform = '';
 
   return {
-    get keyMap()    { return keyMap;    },
-    get deadKeys()  { return deadKeys;  },
-    get pendingDK() { return pendingDK; },
-    get geometry()  { return geometry;  },
-    get platform()  { return platform;  },
-    set platform(value) { platform = value; },
+    get keyMap() {
+      return keyMap;
+    },
+    get deadKeys() {
+      return deadKeys;
+    },
+    get pendingDK() {
+      return pendingDK;
+    },
+    get geometry() {
+      return geometry;
+    },
+    get platform() {
+      return platform;
+    },
+    set platform(value) {
+      platform = value;
+    },
 
     // modifier state
     get modifiers() {
       return {
-        get shift() { return getShiftState(modifiers); },
-        get altgr() { return getAltGrState(modifiers, platform); },
-        get level() { return getModifierLevel(modifiers, platform); },
+        get shift() {
+          return getShiftState(modifiers);
+        },
+        get altgr() {
+          return getAltGrState(modifiers, platform);
+        },
+        get level() {
+          return getModifierLevel(modifiers, platform);
+        },
       };
     },
 
@@ -138,12 +161,12 @@ export function newKeyboardLayout(keyMap = {}, deadKeys = {}, geometry = '') {
     getKeySequence: str => getKeySequence(keyMap, deadKeyDict, str),
 
     // keyboard emulation
-    keyUp: (keyCode) => {
+    keyUp: keyCode => {
       if (keyCode in modifiers) {
         modifiers[keyCode] = false;
       }
     },
-    keyDown: (keyCode) => {
+    keyDown: keyCode => {
       if (keyCode in modifiers) {
         modifiers[keyCode] = true;
       }

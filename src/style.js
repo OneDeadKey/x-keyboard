@@ -129,18 +129,18 @@ const orthoGeometry = `
   .ol40 .pinkyKey, .ol40 #ContextMenu,
   .ol40 #row_AE .numberKey { display: none; }
 
-  .ergo #row_AE       ${translate(1.50, 0, true)}
-  .ergo #row_AD       ${translate(1.00, 1, true)}
+  .ergo #row_AE       ${translate(1.5, 0, true)}
+  .ergo #row_AD       ${translate(1.0, 1, true)}
   .ergo #row_AC       ${translate(0.75, 2, true)}
   .ergo #row_AB       ${translate(0.25, 3, true)}
 
   .ergo #Tab          ${translate(0.25)}
-  .ergo #ShiftLeft    ${translate(1.00)}
+  .ergo #ShiftLeft    ${translate(1.0)}
   .ergo #ControlLeft  ${translate(1.25)}
-  .ergo #MetaLeft     ${translate(2.50)}
-  .ergo #AltLeft      ${translate(4.00)}
+  .ergo #MetaLeft     ${translate(2.5)}
+  .ergo #AltLeft      ${translate(4.0)}
   .ergo #Space        ${translate(5.25)}
-  .ergo #AltRight     ${translate(9.00)}
+  .ergo #AltRight     ${translate(9.0)}
   .ergo #MetaRight    ${translate(10.5)}
   .ergo #ControlRight ${translate(12.5)}
 
@@ -148,20 +148,20 @@ const orthoGeometry = `
   .ergo .right        ${translate(0.25)}
 
   .ol60 .left         ${translate(-1.25)}
-  .ol60 #ControlRight ${translate(13.50)}
+  .ol60 #ControlRight ${translate(13.5)}
   .ol60 #Backquote    ${translate(-0.25)}
   .ol60 #ShiftRight   ${translate(13.25)}
-  .ol60 #ContextMenu  ${translate(12.50)}
-  .ol60 #Backslash    ${translate(11.50, 2)}
+  .ol60 #ContextMenu  ${translate(12.5)}
+  .ol60 #Backslash    ${translate(11.5, 2)}
   .ol60 #Backspace    ${translate(4.625, 1)}
   .ol60 #Enter        ${translate(5.375, 1)}
 
   .ol50 #Escape       ${translate(-0.25)}
-  .ol50 #Backspace    ${translate(11.00)}
+  .ol50 #Backspace    ${translate(11.0)}
   .ol50 #Enter        ${translate(11.75, -1)}
 
   .ol40 #Escape       ${translate(-0.25, 2)}
-  .ol40 #Backspace    ${translate(11.00, 1)}
+  .ol40 #Backspace    ${translate(11.0, 1)}
   .ol40 #Enter        ${translate(11.75, 0)}
 
   [platform="gnu"].ergo .specialKey .win,
@@ -239,9 +239,9 @@ const modifiers = `
   [platform="gnu"] #MetaLeft,
   [platform="win"] #MetaLeft,  #AltLeft   ${translate(1.25)}
   [platform="gnu"] #AltLeft,
-  [platform="win"] #AltLeft,   #MetaLeft  ${translate(2.50)}
+  [platform="win"] #AltLeft,   #MetaLeft  ${translate(2.5)}
   [platform="gnu"] #AltRight,
-  [platform="win"] #AltRight,  #MetaRight ${translate(10.00)}
+  [platform="win"] #AltRight,  #MetaRight ${translate(10.0)}
   [platform="gnu"] #MetaRight,
   [platform="win"] #MetaRight, #AltRight  ${translate(11.25)}
 `;
