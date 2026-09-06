@@ -84,6 +84,30 @@ class Keyboard extends HTMLElement {
     this.root.querySelector('svg').setAttribute('theme', value);
   }
 
+  setCustomColors(keymap) {
+    // XXX drop in favor of .keys?
+    Object.entries(keymap).forEach(([id, color]) => {
+      this.root
+        .getElementById(id)
+        .querySelectorAll('rect')
+        .forEach(rect => {
+          rect.style.fill = color;
+        });
+    });
+  }
+
+  setCustomOpacity(keymap) {
+    // XXX drop in favor of .keys?
+    Object.entries(keymap).forEach(([id, opacity]) => {
+      this.root
+        .getElementById(id)
+        .querySelectorAll('rect')
+        .forEach(rect => {
+          rect.style.opacity = opacity;
+        });
+    });
+  }
+
   get layers() {
     return this._state.layers;
   }
@@ -94,7 +118,7 @@ class Keyboard extends HTMLElement {
       return;
     }
     const svg = this.root.querySelector('svg');
-    const mkClass = suffix => `layers-${suffix}`
+    const mkClass = suffix => `layers-${suffix}`;
     if (this._state.layers) {
       svg.classList.remove(mkClass(this._state.layers));
     }
@@ -140,10 +164,8 @@ class Keyboard extends HTMLElement {
     const geometry = value || this.layout.geometry || 'ansi';
     const shape = supportedShapes[geometry];
     const svg = this.root.querySelector('svg');
-    Object.values(supportedShapes).forEach(
-      classes => classes.forEach(cls =>
-        svg.classList.remove(cls)
-      )
+    Object.values(supportedShapes).forEach(classes =>
+      classes.forEach(cls => svg.classList.remove(cls)),
     );
     shape.forEach(cls => svg.classList.add(cls));
     setFingerAssignment(this.root, !shape.includes('iso'));
@@ -178,8 +200,26 @@ class Keyboard extends HTMLElement {
     this.draw();
   }
 
+  get fingerAssignments() {
+    const fingers = ['l5', 'l4', 'l3', 'l2', 'r2', 'r2', 'r3', 'r4', 'r5'];
+    const keys = {};
+    fingers.forEach(f => {
+      keys[f] = Array.from(this.root.querySelectorAll(`[finger=${f}]`)).map(
+        element => element.id,
+      );
+    });
+    return keys;
+  }
+
   setKeyboardLayout(keyMap, deadKeys, geometry) {
     this.layout = newKeyboardLayout(keyMap, deadKeys, geometry);
+  }
+
+  get keys() {
+    // XXX return IDs only and rely on setCustom{Colors,Opacity}?
+    return Array.from(this.root.querySelectorAll('[id]')).filter(
+      element => !element.id.startsWith('row_'),
+    );
   }
 
   /**
