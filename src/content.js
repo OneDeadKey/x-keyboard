@@ -1,6 +1,14 @@
 import { KEY_WIDTH, KEY_PADDING, KEY_RADIUS } from './constants.js';
 import { isDeadKey } from './x-keyboard-layout.js';
 import dkSymbols from './symbols.js';
+import {
+  KEY_LIGHT_COL0,
+  KEY_LIGHT_COL1,
+  KEY_LIGHT_COL4,
+  KEY_DARK_COL0,
+  KEY_DARK_COL1,
+  KEY_DARK_COL4,
+} from './constants.js';
 
 /**
  * Enter Key: ISO & ALT
@@ -189,19 +197,19 @@ const numberRow = g('left', [
     text('漢字', 'jis', { x: 0.5, y: 0.8 }), // kanji
     g('ansi key'),
   ]),
-  gKey('numberKey', 'l5', 1, 'Digit1'),
-  gKey('numberKey', 'l4', 2, 'Digit2'),
-  gKey('numberKey', 'l3', 3, 'Digit3'),
-  gKey('numberKey', 'l2', 4, 'Digit4'),
-  gKey('numberKey', 'l2', 5, 'Digit5'),
+  gKey('numberKey',          'l5', 1, 'Digit1'),
+  gKey('numberKey',          'l4', 2, 'Digit2'),
+  gKey('numberKey',          'l3', 3, 'Digit3'),
+  gKey('numberKey',          'l2', 4, 'Digit4'),
+  gKey('numberKey innerKey', 'l2', 5, 'Digit5'),
 ]) + g('right', [
-  gKey('numberKey',  'r2',  6, 'Digit6'),
-  gKey('numberKey',  'r2',  7, 'Digit7'),
-  gKey('numberKey',  'r3',  8, 'Digit8'),
-  gKey('numberKey',  'r4',  9, 'Digit9'),
-  gKey('numberKey',  'r5', 10, 'Digit0'),
-  gKey('pinkyKey',   'r5', 11, 'Minus'),
-  gKey('pinkyKey',   'r5', 12, 'Equal', [
+  gKey('numberKey innerKey',  'r2',  6, 'Digit6'),
+  gKey('numberKey',           'r2',  7, 'Digit7'),
+  gKey('numberKey',           'r3',  8, 'Digit8'),
+  gKey('numberKey',           'r4',  9, 'Digit9'),
+  gKey('numberKey',           'r5', 10, 'Digit0'),
+  gKey('pinkyKey',            'r5', 11, 'Minus'),
+  gKey('pinkyKey',            'r5', 12, 'Equal', [
     rect('ansi', { width: 1.00 }),
     rect('ol60', { width: 1.25 }),
     g('key'),
@@ -225,19 +233,19 @@ const letterRow1 = g('left', [
     text('↹'),
     text('↹', 'ergo'),
   ]),
-  gKey('letterKey', 'l5', 1.5, 'KeyQ'),
-  gKey('letterKey', 'l4', 2.5, 'KeyW'),
-  gKey('letterKey', 'l3', 3.5, 'KeyE'),
-  gKey('letterKey', 'l2', 4.5, 'KeyR'),
-  gKey('letterKey', 'l2', 5.5, 'KeyT'),
+  gKey('letterKey',          'l5', 1.5, 'KeyQ'),
+  gKey('letterKey',          'l4', 2.5, 'KeyW'),
+  gKey('letterKey',          'l3', 3.5, 'KeyE'),
+  gKey('letterKey',          'l2', 4.5, 'KeyR'),
+  gKey('letterKey innerKey', 'l2', 5.5, 'KeyT'),
 ]) + g('right', [
-  gKey('letterKey', 'r2',  6.5, 'KeyY'),
-  gKey('letterKey', 'r2',  7.5, 'KeyU'),
-  gKey('letterKey', 'r3',  8.5, 'KeyI'),
-  gKey('letterKey', 'r4',  9.5, 'KeyO'),
-  gKey('letterKey', 'r5', 10.5, 'KeyP'),
-  gKey('pinkyKey',  'r5', 11.5, 'BracketLeft'),
-  gKey('pinkyKey',  'r5', 12.5, 'BracketRight', [
+  gKey('letterKey innerKey', 'r2',  6.5, 'KeyY'),
+  gKey('letterKey',          'r2',  7.5, 'KeyU'),
+  gKey('letterKey',          'r3',  8.5, 'KeyI'),
+  gKey('letterKey',          'r4',  9.5, 'KeyO'),
+  gKey('letterKey',          'r5', 10.5, 'KeyP'),
+  gKey('pinkyKey',           'r5', 11.5, 'BracketLeft'),
+  gKey('pinkyKey',           'r5', 12.5, 'BracketRight', [
     rect('ansi', { width: 1.00 }),
     rect('ol60', { width: 1.25 }),
     g('key'),
@@ -255,19 +263,19 @@ const letterRow2 = g('left', [
     text('⇪', 'ansi'),
     text('英数', 'jis', { x: 0.45 }), // alphanumeric (eisū)
   ]),
-  gKey('letterKey homeKey', 'l5',  1.75, 'KeyA'),
-  gKey('letterKey homeKey', 'l4',  2.75, 'KeyS'),
-  gKey('letterKey homeKey', 'l3',  3.75, 'KeyD'),
-  gKey('letterKey homeKey', 'l2',  4.75, 'KeyF'),
-  gKey('letterKey',         'l2',  5.75, 'KeyG'),
+  gKey('letterKey homeKey',  'l5',  1.75, 'KeyA'),
+  gKey('letterKey homeKey',  'l4',  2.75, 'KeyS'),
+  gKey('letterKey homeKey',  'l3',  3.75, 'KeyD'),
+  gKey('letterKey homeKey',  'l2',  4.75, 'KeyF'),
+  gKey('letterKey innerKey', 'l2',  5.75, 'KeyG'),
 ]) + g('right', [
-  gKey('letterKey',         'r2',  6.75, 'KeyH'),
-  gKey('letterKey homeKey', 'r2',  7.75, 'KeyJ'),
-  gKey('letterKey homeKey', 'r3',  8.75, 'KeyK'),
-  gKey('letterKey homeKey', 'r4',  9.75, 'KeyL'),
-  gKey('letterKey homeKey', 'r5', 10.75, 'Semicolon'),
-  gKey('pinkyKey',          'r5', 11.75, 'Quote'),
-  gKey('specialKey',        'r5', 12.75, 'Enter', [
+  gKey('letterKey innerKey', 'r2',  6.75, 'KeyH'),
+  gKey('letterKey homeKey',  'r2',  7.75, 'KeyJ'),
+  gKey('letterKey homeKey',  'r3',  8.75, 'KeyK'),
+  gKey('letterKey homeKey',  'r4',  9.75, 'KeyL'),
+  gKey('letterKey homeKey',  'r5', 10.75, 'Semicolon'),
+  gKey('pinkyKey',           'r5', 11.75, 'Quote'),
+  gKey('specialKey',         'r5', 12.75, 'Enter', [
     path('alt', altEnterPath),
     path('iso', isoEnterPath),
     rect('ansi',      { width: 2.25 }),
@@ -287,20 +295,20 @@ const letterRow3 = g('left', [
     text('⇧'),
     text('⇧', 'ergo'),
   ]),
-  gKey('letterKey', 'l5', 1.25, 'IntlBackslash'),
-  gKey('letterKey', 'l5', 2.25, 'KeyZ'),
-  gKey('letterKey', 'l4', 3.25, 'KeyX'),
-  gKey('letterKey', 'l3', 4.25, 'KeyC'),
-  gKey('letterKey', 'l2', 5.25, 'KeyV'),
-  gKey('letterKey', 'l2', 6.25, 'KeyB'),
+  gKey('letterKey',          'l5', 1.25, 'IntlBackslash'),
+  gKey('letterKey',          'l5', 2.25, 'KeyZ'),
+  gKey('letterKey',          'l4', 3.25, 'KeyX'),
+  gKey('letterKey',          'l3', 4.25, 'KeyC'),
+  gKey('letterKey',          'l2', 5.25, 'KeyV'),
+  gKey('letterKey innerKey', 'l2', 6.25, 'KeyB'),
 ]) + g('right', [
-  gKey('letterKey',  'r2',  7.25, 'KeyN'),
-  gKey('letterKey',  'r2',  8.25, 'KeyM'),
-  gKey('letterKey',  'r3',  9.25, 'Comma'),
-  gKey('letterKey',  'r4', 10.25, 'Period'),
-  gKey('letterKey',  'r5', 11.25, 'Slash'),
-  gKey('pinkyKey',   'r5', 12.25, 'IntlRo'),
-  gKey('specialKey', 'r5', 12.25, 'ShiftRight', [
+  gKey('letterKey innerKey',  'r2',  7.25, 'KeyN'),
+  gKey('letterKey',           'r2',  8.25, 'KeyM'),
+  gKey('letterKey',           'r3',  9.25, 'Comma'),
+  gKey('letterKey',           'r4', 10.25, 'Period'),
+  gKey('letterKey',           'r5', 11.25, 'Slash'),
+  gKey('pinkyKey',            'r5', 12.25, 'IntlRo'),
+  gKey('specialKey',          'r5', 12.25, 'ShiftRight', [
     rect('ansi',      { width: 2.75 }),
     rect('abnt',      { width: 1.75,  x: 1 }),
     rect('ol50 ol60', { width: 1.25, height: 2, y: -1 }),
@@ -388,9 +396,26 @@ const baseRow = g('left', [
   ]),
 ]);
 
+const gradient = (id, start, stop) => `
+      <linearGradient id="${id}" x1="0%" x2="100%" y1="0%" y2="0%">
+        <stop offset="0%"   stop-color="${start}" />
+        <stop offset="100%" stop-color="${stop}" />
+      </linearGradient>
+`;
+
 export const svgContent = `
   <svg viewBox="0 0 ${KEY_WIDTH * 15} ${KEY_WIDTH * 5}"
       xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      ${gradient('lightOuterLeft',  KEY_LIGHT_COL0, KEY_LIGHT_COL1)}
+      ${gradient('lightInnerLeft',  KEY_LIGHT_COL4, KEY_LIGHT_COL0)}
+      ${gradient('lightInnerRight', KEY_LIGHT_COL0, KEY_LIGHT_COL4)}
+      ${gradient('lightOuterRight', KEY_LIGHT_COL1, KEY_LIGHT_COL0)}
+      ${gradient('darkOuterLeft',   KEY_DARK_COL0,  KEY_DARK_COL1)}
+      ${gradient('darkInnerLeft',   KEY_DARK_COL4,  KEY_DARK_COL0)}
+      ${gradient('darkInnerRight',  KEY_DARK_COL0,  KEY_DARK_COL4)}
+      ${gradient('darkOuterRight',  KEY_DARK_COL1,  KEY_DARK_COL0)}
+    </defs>
     <g id="row_AE" text-anchor="middle"> ${numberRow}  </g>
     <g id="row_AD" text-anchor="middle"> ${letterRow1} </g>
     <g id="row_AC" text-anchor="middle"> ${letterRow2} </g>
