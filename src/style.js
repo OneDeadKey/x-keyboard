@@ -7,6 +7,19 @@ import {
   KEY_COLOR_L5,
   DEAD_KEY_COLOR,
   SPECIAL_KEY_BG,
+  // Nyan Quack
+  KEY_LIGHT_COL0,
+  KEY_LIGHT_COL1,
+  KEY_LIGHT_COL2,
+  KEY_LIGHT_COL3,
+  KEY_LIGHT_COL4,
+  KEY_LIGHT_BAR,
+  KEY_DARK_COL0,
+  KEY_DARK_COL1,
+  KEY_DARK_COL2,
+  KEY_DARK_COL3,
+  KEY_DARK_COL4,
+  KEY_DARK_BAR,
 } from './constants.js';
 
 const translate = (x = 0, y = 0, offset) => {
@@ -246,15 +259,19 @@ const themes = `
   [theme="reach"] .homeKey   rect { fill: hsl(122, 100%, 75%); }
   [theme="reach"] .press     rect { fill: #aaf; }
 
-  [theme="hints"] [finger="m1"] rect { fill: hsl(  0, 100%, 95%); }
-  [theme="hints"] [finger="l2"] rect { fill: hsl( 42, 100%, 85%); }
-  [theme="hints"] [finger="r2"] rect { fill: hsl( 61, 100%, 85%); }
+  [theme="hints"] [finger="m1"] rect { fill: ${KEY_LIGHT_BAR};  }
+  [theme="hints"] [finger="l2"] rect { fill: ${KEY_LIGHT_COL4}; }
+  [theme="hints"] [finger="r2"] rect { fill: ${KEY_LIGHT_COL4}; }
   [theme="hints"] [finger="l3"] rect,
-  [theme="hints"] [finger="r3"] rect { fill: hsl(136, 100%, 85%); }
+  [theme="hints"] [finger="r3"] rect { fill: ${KEY_LIGHT_COL3}; }
   [theme="hints"] [finger="l4"] rect,
-  [theme="hints"] [finger="r4"] rect { fill: hsl(200, 100%, 85%); }
+  [theme="hints"] [finger="r4"] rect { fill: ${KEY_LIGHT_COL2}; }
   [theme="hints"] [finger="l5"] rect,
-  [theme="hints"] [finger="r5"] rect { fill: hsl(230, 100%, 85%); }
+  [theme="hints"] [finger="r5"] rect { fill: ${KEY_LIGHT_COL1}; }
+  [theme="hints"] [finger="l5"].pinkyKey rect { fill: url(#lightOuterLeft); }
+  [theme="hints"] [finger="l2"].innerKey rect { fill: url(#lightInnerLeft); }
+  [theme="hints"] [finger="r2"].innerKey rect { fill: url(#lightInnerRight); }
+  [theme="hints"] [finger="r5"].pinkyKey rect { fill: url(#lightOuterRight); }
   [theme="hints"] .specialKey   rect,
   [theme="hints"] .specialKey   path { fill: ${SPECIAL_KEY_BG}; }
   [theme="hints"] .hint         rect { fill: #a33; }
@@ -304,15 +321,19 @@ const themes = `
     [theme="reach"] .homeKey   rect { fill: hsl(136, 30%, 30%); }
     [theme="reach"] .press     rect { fill: #449; }
 
-    [theme="hints"] [finger="m1"] rect { fill: hsl(  0, 25%, 30%); }
-    [theme="hints"] [finger="l2"] rect { fill: hsl( 31, 30%, 30%); }
-    [theme="hints"] [finger="r2"] rect { fill: hsl( 61, 30%, 30%); }
+    [theme="hints"] [finger="m1"] rect { fill: ${KEY_DARK_BAR};  }
+    [theme="hints"] [finger="l2"] rect { fill: ${KEY_DARK_COL4}; }
+    [theme="hints"] [finger="r2"] rect { fill: ${KEY_DARK_COL4}; }
     [theme="hints"] [finger="l3"] rect,
-    [theme="hints"] [finger="r3"] rect { fill: hsl(136, 30%, 30%); }
+    [theme="hints"] [finger="r3"] rect { fill: ${KEY_DARK_COL3}; }
     [theme="hints"] [finger="l4"] rect,
-    [theme="hints"] [finger="r4"] rect { fill: hsl(200, 30%, 30%); }
+    [theme="hints"] [finger="r4"] rect { fill: ${KEY_DARK_COL2}; }
     [theme="hints"] [finger="l5"] rect,
-    [theme="hints"] [finger="r5"] rect { fill: hsl(230, 30%, 30%); }
+    [theme="hints"] [finger="r5"] rect { fill: ${KEY_DARK_COL1}; }
+    [theme="hints"] [finger="l5"].pinkyKey rect { fill: url(#darkOuterLeft); }
+    [theme="hints"] [finger="l2"].innerKey rect { fill: url(#darkInnerLeft); }
+    [theme="hints"] [finger="r2"].innerKey rect { fill: url(#darkInnerRight); }
+    [theme="hints"] [finger="r5"].pinkyKey rect { fill: url(#darkOuterRight); }
     [theme="hints"] .specialKey   rect,
     [theme="hints"] .specialKey   path { fill: #333; }
     [theme="hints"] .hint         rect { fill: #a33; }
