@@ -98,10 +98,8 @@ const classicGeometry = `
 const orthoGeometry = `
   .specialKey   .ergo,
   .specialKey   .ol60,
-  .specialKey   .ol50,
   .specialKey   .ol40,
   #Space        .ol60,
-  #Space        .ol50,
   #Space        .ol40,
   #Backquote    .ol60,
   #BracketRight .ol60,
@@ -111,58 +109,60 @@ const orthoGeometry = `
   .ergo #Backslash  rect,
   .ergo .specialKey rect,
   .ergo .specialKey text { display: none; }
-  .ol50 #Escape,
-  .ol40 #Escape,
+  .ergo #Escape,
   .ol60 #Space        .ol60,
-  .ol50 #Space        .ol50,
   .ol40 #Space        .ol40,
   .ol60 #Backquote    .ol60,
   .ol60 #BracketRight .ol60,
   .ol60 #Backslash    .ol60,
   .ol60 #Equal        .ol60,
   .ol60 .specialKey   .ol60,
-  .ol50 .specialKey   .ol50,
   .ol40 .specialKey   .ol40,
   .ergo .specialKey   .ergo { display: block; }
 
-  .ol50 .pinkyKey, .ol50 #ContextMenu,
-  .ol40 .pinkyKey, .ol40 #ContextMenu,
+  .ol40 .pinkyKey,
   .ol40 #row_AE .numberKey { display: none; }
 
-  .ergo #row_AE       ${translate(1.5, 0, true)}
-  .ergo #row_AD       ${translate(1.0, 1, true)}
-  .ergo #row_AC       ${translate(0.75, 2, true)}
-  .ergo #row_AB       ${translate(0.25, 3, true)}
+  .ol60 #row_AE ${translate(1.50, 0, true)}
+  .ol60 #row_AD ${translate(1.00, 1, true)}
+  .ol60 #row_AC ${translate(0.75, 2, true)}
+  .ol60 #row_AB ${translate(0.25, 3, true)}
 
-  .ergo #Tab          ${translate(0.25)}
-  .ergo #ShiftLeft    ${translate(1.0)}
-  .ergo #ControlLeft  ${translate(1.25)}
-  .ergo #MetaLeft     ${translate(2.5)}
-  .ergo #AltLeft      ${translate(4.0)}
-  .ergo #Space        ${translate(5.25)}
-  .ergo #AltRight     ${translate(9.0)}
-  .ergo #MetaRight    ${translate(10.5)}
-  .ergo #ControlRight ${translate(12.5)}
+  .ol40 #row_AD ${translate(0.875, 0.5, true)}
+  .ol40 #row_AC ${translate(0.625, 1.5, true)}
+  .ol40 #row_AB ${translate(0.125, 2.5, true)}
+  .ol40 #row_AA ${translate(-0.125, 3.5, true)}
 
   .ergo .left         ${translate(-0.25)}
   .ergo .right        ${translate(0.25)}
+  .ergo #Space        ${translate(5.25)}
+  .ergo #ShiftLeft    ${translate(4, 1)}
+  .ergo #Tab          ${translate(0.25, 0.5)}
+  .ergo #MetaLeft,
+  .ergo #MetaRight,
+  .ergo #ControlLeft,
+  .ergo #ControlRight,
+  .ergo #ContextMenu,
+  .ergo #AltLeft,
+  .ergo #ShiftRight { display: none; }
 
   .ol60 .left         ${translate(-1.25)}
-  .ol60 #ControlRight ${translate(13.5)}
-  .ol60 #Backquote    ${translate(-0.25)}
-  .ol60 #ShiftRight   ${translate(13.25)}
-  .ol60 #ContextMenu  ${translate(12.5)}
-  .ol60 #Backslash    ${translate(11.5, 2)}
-  .ol60 #Backspace    ${translate(4.625, 1)}
-  .ol60 #Enter        ${translate(5.375, 1)}
+  .ol60 #Escape       ${translate(6.125, 0.5)}
+  .ol60 #Enter        ${translate(5.375, 0.5)}
+  .ol60 #Backspace    ${translate(4.625, 1.5)}
+  .ol60 #Backquote    ${translate(0, 0.5)}
+  .ol60 #IntlBackslash ${translate(1.25, -0.5)}
+  .ol60 #Minus        ${translate(11.0, 0.5)}
+  .ol60 #Equal        ${translate(12.0, 0.5)}
+  .ol60 #BracketLeft  ${translate(11.5, 0.5)}
+  .ol60 #BracketRight ${translate(12.5, 0.5)}
+  .ol60 #Quote        ${translate(11.75, 0.5)}
+  .ol60 #Backslash    ${translate(12.5, 1.5)}
+  .ol60 #IntlBackslash { display: block; }
 
-  .ol50 #Escape       ${translate(-0.25)}
-  .ol50 #Backspace    ${translate(11.0)}
-  .ol50 #Enter        ${translate(11.75, -1)}
-
-  .ol40 #Escape       ${translate(-0.25, 2)}
-  .ol40 #Backspace    ${translate(11.0, 1)}
-  .ol40 #Enter        ${translate(11.75, 0)}
+  .ol40 #Escape       ${translate(1.125, 2)}
+  .ol40 #Backspace    ${translate(12.375, 1)}
+  .ol40 #Enter        ${translate(11.75, 0.5)}
 
   [platform="gnu"].ergo .specialKey .win,
   [platform="gnu"].ergo .specialKey .mac,
