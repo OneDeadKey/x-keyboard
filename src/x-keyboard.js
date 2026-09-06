@@ -9,10 +9,10 @@ import css from './style.js';
 const setFingerAssignment = (root, ansiStyle) => {
   (ansiStyle
     ? ['l5', 'l4', 'l3', 'l2', 'l2', 'r2', 'r2', 'r3', 'r4', 'r5']
-    : ['l5', 'l5', 'l4', 'l3', 'l2', 'l2', 'r2', 'r2', 'r3', 'r4'])
-    .forEach((attr, i) => {
-      root.getElementById(`Digit${(i + 1) % 10}`).setAttribute('finger', attr);
-    });
+    : ['l5', 'l5', 'l4', 'l3', 'l2', 'l2', 'r2', 'r2', 'r3', 'r4']
+  ).forEach((attr, i) => {
+    root.getElementById(`Digit${(i + 1) % 10}`).setAttribute('finger', attr);
+  });
 };
 
 const getKeyChord = (root, key) => {
@@ -20,13 +20,18 @@ const getKeyChord = (root, key) => {
     return [];
   }
   const element = root.getElementById(key.id);
-  const chord = [ element ];
-  if (key.level > 1) { // altgr
+  const chord = [element];
+  if (key.level > 1) {
+    // altgr
     chord.push(root.getElementById('AltRight'));
   }
-  if (key.level % 2) { // shift
-    chord.push(root.getElementById(element.getAttribute('finger')[0] === 'l'
-      ? 'ShiftRight' : 'ShiftLeft'));
+  if (key.level % 2) {
+    // shift
+    chord.push(
+      root.getElementById(
+        element.getAttribute('finger')[0] === 'l' ? 'ShiftRight' : 'ShiftLeft',
+      ),
+    );
   }
   return chord;
 };
@@ -56,12 +61,12 @@ class Keyboard extends HTMLElement {
     this._state = {
       geometry: this.getAttribute('geometry') || '',
       platform: this.getAttribute('platform') || '',
-      theme:    this.getAttribute('theme')    || '',
-      layout:   newKeyboardLayout(),
+      theme: this.getAttribute('theme') || '',
+      layout: newKeyboardLayout(),
     };
     this.geometry = this._state.geometry;
     this.platform = this._state.platform;
-    this.theme    = this._state.theme;
+    this.theme = this._state.theme;
   }
 
   /**
@@ -98,11 +103,11 @@ class Keyboard extends HTMLElement {
      *     OL40 = OLKB Planck
      */
     const supportedShapes = {
-      alt:  'alt intlYen',
-      ks:   'alt intlYen ks',
-      jis:  'iso intlYen intlRo jis',
+      alt: 'alt intlYen',
+      ks: 'alt intlYen ks',
+      jis: 'iso intlYen intlRo jis',
       abnt: 'iso intlBackslash intlRo',
-      iso:  'iso intlBackslash',
+      iso: 'iso intlBackslash',
       ansi: '',
       ol60: 'ergo ol60',
       ol50: 'ergo ol50',
@@ -131,7 +136,8 @@ class Keyboard extends HTMLElement {
     this._state.platform = value in supportedPlatforms ? value : '';
     const platform = this._state.platform || guessPlatform();
     this.layout.platform = platform;
-    this.root.querySelector('svg')
+    this.root
+      .querySelector('svg')
       .setAttribute('platform', supportedPlatforms[platform]);
   }
 
@@ -143,8 +149,9 @@ class Keyboard extends HTMLElement {
     this._state.layout = value;
     this._state.layout.platform = this.platform;
     this.geometry = this._state.geometry;
-    Array.from(this.root.querySelectorAll('.key'))
-      .forEach(key => drawKey(key, value.keyMap));
+    Array.from(this.root.querySelectorAll('.key')).forEach(key =>
+      drawKey(key, value.keyMap),
+    );
   }
 
   setKeyboardLayout(keyMap, deadKeys, geometry) {
@@ -165,29 +172,29 @@ class Keyboard extends HTMLElement {
       return '';
     }
     element.classList.add('press');
-    const dk  = this.layout.pendingDK;
-    const rv  = this.layout.keyDown(code); // updates `this.layout.pendingDK`
+    const dk = this.layout.pendingDK;
+    const rv = this.layout.keyDown(code); // updates `this.layout.pendingDK`
     const alt = this.layout.modifiers.altgr;
     if (alt) {
       this.root.querySelector('svg').classList.add('altgr');
     }
-    if (dk) { // a dead key has just been unlatched, hide all key hints
+    if (dk) {
+      // a dead key has just been unlatched, hide all key hints
       if (!element.classList.contains('specialKey')) {
         this.root.querySelector('svg').classList.remove('dk');
-        Array.from(this.root.querySelectorAll('.dk'))
-          .forEach((span) => {
-            span.textContent = '';
-          });
+        Array.from(this.root.querySelectorAll('.dk')).forEach(span => {
+          span.textContent = '';
+        });
       }
     }
-    if (this.layout.pendingDK) { // show hints for this dead key
-      Array.from(this.root.querySelectorAll('.key')).forEach((key) => {
+    if (this.layout.pendingDK) {
+      // show hints for this dead key
+      Array.from(this.root.querySelectorAll('.key')).forEach(key => {
         drawDK(key, this.layout.keyMap, this.layout.pendingDK);
       });
       this.root.querySelector('svg').classList.add('dk');
     }
-    return (!alt && (event.ctrlKey || event.altKey || event.metaKey))
-      ? '' : rv; // don't steal ctrl/alt/meta shortcuts
+    return !alt && (event.ctrlKey || event.altKey || event.metaKey) ? '' : rv; // don't steal ctrl/alt/meta shortcuts
   }
 
   keyUp(event) {
@@ -211,25 +218,27 @@ class Keyboard extends HTMLElement {
    */
 
   clearStyle() {
-    Array.from(this.root.querySelectorAll('[style]'))
-      .forEach(element => element.removeAttribute('style'));
-    Array.from(this.root.querySelectorAll('.press'))
-      .forEach(element => element.classList.remove('press'));
+    Array.from(this.root.querySelectorAll('[style]')).forEach(element =>
+      element.removeAttribute('style'),
+    );
+    Array.from(this.root.querySelectorAll('.press')).forEach(element =>
+      element.classList.remove('press'),
+    );
   }
 
   showKeys(chars, cssText) {
     this.clearStyle();
-    this.layout.getKeySequence(chars)
-      .forEach((key) => {
-        this.root.getElementById(key.id).style.cssText = cssText;
-      });
+    this.layout.getKeySequence(chars).forEach(key => {
+      this.root.getElementById(key.id).style.cssText = cssText;
+    });
   }
 
   showHint(keyObj) {
     let hintClass = '';
-    Array.from(this.root.querySelectorAll('.hint'))
-      .forEach(key => key.classList.remove('hint'));
-    getKeyChord(this.root, keyObj).forEach((key) => {
+    Array.from(this.root.querySelectorAll('.hint')).forEach(key =>
+      key.classList.remove('hint'),
+    );
+    getKeyChord(this.root, keyObj).forEach(key => {
       key.classList.add('hint');
       hintClass += `${key.getAttribute('finger')} `;
     });
@@ -238,15 +247,15 @@ class Keyboard extends HTMLElement {
 
   pressKey(keyObj) {
     this.clearStyle();
-    getKeyChord(this.root, keyObj)
-      .forEach((key) => {
-        key.classList.add('press');
-      });
+    getKeyChord(this.root, keyObj).forEach(key => {
+      key.classList.add('press');
+    });
   }
 
   pressKeys(str, duration = 250) {
     function* pressKeys(keys) {
-      for (const key of keys) { // eslint-disable-line
+      for (const key of keys) {
+        // eslint-disable-line
         yield key;
       }
     }
