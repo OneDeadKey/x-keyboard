@@ -121,6 +121,24 @@ export function newKeyboardLayout(keyMap = {}, deadKeys = {}, geometry = '') {
   let pendingDK;
   let platform = '';
 
+  // Add 1DK levels
+  const odk = deadKeys['**'];
+  if (odk !== undefined) {
+    keyMap = Object.fromEntries(
+      Object.entries(keyMap).map(([key, levels]) => {
+        if (levels.length < 4) {
+          levels = levels.concat(new Array(4 - levels.length));
+        }
+        levels = Array.from(levels);
+        if (levels.length <= 4) {
+          levels.push(odk[levels[0]]);
+          levels.push(odk[levels[1]]);
+        }
+        return [key, levels];
+      })
+    );
+  }
+
   return {
     get keyMap() {
       return keyMap;

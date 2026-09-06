@@ -59,11 +59,13 @@ class Keyboard extends HTMLElement {
     this.root = this.attachShadow({ mode: 'open' });
     this.root.appendChild(template.content.cloneNode(true));
     this._state = {
-      geometry: this.getAttribute('geometry') || '',
+      layers: this.getAttribute('layers') || 'altgr',
+      geometry: this.getAttribute('geometry') || 'iso',
       platform: this.getAttribute('platform') || '',
       theme: this.getAttribute('theme') || '',
       layout: newKeyboardLayout(),
     };
+    this.layers = this._state.layers;
     this.geometry = this._state.geometry;
     this.platform = this._state.platform;
     this.theme = this._state.theme;
@@ -80,6 +82,24 @@ class Keyboard extends HTMLElement {
   set theme(value) {
     this._state.theme = value;
     this.root.querySelector('svg').setAttribute('theme', value);
+  }
+
+  get layers() {
+    return this._state.layers;
+  }
+
+  set layers(value) {
+    const supportedLayers = ['odk', 'mixed', 'altgr'];
+    if (!value && !supportedLayers.includes(value)) {
+      return;
+    }
+    const svg = this.root.querySelector('svg');
+    const mkClass = suffix => `layers-${suffix}`
+    if (this._state.layers) {
+      svg.classList.remove(mkClass(this._state.layers));
+    }
+    this._state.layers = value;
+    svg.classList.add(mkClass(this._state.layers));
   }
 
   get geometry() {
@@ -103,15 +123,15 @@ class Keyboard extends HTMLElement {
      *     OL40 = OLKB Planck
      */
     const supportedShapes = {
-      alt: 'alt intlYen',
-      ks: 'alt intlYen ks',
-      jis: 'iso intlYen intlRo jis',
-      abnt: 'iso intlBackslash intlRo',
-      iso: 'iso intlBackslash',
-      ansi: '',
-      ol60: 'ergo ol60',
-      ol50: 'ergo ol50',
-      ol40: 'ergo ol40',
+      alt: ['alt', 'intlYen'],
+      ks: ['alt', 'intlYen', 'ks'],
+      jis: ['iso', 'intlYen', 'intlRo', 'jis'],
+      abnt: ['iso', 'intlBackslash', 'intlRo'],
+      iso: ['iso', 'intlBackslash'],
+      ansi: [],
+      ol60: ['ergo', 'ol60'],
+      ol50: ['ergo', 'ol50'],
+      ol40: ['ergo', 'ol40'],
     };
     if (value && !(value in supportedShapes)) {
       return;
@@ -119,8 +139,14 @@ class Keyboard extends HTMLElement {
     this._state.geometry = value;
     const geometry = value || this.layout.geometry || 'ansi';
     const shape = supportedShapes[geometry];
-    this.root.querySelector('svg').className.baseVal = shape;
-    setFingerAssignment(this.root, !shape.startsWith('iso'));
+    const svg = this.root.querySelector('svg');
+    Object.values(supportedShapes).forEach(
+      classes => classes.forEach(cls =>
+        svg.classList.remove(cls)
+      )
+    );
+    shape.forEach(cls => svg.classList.add(cls));
+    setFingerAssignment(this.root, !shape.includes('iso'));
   }
 
   get platform() {
@@ -149,13 +175,21 @@ class Keyboard extends HTMLElement {
     this._state.layout = value;
     this._state.layout.platform = this.platform;
     this.geometry = this._state.geometry;
-    Array.from(this.root.querySelectorAll('.key')).forEach(key =>
-      drawKey(key, value.keyMap),
-    );
+    this.draw();
   }
 
   setKeyboardLayout(keyMap, deadKeys, geometry) {
     this.layout = newKeyboardLayout(keyMap, deadKeys, geometry);
+  }
+
+  /**
+   * Drawing
+   */
+
+  draw() {
+    Array.from(this.root.querySelectorAll('.key')).forEach(key =>
+      drawKey(key, this._state.layout.keyMap),
+    );
   }
 
   /**

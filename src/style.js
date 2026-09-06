@@ -266,8 +266,8 @@ const themes = `
   }
 
   /* dimmed AltGr + bold dead keys */
-  .level3, .level4 { fill: ${KEY_COLOR_L3}; opacity: .5; }
-  .level5, .level6 { fill: ${KEY_COLOR_L5}; }
+  .level3, .level4      { fill: ${KEY_COLOR_L3}; opacity: .5; }
+  .level5, .level6, .dk { fill: ${KEY_COLOR_L5}; }
   .deadKey {
     fill: ${DEAD_KEY_COLOR};
     font-size: 14px;
@@ -277,17 +277,39 @@ const themes = `
     font-weight: bolder;
   }
 
+  .layers-odk .level3,
+  .layers-odk .level4       { display: none; }
+  .layers-odk.altgr .level3,
+  .layers-odk.altgr .level4 { display: block; }
+
+  .layers-altgr .level5,
+  .layers-altgr .level6 { display: none; }
+
+  .layers-mixed .level5 { transform: translate(0, -22.8px); }
+  .layers-mixed .level6 { display: none; }
+
   /* hide Level4 (Shift+AltGr) unless AltGr is pressed */
   .level4        { display: none; }
   .altgr .level4 { display: block; }
 
+  .altgr .level5,
+  .altgr .level6 { display: none; }
+
+  /* hide Level6 (Shift+AltGr) */
+  .level6        { display: none; }
+
+  /* hide dk1 and dk2 unless a dead key is pressed */
+  .dk1, .dk2     { display: none; }
+  .dk .dk1,
+  .dk .dk2       { display: block; }
+
   /* highlight AltGr + Dead Keys */
   .dk .level1, .altgr .level1,
   .dk .level2, .altgr .level2 { opacity: 0.25; }
-  .dk .level5, .altgr .level3,
-  .dk .level6, .altgr .level4 { opacity: 1; }
-  .dk .level3,
-  .dk .level4 { display: none; }
+  .dk .dk1, .altgr .level3,
+  .dk .dk2, .altgr .level4 { opacity: 1; }
+  .dk .level3, .dk level4,
+  .dk .level5, .dk level6 { display: none; }
 
   @media (prefers-color-scheme: dark) {
     rect, path { stroke: #777; fill: #444; }
@@ -295,7 +317,7 @@ const themes = `
     g:target rect, .press rect, g:target path, .press path { fill: #558; }
     text { fill: #bbb; }
     .level3, .level4 { fill: #99f; }
-    .level5, .level6 { fill: #6d6; }
+    .level5, .level6, .dk { fill: #6d6; }
     .deadKey { fill: #f44; }
 
     [theme="reach"] .pinkyKey  rect { fill: hsl(  0, 20%, 30%); }

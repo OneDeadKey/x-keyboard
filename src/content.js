@@ -127,12 +127,15 @@ const keyLevel = (level, label, position) => {
   const symbol = dkSymbols[label] || '';
   const content = symbol || (label || '').slice(-1);
   let className = '';
-  if (level > 4) {
+  let levelPrefix = 'level';
+  if (level < 0) {
     className = 'dk';
+    levelPrefix = 'dk';
+    level = -level;
   } else if (isDeadKey(label)) {
     className = `deadKey ${symbol.startsWith(' ') ? 'diacritic' : ''}`;
   }
-  return text(content, `level${level} ${className}`, attrs);
+  return text(content, `${levelPrefix}${level} ${className}`, attrs);
 };
 
 // In order not to overload the `alt` layers visually (AltGr & dead keys),
@@ -163,17 +166,20 @@ export function drawKey(element, keyMap) {
    * So if the lowercase version of the `shift` layer does not match the `base`
    * layer, we'll show the lowercase letter (e.g. Greek 'ς').
    */
-  const [l1, l2, l3, l4] = keyChars;
+  const [l1, l2, l3, l4, l5, l6] = keyChars;
   const base = l1.toUpperCase() !== l2 ? l1 : '';
   const shift = base || l2.toLowerCase() === l1 ? l2 : l1;
   const salt = altUpperChar(l3, l4);
+  const sodk = altUpperChar(l5, l6);
   element.innerHTML = `
     ${keyLevel(1, base, { x: 0.28, y: 0.79 })}
     ${keyLevel(2, shift, { x: 0.28, y: 0.41 })}
     ${keyLevel(3, l3, { x: 0.7, y: 0.79 })}
     ${keyLevel(4, salt, { x: 0.7, y: 0.41 })}
-    ${keyLevel(5, '', { x: 0.7, y: 0.79 })}
-    ${keyLevel(6, '', { x: 0.7, y: 0.41 })}
+    ${keyLevel(5, l5, { x: 0.7, y: 0.79 })}
+    ${keyLevel(6, sodk, { x: 0.7, y: 0.41 })}
+    ${keyLevel(-1, '', { x: 0.7, y: 0.79 })}
+    ${keyLevel(-2, '', { x: 0.7, y: 0.41 })}
   `;
 }
 
@@ -194,8 +200,8 @@ export function drawDK(element, keyMap, deadKey) {
   const alt0 = deadKey[keyChars[0]];
   const alt1 = deadKey[keyChars[1]];
 
-  drawChar(element.querySelector('.level5'), alt0);
-  drawChar(element.querySelector('.level6'), altUpperChar(alt0, alt1));
+  drawChar(element.querySelector('.dk1'), alt0);
+  drawChar(element.querySelector('.dk2'), altUpperChar(alt0, alt1));
 }
 
 /**
