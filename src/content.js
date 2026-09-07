@@ -321,7 +321,7 @@ const letterRow3 =
       text('⇧'),
       text('⇧', 'ergo'),
     ]),
-    gKey('letterKey', 'l5', 1.25, 'IntlBackslash'),
+    gKey('pinkyKey', 'l5', 1.25, 'IntlBackslash'),
     gKey('letterKey', 'l5', 2.25, 'KeyZ'),
     gKey('letterKey', 'l4', 3.25, 'KeyX'),
     gKey('letterKey', 'l3', 4.25, 'KeyC'),
