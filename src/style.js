@@ -209,16 +209,9 @@ const orthoGeometry = `
 
   .ergo .left         ${translate(-0.25)}
   .ergo .right        ${translate(0.25)}
-  .ergo #Space        ${translate(5.25)}
+  .ergo #Space        ${translate(5.5)}
   .ergo #ShiftLeft    ${translate(4, 1)}
   .ergo #Tab          ${translate(0.25, 0.5)}
-  .ergo #MetaLeft,
-  .ergo #MetaRight,
-  .ergo #ControlLeft,
-  .ergo #ControlRight,
-  .ergo #ContextMenu,
-  .ergo #AltLeft,
-  .ergo #ShiftRight { display: none; }
 
   .ol60 .left         ${translate(-1.25)}
   .ol60 #Escape       ${translate(6.125, 0.5)}
@@ -237,28 +230,6 @@ const orthoGeometry = `
   .ol40 #Escape       ${translate(1.125, 2)}
   .ol40 #Backspace    ${translate(12.375, 1)}
   .ol40 #Enter        ${translate(11.75, 0.5)}
-
-  [platform="gnu"].ergo .specialKey .win,
-  [platform="gnu"].ergo .specialKey .mac,
-  [platform="win"].ergo .specialKey .gnu,
-  [platform="win"].ergo .specialKey .mac { display: none; }
-  .ergo .specialKey .mac,
-  [platform="gnu"].ergo .specialKey .gnu,
-  [platform="win"].ergo .specialKey .win { display: block; }
-
-  /* swap Alt/Meta for MacOSX */
-  [platform="gnu"].ergo #MetaLeft,
-  [platform="win"].ergo #MetaLeft,
-                  .ergo #AltLeft   ${translate(2.5)}
-  [platform="gnu"].ergo #AltLeft,
-  [platform="win"].ergo #AltLeft,
-                  .ergo #MetaLeft  ${translate(4.0)}
-  [platform="gnu"].ergo #AltRight,
-  [platform="win"].ergo #AltRight,
-                  .ergo #MetaRight ${translate(9.5)}
-  [platform="gnu"].ergo #MetaRight,
-  [platform="win"].ergo #MetaRight,
-                  .ergo #AltRight  ${translate(11.0)}
 `;
 
 // Korean + Japanese input systems
@@ -318,6 +289,21 @@ const modifiers = `
   [platform="win"] #AltRight,  #MetaRight ${translate(10.0)}
   [platform="gnu"] #MetaRight,
   [platform="win"] #MetaRight, #AltRight  ${translate(11.25)}
+
+  /* only show the left Shift and right Option key for ergo layouts */
+  .ergo #MetaLeft,
+  .ergo #MetaRight,
+  .ergo #ControlLeft,
+  .ergo #ControlRight,
+  .ergo #ContextMenu,
+  .ergo #AltLeft,
+  .ergo #ShiftRight { display: none; }
+
+  .ergo #AltRight { display: block; }
+  .ergo #AltRight ${translate(9.25)}
+  .ergo #AltRight .win,
+  .ergo #AltRight .gnu { display: none; }
+  .ergo #AltRight .mac { display: block; }
 `;
 
 // keymap layers

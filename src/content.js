@@ -315,7 +315,7 @@ const letterRow3 =
     gKey('specialKey', 'l5', 0, 'ShiftLeft', [
       rect('ansi alt', { width: 2.25 }),
       rect('iso', { width: 1.25 }),
-      rect('ergo', { width: 1.25 }),
+      rect('ergo', { width: 1.5 }),
       text('⇧'),
       text('⇧', 'ergo'),
     ]),
@@ -374,8 +374,8 @@ const baseRow =
   ]) +
   gKey('homeKey', 'm1', 3.75, 'Space', [
     rect('ansi', { width: 6.25 }),
-    rect('ol60', { width: 5.5, x: -1 }),
-    rect('ol40', { width: 4.5 }),
+    rect('ol60', { width: 5, x: -1 }),
+    rect('ol40', { width: 4 }),
     rect('ks', { width: 4.25, x: 1 }),
     rect('jis', { width: 3.25, x: 1 }),
   ]) +
