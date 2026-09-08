@@ -1,26 +1,7 @@
 import {
   KEY_WIDTH,
   KEY_PADDING,
-  KEY_BG,
-  KEY_COLOR,
-  KEY_COLOR_L3,
-  KEY_COLOR_L5,
-  DEAD_KEY_COLOR,
-  SPECIAL_KEY_BG,
-  // Nyan Quack
-  KEY_LIGHT_COL0,
-  KEY_LIGHT_COL1,
-  KEY_LIGHT_COL2,
-  KEY_LIGHT_COL3,
-  KEY_LIGHT_COL4,
-  KEY_LIGHT_BAR,
-  KEY_DARK_COL0,
-  KEY_DARK_COL1,
-  KEY_DARK_COL2,
-  KEY_DARK_COL3,
-  KEY_DARK_COL4,
-  KEY_DARK_BAR,
-} from './constants.js';
+} from './geometry.js';
 
 const translate = (x = 0, y = 0, offset) => {
   const dx = KEY_WIDTH * x + (offset ? KEY_PADDING : 0);
@@ -28,24 +9,117 @@ const translate = (x = 0, y = 0, offset) => {
   return `{ transform: translate(${dx}px, ${dy}px); }`;
 };
 
-const main = `
+const themes = `
+  svg, :root {
+    color-scheme: light dark;
+
+    --key-txt:    #333;
+    --key-fg:     #666;
+    --key-bg:     #f8f8f8;
+    --special-bg: #e4e4e4;
+    --target-bg:  #aad;
+    --hint-bg:    #a33;
+    --press-bg:   #335;
+    --press-fg:   #fff;
+
+    --altgr-txt:  blue;
+    --1dk-txt:    green;
+    --dk-txt:     red;
+
+    --bar-bg:    hsl(-90deg, 100%, 90%);
+    --col0-bg:   hsl(-90deg, 100%, 90%);
+    --col1-bg:   hsl(200deg, 100%, 85%);
+    --col2-bg:   hsl(136deg, 100%, 85%);
+    --col3-bg:   hsl( 60deg, 100%, 85%);
+    --col4-bg:   hsl( 30deg, 100%, 90%);
+    --col4-bg:   hsl(-20deg, 100%, 90%);
+
+    --pinky-bg:  hsl(-90deg,  70%, 90%);
+    --number-bg: hsl(295deg, 100%, 95%);
+    --letter-bg: hsl(222deg, 100%, 95%);
+    --home-bg:   hsl(222deg, 100%, 90%);
+  }
+
+  @media (prefers-color-scheme: dark) { svg, :root {
+    --key-txt:    #bbb;
+    --key-fg:     #777;
+    --key-bg:     #4d4d4d;
+    --special-bg: #333;
+    --target-bg:  #558;
+    --press-bg:   #449;
+
+    --altgr-txt:  #99f;
+    --1dk-txt:    #6d6;
+    --dk-txt:     #f44;
+
+    --bar-bg:    hsl(-90deg, 25%, 35%);
+    --col0-bg:   hsl(-90deg, 25%, 50%);
+    --col1-bg:   hsl(225deg, 25%, 40%);
+    --col2-bg:   hsl(135deg, 25%, 40%);
+    --col3-bg:   hsl( 40deg, 27%, 48%);
+    --col4-bg:   hsl(330deg, 25%, 53%);
+
+    --pinky-bg:  hsl(-90deg, 10%, 40%);
+    --number-bg: hsl(280deg, 10%, 34%);
+    --letter-bg: hsl(220deg, 15%, 35%);
+    --home-bg:   hsl(225deg, 30%, 30%);
+  }}
+
   rect, path {
-    stroke: #666;
+    fill:   var(--key-bg);
+    stroke: var(--key-fg);
     stroke-width: .5px;
-    fill: ${KEY_BG};
   }
   .specialKey,
   .specialKey rect,
-  .specialKey path {
-    fill: ${SPECIAL_KEY_BG};
-  }
+  .specialKey path { fill: var(--special-bg); }
+
+  g:target rect, .press rect,
+  g:target path, .press path { fill: var(--target-bg); }
+
   text {
-    fill: ${KEY_COLOR};
     font: normal 20px sans-serif;
+    fill: var(--key-txt);
+    text-shadow: 1px 1px var(--key-bg);
     text-align: center;
   }
-  #Backspace text {
-    font-size: 12px;
+  .level3, .level4      { fill: var(--altgr-txt); }
+  .level5, .level6, .dk { fill: var(--1dk-txt); }
+  .deadKey              { fill: var(--dk-txt); }
+
+  [theme="hints"] {
+    [finger="m1"] rect { fill: var(--bar-bg);  }
+    [finger="l2"] rect,
+    [finger="r2"] rect { fill: var(--col4-bg); }
+    [finger="l3"] rect,
+    [finger="r3"] rect { fill: var(--col3-bg); }
+    [finger="l4"] rect,
+    [finger="r4"] rect { fill: var(--col2-bg); }
+    [finger="l5"] rect,
+    [finger="r5"] rect { fill: var(--col1-bg); }
+
+    [finger="l5"].pinkyKey rect { fill: url(#outerLeft); }
+    [finger="l2"].innerKey rect { fill: url(#innerLeft); }
+    [finger="r2"].innerKey rect { fill: url(#innerRight); }
+    [finger="r5"].pinkyKey rect { fill: url(#outerRight); }
+
+    .specialKey rect,
+    .specialKey path { fill: var(--special-bg); } /* duplicate? */
+    .press      rect { fill: var(--press-bg);   }
+    .press      text { fill: var(--press-fg);   }
+    .hint       rect { fill: var(--hint-bg);    }
+    .hint text {
+      font-weight: bold;
+      fill: var(--press-fg);
+    }
+  }
+
+  [theme="reach"] {
+    .pinkyKey  rect { fill: var(--pinky-bg);  } /* disabled on ergol.org */
+    .numberKey rect { fill: var(--number-bg); }
+    .letterKey rect { fill: var(--letter-bg); }
+    .homeKey   rect { fill: var(--home-bg);   }
+    .press     rect { fill: var(--bar-bg);    } /* duplicate? */
   }
 `;
 
@@ -246,50 +320,13 @@ const modifiers = `
   [platform="win"] #MetaRight, #AltRight  ${translate(11.25)}
 `;
 
-// color themes
-const themes = `
-  g:target rect, .press rect,
-  g:target path, .press path {
-    fill: #aad;
-  }
-
-  [theme="reach"] .pinkyKey  rect { fill: hsl(  0, 100%, 90%); }
-  [theme="reach"] .numberKey rect { fill: hsl( 42, 100%, 90%); }
-  [theme="reach"] .letterKey rect { fill: hsl(122, 100%, 90%); }
-  [theme="reach"] .homeKey   rect { fill: hsl(122, 100%, 75%); }
-  [theme="reach"] .press     rect { fill: #aaf; }
-
-  [theme="hints"] [finger="m1"] rect { fill: ${KEY_LIGHT_BAR};  }
-  [theme="hints"] [finger="l2"] rect { fill: ${KEY_LIGHT_COL4}; }
-  [theme="hints"] [finger="r2"] rect { fill: ${KEY_LIGHT_COL4}; }
-  [theme="hints"] [finger="l3"] rect,
-  [theme="hints"] [finger="r3"] rect { fill: ${KEY_LIGHT_COL3}; }
-  [theme="hints"] [finger="l4"] rect,
-  [theme="hints"] [finger="r4"] rect { fill: ${KEY_LIGHT_COL2}; }
-  [theme="hints"] [finger="l5"] rect,
-  [theme="hints"] [finger="r5"] rect { fill: ${KEY_LIGHT_COL1}; }
-  [theme="hints"] [finger="l5"].pinkyKey rect { fill: url(#lightOuterLeft); }
-  [theme="hints"] [finger="l2"].innerKey rect { fill: url(#lightInnerLeft); }
-  [theme="hints"] [finger="r2"].innerKey rect { fill: url(#lightInnerRight); }
-  [theme="hints"] [finger="r5"].pinkyKey rect { fill: url(#lightOuterRight); }
-  [theme="hints"] .specialKey   rect,
-  [theme="hints"] .specialKey   path { fill: ${SPECIAL_KEY_BG}; }
-  [theme="hints"] .hint         rect { fill: #a33; }
-  [theme="hints"] .press        rect { fill: #335; }
-  [theme="hints"] .press        text { fill: #fff; }
-  [theme="hints"] .hint text {
-    font-weight: bold;
-    fill: white;
-  }
-
+// keymap layers
+const layers = `
   /* dimmed AltGr + bold dead keys */
-  .level3, .level4      { fill: ${KEY_COLOR_L3}; opacity: .5; }
-  .level5, .level6, .dk { fill: ${KEY_COLOR_L5}; }
   .deadKey {
-    fill: ${DEAD_KEY_COLOR};
     font-size: 14px;
   }
-  .diacritic  {
+  .diacritic {
     font-size: 20px;
     font-weight: bolder;
   }
@@ -327,54 +364,15 @@ const themes = `
   .dk .dk2, .altgr .level4 { opacity: 1; }
   .dk .level3, .dk level4,
   .dk .level5, .dk level6 { display: none; }
-
-  @media (prefers-color-scheme: dark) {
-    rect, path { stroke: #777; fill: #4d4d4d; }
-    .specialKey, .specialKey rect, .specialKey path { fill: #333; }
-    g:target rect, .press rect, g:target path, .press path { fill: #558; }
-    text { fill: #bbb; }
-    .level3, .level4 { fill: #99f; }
-    .level5, .level6, .dk { fill: #6d6; }
-    .deadKey { fill: #f44; }
-
-    [theme="reach"] .pinkyKey  rect { fill: hsl(  0, 20%, 30%); }
-    [theme="reach"] .numberKey rect { fill: hsl( 35, 25%, 30%); }
-    [theme="reach"] .letterKey rect { fill: hsl( 61, 30%, 30%); }
-    [theme="reach"] .homeKey   rect { fill: hsl(136, 30%, 30%); }
-    [theme="reach"] .press     rect { fill: #449; }
-
-    [theme="hints"] [finger="m1"] rect { fill: ${KEY_DARK_BAR};  }
-    [theme="hints"] [finger="l2"] rect { fill: ${KEY_DARK_COL4}; }
-    [theme="hints"] [finger="r2"] rect { fill: ${KEY_DARK_COL4}; }
-    [theme="hints"] [finger="l3"] rect,
-    [theme="hints"] [finger="r3"] rect { fill: ${KEY_DARK_COL3}; }
-    [theme="hints"] [finger="l4"] rect,
-    [theme="hints"] [finger="r4"] rect { fill: ${KEY_DARK_COL2}; }
-    [theme="hints"] [finger="l5"] rect,
-    [theme="hints"] [finger="r5"] rect { fill: ${KEY_DARK_COL1}; }
-    [theme="hints"] [finger="l5"].pinkyKey rect { fill: url(#darkOuterLeft); }
-    [theme="hints"] [finger="l2"].innerKey rect { fill: url(#darkInnerLeft); }
-    [theme="hints"] [finger="r2"].innerKey rect { fill: url(#darkInnerRight); }
-    [theme="hints"] [finger="r5"].pinkyKey rect { fill: url(#darkOuterRight); }
-    [theme="hints"] .specialKey   rect,
-    [theme="hints"] .specialKey   path { fill: #333; }
-    [theme="hints"] .hint         rect { fill: #a33; }
-    [theme="hints"] .press        rect { fill: #335; }
-    [theme="hints"] .press        text { fill: #fff; }
-    [theme="hints"] .hint text {
-      font-weight: bold;
-      fill: white;
-    }
-  }
 `;
 
 // export full stylesheet
 const style = `
-  ${main}
+  ${themes}
   ${classicGeometry}
   ${orthoGeometry}
   ${cjkKeys}
   ${modifiers}
-  ${themes}
+  ${layers}
 `;
 export default style;

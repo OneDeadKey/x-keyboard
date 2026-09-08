@@ -1,14 +1,6 @@
-import { KEY_WIDTH, KEY_PADDING, KEY_RADIUS } from './constants.js';
+import { KEY_WIDTH, KEY_PADDING, KEY_RADIUS } from './geometry.js';
 import { isDeadKey } from './x-keyboard-layout.js';
 import dkSymbols from './symbols.js';
-import {
-  KEY_LIGHT_COL0,
-  KEY_LIGHT_COL1,
-  KEY_LIGHT_COL4,
-  KEY_DARK_COL0,
-  KEY_DARK_COL1,
-  KEY_DARK_COL4,
-} from './constants.js';
 
 /**
  * Enter Key: ISO & ALT
@@ -436,14 +428,10 @@ export const svgContent = `
   <svg viewBox="0 0 ${KEY_WIDTH * 15} ${KEY_WIDTH * 5}"
       xmlns="http://www.w3.org/2000/svg">
     <defs>
-      ${gradient('lightOuterLeft', KEY_LIGHT_COL0, KEY_LIGHT_COL1)}
-      ${gradient('lightInnerLeft', KEY_LIGHT_COL4, KEY_LIGHT_COL0)}
-      ${gradient('lightInnerRight', KEY_LIGHT_COL0, KEY_LIGHT_COL4)}
-      ${gradient('lightOuterRight', KEY_LIGHT_COL1, KEY_LIGHT_COL0)}
-      ${gradient('darkOuterLeft', KEY_DARK_COL0, KEY_DARK_COL1)}
-      ${gradient('darkInnerLeft', KEY_DARK_COL4, KEY_DARK_COL0)}
-      ${gradient('darkInnerRight', KEY_DARK_COL0, KEY_DARK_COL4)}
-      ${gradient('darkOuterRight', KEY_DARK_COL1, KEY_DARK_COL0)}
+      ${gradient('outerLeft', 'var(--col0-bg)', 'var(--col1-bg)')}
+      ${gradient('innerLeft', 'var(--col4-bg)', 'var(--col0-bg)')}
+      ${gradient('innerRight', 'var(--col0-bg)', 'var(--col4-bg)')}
+      ${gradient('outerRight', 'var(--col1-bg)', 'var(--col0-bg)')}
     </defs>
     <g id="row_AE" text-anchor="middle"> ${numberRow}  </g>
     <g id="row_AD" text-anchor="middle"> ${letterRow1} </g>
