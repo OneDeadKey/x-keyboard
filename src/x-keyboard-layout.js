@@ -13,7 +13,8 @@
  *     ...
  *   },
  *   geometry: 'ansi' // 'ansi', 'iso', 'alt', 'abnt', 'jis', 'ks' (standard)
- *                    // or 'ol60', 'ol50', 'ol40' (ortholinear)
+ *                    // or 'isoa' (ISO with angle-mod)
+ *                    // or 'ol60', 'ol40' (ortholinear)
  * }
  */
 
