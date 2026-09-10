@@ -249,7 +249,8 @@ const numberRow =
       rect('ansi', { width: 2 }),
       rect('ergo', { width: 1.25 }),
       rect('alt', { x: 1 }),
-      text('⌫', 'ansi, ergo'),
+      text('⌫', 'ansi'),
+      text('⌫', 'ergo'),
       text('⌫', 'alt', { translateX: 1 }),
     ]),
   ]);
@@ -438,11 +439,11 @@ const gradient = (id, start, stop) => `
 export const svgContent = `<svg xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 ${KEY_WIDTH * 15} ${KEY_HEIGHT * 5}">
   <style>
-    ${translate('#row_AE', 0, 0, true)}
-    ${translate('#row_AD', 0, 1, true)}
-    ${translate('#row_AC', 0, 2, true)}
-    ${translate('#row_AB', 0, 3, true)}
-    ${translate('#row_AA', 0, 4, true)}
+    ${translate('.row_AE', 0, 0, true)}
+    ${translate('.row_AD', 0, 1, true)}
+    ${translate('.row_AC', 0, 2, true)}
+    ${translate('.row_AB', 0, 3, true)}
+    ${translate('.row_AA', 0, 4, true)}
     ${translate('.iso #Backslash', 12.75, 1)}
     ${translate('.alt #Backslash', 13.0, -1)}
 
@@ -459,10 +460,10 @@ export const svgContent = `<svg xmlns="http://www.w3.org/2000/svg"
       ${translate('#Tab      ', 0.25, 0.5)}
     }
     .ol60 {
-      ${translate('#row_AE', 1.5, 0, true)}
-      ${translate('#row_AD', 1.0, 1, true)}
-      ${translate('#row_AC', 0.75, 2, true)}
-      ${translate('#row_AB', 0.25, 3, true)}
+      ${translate('.row_AE', 1.5, 0, true)}
+      ${translate('.row_AD', 1.0, 1, true)}
+      ${translate('.row_AC', 0.75, 2, true)}
+      ${translate('.row_AB', 0.25, 3, true)}
       ${translate('.left', -1.25)}
       ${translate('.right', 0.25)}
       ${translate('#Escape       ', 6.125, 0.5)}
@@ -478,10 +479,10 @@ export const svgContent = `<svg xmlns="http://www.w3.org/2000/svg"
       ${translate('#Backslash    ', 12.5, 1.5)}
     }
     .ol40 {
-      ${translate('#row_AD', 0.875, 0.5, true)}
-      ${translate('#row_AC', 0.625, 1.5, true)}
-      ${translate('#row_AB', 0.125, 2.5, true)}
-      ${translate('#row_AA', -0.125, 3.5, true)}
+      ${translate('.row_AD', 0.875, 0.5, true)}
+      ${translate('.row_AC', 0.625, 1.5, true)}
+      ${translate('.row_AB', 0.125, 2.5, true)}
+      ${translate('.row_AA', -0.125, 3.5, true)}
       ${translate('.left', -0.25)}
       ${translate('.right', 0.25)}
       ${translate('#Escape   ', 1.125, 2)}
@@ -497,9 +498,9 @@ export const svgContent = `<svg xmlns="http://www.w3.org/2000/svg"
     ${gradient('innerRight', 'var(--col0-bg)', 'var(--col4-bg)')}
     ${gradient('outerRight', 'var(--col1-bg)', 'var(--col0-bg)')}
   </defs>
-  <g id="row_AE" text-anchor="middle"> ${numberRow}  </g>
-  <g id="row_AD" text-anchor="middle"> ${letterRow1} </g>
-  <g id="row_AC" text-anchor="middle"> ${letterRow2} </g>
-  <g id="row_AB" text-anchor="middle"> ${letterRow3} </g>
-  <g id="row_AA" text-anchor="middle"> ${baseRow}    </g>
+  <g class="row_AE" text-anchor="middle"> ${numberRow}  </g>
+  <g class="row_AD" text-anchor="middle"> ${letterRow1} </g>
+  <g class="row_AC" text-anchor="middle"> ${letterRow2} </g>
+  <g class="row_AB" text-anchor="middle"> ${letterRow3} </g>
+  <g class="row_AA" text-anchor="middle"> ${baseRow}    </g>
 </svg>`;
