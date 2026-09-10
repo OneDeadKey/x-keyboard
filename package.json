@@ -8,7 +8,8 @@
   "scripts": {
     "lint": "eslint .",
     "build": "esbuild src/x-keyboard.js --bundle --outfile=x-keyboard.js --minify",
-    "watch": "esbuild src/x-keyboard.js --bundle --outfile=x-keyboard.js --watch"
+    "watch": "esbuild src/x-keyboard.js --bundle --outfile=x-keyboard.js --watch",
+    "prettify": "prettier src/*.js --write"
   },
   "repository": {
     "type": "git",
@@ -30,7 +31,8 @@
     "esbuild": "^0.28.2",
     "eslint": "^7.9.0",
     "eslint-config-airbnb-base": "^14.2.0",
-    "eslint-plugin-import": "^2.22.0"
+    "eslint-plugin-import": "^2.22.0",
+    "prettier": "^3.9.6"
   },
   "eslintConfig": {
     "env": {
