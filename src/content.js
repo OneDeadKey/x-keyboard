@@ -63,19 +63,22 @@ const isoEnterPath = [
  * DOM-to-Text Utils
  */
 
+const unit2axis = (value, vertical) =>
+  Math.round(10 * (vertical ? KEY_HEIGHT : KEY_WIDTH) * Number(value)) / 10;
+
 const sgml = (nodeName, attributes = {}, children = []) =>
   `<${nodeName} ${Object.entries(attributes)
     .map(([id, value]) => {
       if (id === 'x' || id === 'y') {
         return `${id}="${
-          KEY_WIDTH * Number(value) - (nodeName === 'text' ? KEY_PADDING : 0)
+          unit2axis(value, id === 'y') - (nodeName === 'text' ? KEY_PADDING : 0)
         }"`;
       }
       if (id === 'width' || id === 'height') {
-        return `${id}="${KEY_WIDTH * Number(value) - 2 * KEY_PADDING}"`;
+        return `${id}="${unit2axis(value, id === 'height') - 2 * KEY_PADDING}"`;
       }
       if (id === 'translateX') {
-        return `transform="translate(${KEY_WIDTH * Number(value)}, 0)"`;
+        return `transform="translate(${unit2axis(value)}, 0)"`;
       }
       return `${id}="${value}"`;
     })
@@ -98,8 +101,6 @@ const text = (content, cname = '', attributes) =>
     'text',
     {
       class: cname,
-      width: 0.5,
-      height: 0.5,
       x: 0.34,
       y: 0.78,
       ...attributes,
