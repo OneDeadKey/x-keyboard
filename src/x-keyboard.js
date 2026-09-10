@@ -134,6 +134,7 @@ class Keyboard extends HTMLElement {
      * Supported geometries (besides ANSI):
      * - Euro-style [Enter] key:
      *     ISO  = ANSI + IntlBackslash
+     *     ISOA = ANSI + IntlBackslash + angle-mod
      *     ABNT = ISO + IntlRo + NumpadComma
      *     JIS  = ISO + IntlRo + IntlYen - IntlBackslash
      *                + NonConvert + Convert + KanaMode
@@ -141,9 +142,8 @@ class Keyboard extends HTMLElement {
      *     ALT = ANSI - Backslash + IntlYen
      *     KS = ALT + Lang1 + Lang2
      * - Ortholinear:
-     *     OL60 = TypeMatrix 2030
-     *     OL50 = OLKB Preonic
-     *     OL40 = OLKB Planck
+     *     OL60 = TMx2030 / QMx2040
+     *     OL40 = Arsenik-like
      */
     const supportedShapes = {
       alt: ['alt', 'intlYen'],
@@ -151,9 +151,9 @@ class Keyboard extends HTMLElement {
       jis: ['iso', 'intlYen', 'intlRo', 'jis'],
       abnt: ['iso', 'intlBackslash', 'intlRo'],
       iso: ['iso', 'intlBackslash'],
+      isoa: ['iso', 'intlBackslash', 'am'],
       ansi: [],
       ol60: ['ergo', 'ol60'],
-      ol50: ['ergo', 'ol50'],
       ol40: ['ergo', 'ol40'],
     };
     if (value && !(value in supportedShapes)) {

@@ -380,7 +380,7 @@ const baseRow =
   ]) +
   gKey('homeKey', 'm1', 3.75, 'Space', [
     rect('ansi', { width: 6.25 }),
-    rect('ol60', { width: 5, x: -1 }),
+    rect('ol60', { width: 5 }),
     rect('ol40', { width: 4 }),
     rect('ks', { width: 4.25, x: 1 }),
     rect('jis', { width: 3.25, x: 1 }),
@@ -448,13 +448,22 @@ export const svgContent = `<svg xmlns="http://www.w3.org/2000/svg"
     ${translate('.alt #Backslash', 13.0, -1)}
 
     /* swap Alt/Meta for macOS */
-    ${translate('[platform="mac"] #AltLeft,   #MetaLeft ', 1.25)}
-    ${translate('[platform="mac"] #MetaLeft,  #AltLeft  ', 2.5)}
-    ${translate('[platform="mac"] #MetaRight, #AltRight ', 10.0)}
-    ${translate('[platform="mac"] #AltRight,  #MetaRight', 11.25)}
+    ${translate('[platform="gnu"] #MetaLeft,  [platform="win"] #MetaLeft,  #AltLeft', 1.25)}
+    ${translate('[platform="gnu"] #AltLeft,   [platform="win"] #AltLeft,   #MetaLeft', 2.5)}
+    ${translate('[platform="gnu"] #AltRight,  [platform="win"] #AltRight,  #MetaRight', 10.0)}
+    ${translate('[platform="gnu"] #MetaRight, [platform="win"] #MetaRight, #AltRight', 11.25)}
+
+    /* Angle Mod */
+    .am {
+      ${translate('#KeyZ         ', 1.25)}
+      ${translate('#KeyX         ', 2.25)}
+      ${translate('#KeyC         ', 3.25)}
+      ${translate('#KeyV         ', 4.25)}
+      ${translate('#KeyB         ', 5.25)}
+      ${translate('#IntlBackslash', 6.25)}
+    }
 
     .ergo {
-      ${translate('#Space    ', 5.5)}
       ${translate('#ShiftLeft', 4, 1)}
       ${translate('#AltRight ', 9.25)}
       ${translate('#Tab      ', 0.25, 0.5)}
@@ -464,6 +473,7 @@ export const svgContent = `<svg xmlns="http://www.w3.org/2000/svg"
       ${translate('.row_AD', 1.0, 1, true)}
       ${translate('.row_AC', 0.75, 2, true)}
       ${translate('.row_AB', 0.25, 3, true)}
+      ${translate('#Space ', 4.5)}
       ${translate('.left', -1.25)}
       ${translate('.right', 0.25)}
       ${translate('#Escape       ', 6.125, 0.5)}
@@ -483,6 +493,7 @@ export const svgContent = `<svg xmlns="http://www.w3.org/2000/svg"
       ${translate('.row_AC', 0.625, 1.5, true)}
       ${translate('.row_AB', 0.125, 2.5, true)}
       ${translate('.row_AA', -0.125, 3.5, true)}
+      ${translate('#Space ', 5.5)}
       ${translate('.left', -0.25)}
       ${translate('.right', 0.25)}
       ${translate('#Escape   ', 1.125, 2)}
