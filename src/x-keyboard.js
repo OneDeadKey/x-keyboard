@@ -1,6 +1,5 @@
 import { newKeyboardLayout } from './x-keyboard-layout.js';
 import { svgContent, drawKey, drawDK } from './content.js';
-import css from './style.js';
 
 /**
  * Custom Element
@@ -51,7 +50,7 @@ const guessPlatform = () => {
 };
 
 const template = document.createElement('template');
-template.innerHTML = `<style>${css}</style>${svgContent}`;
+template.innerHTML = svgContent;
 
 class Keyboard extends HTMLElement {
   constructor() {
