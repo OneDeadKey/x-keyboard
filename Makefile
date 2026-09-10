@@ -2,6 +2,7 @@ watch:
 	npm run watch
 
 publish:
+	npm run prettify
 	npm run build
 	npm run lint
 	npm publish
