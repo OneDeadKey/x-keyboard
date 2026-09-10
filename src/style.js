@@ -1,14 +1,3 @@
-import {
-  KEY_WIDTH,
-  KEY_PADDING,
-} from './geometry.js';
-
-const translate = (x = 0, y = 0, offset) => {
-  const dx = KEY_WIDTH * x + (offset ? KEY_PADDING : 0);
-  const dy = KEY_WIDTH * y + (offset ? KEY_PADDING : 0);
-  return `{ transform: translate(${dx}px, ${dy}px); }`;
-};
-
 const themes = `
   svg, :root {
     color-scheme: light dark;
@@ -127,12 +116,6 @@ const themes = `
 const classicGeometry = `
   #Escape { display: none; }
 
-  #row_AE ${translate(0, 0, true)}
-  #row_AD ${translate(0, 1, true)}
-  #row_AC ${translate(0, 2, true)}
-  #row_AB ${translate(0, 3, true)}
-  #row_AA ${translate(0, 4, true)}
-
   /* Backslash + Enter */
   #Enter path.alt,
   #Enter     .iso,
@@ -146,8 +129,6 @@ const classicGeometry = `
   .alt #Enter     .alt,
   .iso #Enter     .iso,
   .iso #Backslash .iso { display: block; }
-  .iso #Backslash ${translate(12.75, 1)}
-  .alt #Backslash ${translate(13.0, -1)}
 
   /* Backspace + IntlYen */
   #IntlYen, #Backspace .alt,
@@ -182,8 +163,12 @@ const orthoGeometry = `
   .ergo #Space      rect,
   .ergo #Backslash  rect,
   .ergo .specialKey rect,
-  .ergo .specialKey text { display: none; }
+  .ergo .specialKey text,
+  .ol40 .pinkyKey,
+  .ol40 #row_AE .numberKey { display: none; }
+
   .ergo #Escape,
+  .ol60 #IntlBackslash,
   .ol60 #Space        .ol60,
   .ol40 #Space        .ol40,
   .ol60 #Backquote    .ol60,
@@ -193,43 +178,6 @@ const orthoGeometry = `
   .ol60 .specialKey   .ol60,
   .ol40 .specialKey   .ol40,
   .ergo .specialKey   .ergo { display: block; }
-
-  .ol40 .pinkyKey,
-  .ol40 #row_AE .numberKey { display: none; }
-
-  .ol60 #row_AE ${translate(1.50, 0, true)}
-  .ol60 #row_AD ${translate(1.00, 1, true)}
-  .ol60 #row_AC ${translate(0.75, 2, true)}
-  .ol60 #row_AB ${translate(0.25, 3, true)}
-
-  .ol40 #row_AD ${translate(0.875, 0.5, true)}
-  .ol40 #row_AC ${translate(0.625, 1.5, true)}
-  .ol40 #row_AB ${translate(0.125, 2.5, true)}
-  .ol40 #row_AA ${translate(-0.125, 3.5, true)}
-
-  .ergo .left         ${translate(-0.25)}
-  .ergo .right        ${translate(0.25)}
-  .ergo #Space        ${translate(5.5)}
-  .ergo #ShiftLeft    ${translate(4, 1)}
-  .ergo #Tab          ${translate(0.25, 0.5)}
-
-  .ol60 .left         ${translate(-1.25)}
-  .ol60 #Escape       ${translate(6.125, 0.5)}
-  .ol60 #Enter        ${translate(5.375, 0.5)}
-  .ol60 #Backspace    ${translate(4.625, 1.5)}
-  .ol60 #Backquote    ${translate(0, 0.5)}
-  .ol60 #IntlBackslash ${translate(1.25, -0.5)}
-  .ol60 #Minus        ${translate(11.0, 0.5)}
-  .ol60 #Equal        ${translate(12.0, 0.5)}
-  .ol60 #BracketLeft  ${translate(11.5, 0.5)}
-  .ol60 #BracketRight ${translate(12.5, 0.5)}
-  .ol60 #Quote        ${translate(11.75, 0.5)}
-  .ol60 #Backslash    ${translate(12.5, 1.5)}
-  .ol60 #IntlBackslash { display: block; }
-
-  .ol40 #Escape       ${translate(1.125, 2)}
-  .ol40 #Backspace    ${translate(12.375, 1)}
-  .ol40 #Enter        ${translate(11.75, 0.5)}
 `;
 
 // Korean + Japanese input systems
@@ -280,30 +228,20 @@ const modifiers = `
   [platform="gnu"] .specialKey .gnu,
   [platform="win"] .specialKey .win { display: block; }
 
-  /* swap Alt/Meta for MacOSX */
-  [platform="gnu"] #MetaLeft,
-  [platform="win"] #MetaLeft,  #AltLeft   ${translate(1.25)}
-  [platform="gnu"] #AltLeft,
-  [platform="win"] #AltLeft,   #MetaLeft  ${translate(2.5)}
-  [platform="gnu"] #AltRight,
-  [platform="win"] #AltRight,  #MetaRight ${translate(10.0)}
-  [platform="gnu"] #MetaRight,
-  [platform="win"] #MetaRight, #AltRight  ${translate(11.25)}
-
   /* only show the left Shift and right Option key for ergo layouts */
-  .ergo #MetaLeft,
-  .ergo #MetaRight,
-  .ergo #ControlLeft,
-  .ergo #ControlRight,
-  .ergo #ContextMenu,
-  .ergo #AltLeft,
-  .ergo #ShiftRight { display: none; }
-
-  .ergo #AltRight { display: block; }
-  .ergo #AltRight ${translate(9.25)}
-  .ergo #AltRight .win,
-  .ergo #AltRight .gnu { display: none; }
-  .ergo #AltRight .mac { display: block; }
+  .ergo {
+    #MetaLeft,
+    #MetaRight,
+    #ControlLeft,
+    #ControlRight,
+    #ContextMenu,
+    #AltLeft,
+    #ShiftRight,
+    #AltRight .win,
+    #AltRight .gnu { display: none; }
+    #AltRight,
+    #AltRight .mac { display: block; }
+  }
 `;
 
 // keymap layers
