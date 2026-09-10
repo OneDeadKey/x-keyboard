@@ -1,6 +1,10 @@
-import { KEY_WIDTH, KEY_PADDING, KEY_RADIUS } from './geometry.js';
 import { isDeadKey } from './x-keyboard-layout.js';
 import dkSymbols from './symbols.js';
+
+const KEY_WIDTH = 60; // 1U = 0.75" = 19.05mm = 60px
+const KEY_HEIGHT = 60;
+const KEY_PADDING = 4; // 8px between two key edges
+const KEY_RADIUS = 5; // 5px border radius
 
 /**
  * Enter Key: ISO & ALT
@@ -30,7 +34,7 @@ const v = (length, gap = 0, ccw = 0) => {
   return `v${l} ${ccw ? arc(1, sign, sign) : arc(0, -sign, sign)}`;
 };
 
-const M = `M${0.75 * KEY_WIDTH + KEY_RADIUS},-${KEY_WIDTH}`;
+const M = `M${0.75 * KEY_WIDTH + KEY_RADIUS},-${KEY_HEIGHT}`;
 
 const altEnterPath = [
   M,
@@ -243,8 +247,7 @@ const numberRow =
       rect('ansi', { width: 2 }),
       rect('ergo', { width: 1.25 }),
       rect('alt', { x: 1 }),
-      text('⌫', 'ansi'),
-      text('⌫', 'ergo'),
+      text('⌫', 'ansi, ergo'),
       text('⌫', 'alt', { translateX: 1 }),
     ]),
   ]);
@@ -417,26 +420,82 @@ const baseRow =
     ]),
   ]);
 
+const translate = (selector, x = 0, y = 0, offset) => {
+  const dx = KEY_WIDTH * x + (offset ? KEY_PADDING : 0);
+  const dy = KEY_HEIGHT * y + (offset ? KEY_PADDING : 0);
+  return `${selector} { transform: translate(${dx}px, ${dy}px); }`;
+};
+
 const gradient = (id, start, stop) => `
-      <linearGradient id="${id}" x1="0%" x2="100%" y1="0%" y2="0%">
-        <stop offset="0%"   stop-color="${start}" />
-        <stop offset="100%" stop-color="${stop}" />
-      </linearGradient>
+    <linearGradient id="${id}" x1="0%" x2="100%" y1="0%" y2="0%">
+      <stop offset="0%"   stop-color="${start}" />
+      <stop offset="100%" stop-color="${stop}" />
+    </linearGradient>
 `;
 
-export const svgContent = `
-  <svg viewBox="0 0 ${KEY_WIDTH * 15} ${KEY_WIDTH * 5}"
-      xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      ${gradient('outerLeft', 'var(--col0-bg)', 'var(--col1-bg)')}
-      ${gradient('innerLeft', 'var(--col4-bg)', 'var(--col0-bg)')}
-      ${gradient('innerRight', 'var(--col0-bg)', 'var(--col4-bg)')}
-      ${gradient('outerRight', 'var(--col1-bg)', 'var(--col0-bg)')}
-    </defs>
-    <g id="row_AE" text-anchor="middle"> ${numberRow}  </g>
-    <g id="row_AD" text-anchor="middle"> ${letterRow1} </g>
-    <g id="row_AC" text-anchor="middle"> ${letterRow2} </g>
-    <g id="row_AB" text-anchor="middle"> ${letterRow3} </g>
-    <g id="row_AA" text-anchor="middle"> ${baseRow}    </g>
-  </svg>
-`;
+export const svgContent = `<svg xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 ${KEY_WIDTH * 15} ${KEY_HEIGHT * 5}">
+  <style>
+    ${translate('#row_AE', 0, 0, true)}
+    ${translate('#row_AD', 0, 1, true)}
+    ${translate('#row_AC', 0, 2, true)}
+    ${translate('#row_AB', 0, 3, true)}
+    ${translate('#row_AA', 0, 4, true)}
+    ${translate('.iso #Backslash', 12.75, 1)}
+    ${translate('.alt #Backslash', 13.0, -1)}
+
+    /* swap Alt/Meta for macOS */
+    ${translate('[platform="mac"] #AltLeft,   #MetaLeft ', 1.25)}
+    ${translate('[platform="mac"] #MetaLeft,  #AltLeft  ', 2.5)}
+    ${translate('[platform="mac"] #MetaRight, #AltRight ', 10.0)}
+    ${translate('[platform="mac"] #AltRight,  #MetaRight', 11.25)}
+
+    .ergo {
+      ${translate('#Space    ', 5.5)}
+      ${translate('#ShiftLeft', 4, 1)}
+      ${translate('#AltRight ', 9.25)}
+      ${translate('#Tab      ', 0.25, 0.5)}
+    }
+    .ol60 {
+      ${translate('#row_AE', 1.5, 0, true)}
+      ${translate('#row_AD', 1.0, 1, true)}
+      ${translate('#row_AC', 0.75, 2, true)}
+      ${translate('#row_AB', 0.25, 3, true)}
+      ${translate('.left', -1.25)}
+      ${translate('.right', 0.25)}
+      ${translate('#Escape       ', 6.125, 0.5)}
+      ${translate('#Enter        ', 5.375, 0.5)}
+      ${translate('#Backspace    ', 4.625, 1.5)}
+      ${translate('#Backquote    ', 0, 0.5)}
+      ${translate('#IntlBackslash', 1.25, -0.5)}
+      ${translate('#Minus        ', 11.0, 0.5)}
+      ${translate('#Equal        ', 12.0, 0.5)}
+      ${translate('#BracketLeft  ', 11.5, 0.5)}
+      ${translate('#BracketRight ', 12.5, 0.5)}
+      ${translate('#Quote        ', 11.75, 0.5)}
+      ${translate('#Backslash    ', 12.5, 1.5)}
+    }
+    .ol40 {
+      ${translate('#row_AD', 0.875, 0.5, true)}
+      ${translate('#row_AC', 0.625, 1.5, true)}
+      ${translate('#row_AB', 0.125, 2.5, true)}
+      ${translate('#row_AA', -0.125, 3.5, true)}
+      ${translate('.left', -0.25)}
+      ${translate('.right', 0.25)}
+      ${translate('#Escape   ', 1.125, 2)}
+      ${translate('#Backspace', 12.375, 1)}
+      ${translate('#Enter    ', 11.75, 0.5)}
+    }
+  </style>
+  <defs>
+    ${gradient('outerLeft', 'var(--col0-bg)', 'var(--col1-bg)')}
+    ${gradient('innerLeft', 'var(--col4-bg)', 'var(--col0-bg)')}
+    ${gradient('innerRight', 'var(--col0-bg)', 'var(--col4-bg)')}
+    ${gradient('outerRight', 'var(--col1-bg)', 'var(--col0-bg)')}
+  </defs>
+  <g id="row_AE" text-anchor="middle"> ${numberRow}  </g>
+  <g id="row_AD" text-anchor="middle"> ${letterRow1} </g>
+  <g id="row_AC" text-anchor="middle"> ${letterRow2} </g>
+  <g id="row_AB" text-anchor="middle"> ${letterRow3} </g>
+  <g id="row_AA" text-anchor="middle"> ${baseRow}    </g>
+</svg>`;
