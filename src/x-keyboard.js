@@ -6,15 +6,6 @@ import css from './style.js';
  * Custom Element
  */
 
-const setFingerAssignment = (root, ansiStyle) => {
-  (ansiStyle
-    ? ['l5', 'l4', 'l3', 'l2', 'l2', 'r2', 'r2', 'r3', 'r4', 'r5']
-    : ['l5', 'l5', 'l4', 'l3', 'l2', 'l2', 'r2', 'r2', 'r3', 'r4']
-  ).forEach((attr, i) => {
-    root.getElementById(`Digit${(i + 1) % 10}`).setAttribute('finger', attr);
-  });
-};
-
 const getKeyChord = (root, key) => {
   if (!key || !key.id) {
     return [];
@@ -168,7 +159,6 @@ class Keyboard extends HTMLElement {
       classes.forEach(cls => svg.classList.remove(cls)),
     );
     shape.forEach(cls => svg.classList.add(cls));
-    setFingerAssignment(this.root, !shape.includes('iso'));
   }
 
   get platform() {
