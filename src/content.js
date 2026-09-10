@@ -1,4 +1,5 @@
 import { isDeadKey } from './x-keyboard-layout.js';
+import stylesheet from './style.css' with { type: 'text' };
 import dkSymbols from './symbols.js';
 
 const KEY_WIDTH = 60; // 1U = 0.75" = 19.05mm = 60px
@@ -486,6 +487,8 @@ export const svgContent = `<svg xmlns="http://www.w3.org/2000/svg"
       ${translate('#Backspace', 12.375, 1)}
       ${translate('#Enter    ', 11.75, 0.5)}
     }
+
+    ${stylesheet}
   </style>
   <defs>
     ${gradient('outerLeft', 'var(--col0-bg)', 'var(--col1-bg)')}

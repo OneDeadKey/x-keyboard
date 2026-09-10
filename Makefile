@@ -1,3 +1,6 @@
+watch:
+	npm run watch
+
 publish:
 	npm run build
 	npm run lint

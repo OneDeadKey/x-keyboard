@@ -1,17 +1,18 @@
 {
   "name": "x-keyboard",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "A web component to display and emulate keyboard layouts.",
   "files": [
-    "index.js"
+    "x-keyboard.js"
   ],
   "scripts": {
     "lint": "eslint .",
-    "build": "rollup main.js --format esm --file index.js"
+    "build": "esbuild src/x-keyboard.js --bundle --outfile=x-keyboard.js --minify",
+    "watch": "esbuild src/x-keyboard.js --bundle --outfile=x-keyboard.js --watch"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fabi1cazenave/x-keyboard.git"
+    "url": "git+https://github.com/OneDeadKey/x-keyboard.git"
   },
   "keywords": [
     "webcomponent",
@@ -22,14 +23,14 @@
   "author": "Fabien Cazenave",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/fabi1cazenave/x-keyboard/issues"
+    "url": "https://github.com/OneDeadKey/x-keyboard/issues"
   },
-  "homepage": "https://fabi1cazenave.github.io/x-keyboard",
+  "homepage": "https://onedeadkey.github.io/x-keyboard",
   "devDependencies": {
+    "esbuild": "^0.28.2",
     "eslint": "^7.9.0",
     "eslint-config-airbnb-base": "^14.2.0",
-    "eslint-plugin-import": "^2.22.0",
-    "rollup": "^2.27.1"
+    "eslint-plugin-import": "^2.22.0"
   },
   "eslintConfig": {
     "env": {
