@@ -172,7 +172,7 @@ text {
 .ergo .specialKey rect,
 .ergo .specialKey text,
 .ol40 .pinkyKey,
-.ol40 #row_AE .numberKey { display: none; }
+.ol40 .row_AE .numberKey { display: none; }
 
 .ergo #Escape,
 .ol60 #IntlBackslash,
