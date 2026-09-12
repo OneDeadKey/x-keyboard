@@ -10,6 +10,9 @@ window.addEventListener('DOMContentLoaded', () => {
   const setProp = (key, value) => {
     if (key === 'layout') {
       if (value) {
+        if (!/^[\w()-]+$/.test(value)) {
+          return;
+        }
         fetch(`layouts/${value}.json`)
           .then(response => response.json())
           .then(data => keyboard.setKeyboardLayout(data.keymap, data.deadkeys,
