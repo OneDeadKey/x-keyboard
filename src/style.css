@@ -59,14 +59,14 @@ svg, :root {
   --home-bg:   hsl(225deg, 30%, 30%);
 }}
 
-rect, path {
+rect, path.iso, path.alt {
   fill:   var(--key-bg);
   stroke: var(--key-fg);
   stroke-width: .5px;
 }
 .specialKey,
 .specialKey rect,
-.specialKey path { fill: var(--special-bg); }
+.specialKey path { fill: var(--special-bg) !important; }
 
 g:target rect, .press rect,
 g:target path, .press path { fill: var(--target-bg); }
@@ -77,6 +77,17 @@ text {
   text-shadow: 1px 1px var(--key-bg);
   text-align: center;
 }
+.glyph {
+  transform: scale(0.4) translate(-24px, -36px);
+  stroke-width: 3px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+use {
+  stroke: var(--key-txt);
+}
+
 .level3, .level4      { fill: var(--altgr-txt); }
 .level5, .level6, .dk { fill: var(--1dk-txt); }
 .deadKey              { fill: var(--dk-txt); }
@@ -105,15 +116,10 @@ text {
   [finger="r2"].innerKey rect { fill: url(#innerRight); }
   [finger="r5"].pinkyKey rect { fill: url(#outerRight); }
 
-  .specialKey rect,
-  .specialKey path { fill: var(--special-bg); } /* duplicate? */
-  .press      rect { fill: var(--press-bg);   }
-  .press      text { fill: var(--press-fg);   }
-  .hint       rect { fill: var(--hint-bg);    }
-  .hint text {
-    font-weight: bold;
-    fill: var(--press-fg);
-  }
+  .press rect { fill: var(--press-bg); }
+  .press text { fill: var(--press-fg); }
+  .hint  rect { fill: var(--hint-bg);  }
+  .hint  text { fill: var(--press-fg); font-weight: bold; }
 }
 [theme="hints"].am #IntlBackslash rect { fill: var(--col0-bg); }
 
@@ -125,15 +131,14 @@ text {
 #Escape { display: none; }
 
 /* Backslash + Enter */
-#Enter path.alt,
+#Enter     .alt,
 #Enter     .iso,
 #Backslash .iso,
-.alt #Enter rect.ansi,
-.iso #Enter rect.ansi,
-.iso #Enter text.ansi,
+.alt #Enter .ansi,
+.iso #Enter .ansi,
 .alt #Backslash .ansi,
 .iso #Backslash .ansi { display: none; }
-#Enter text.ansi,
+#Enter use.ansi,
 .alt #Enter     .alt,
 .iso #Enter     .iso,
 .iso #Backslash .iso { display: block; }
@@ -269,8 +274,8 @@ text {
   font-weight: bolder;
 }
 
-.layers-odk .level3,
-.layers-odk .level4       { display: none; }
+.layers-odk       .level3,
+.layers-odk       .level4 { display: none; }
 .layers-odk.altgr .level3,
 .layers-odk.altgr .level4 { display: block; }
 
@@ -288,17 +293,17 @@ text {
 .altgr .level6 { display: none; }
 
 /* hide Level6 (Shift+AltGr) */
-.level6        { display: none; }
+.level6 { display: none; }
 
 /* hide dk1 and dk2 unless a dead key is pressed */
-.dk1, .dk2     { display: none; }
+.dk1, .dk2 { display: none; }
 .dk .dk1,
-.dk .dk2       { display: block; }
+.dk .dk2   { display: block; }
 
 /* highlight AltGr + Dead Keys */
 .dk .level1, .altgr .level1,
 .dk .level2, .altgr .level2 { opacity: 0.25; }
 .dk .dk1, .altgr .level3,
 .dk .dk2, .altgr .level4 { opacity: 1; }
-.dk .level3, .dk level4,
-.dk .level5, .dk level6 { display: none; }
+.dk .level3, .dk .level4,
+.dk .level5, .dk .level6 { display: none; }

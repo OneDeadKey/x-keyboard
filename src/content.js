@@ -108,6 +108,18 @@ const text = (content, cname = '', attributes) =>
     [content],
   );
 
+const use = (href, cname = '', attributes) =>
+  sgml(
+    'use',
+    {
+      href: `#glyph_${href}`,
+      class: cname,
+      x: 0.33,
+      y: 0.67,
+      ...attributes,
+    },
+  );
+
 const g = (className, children) => sgml('g', { class: className }, children);
 
 const emptyKey = [rect(), g('key')];
@@ -220,7 +232,7 @@ const numberRow =
   g('left', [
     gKey('specialKey', 'l5', 0, 'Escape', [
       rect('ergo', { width: 1.25 }),
-      text('⎋', 'ergo'),
+      use('escape'),
     ]),
     gKey('pinkyKey', 'l5', 0, 'Backquote', [
       rect('specialKey jis', { width: 1 }),
@@ -249,9 +261,8 @@ const numberRow =
       rect('ansi', { width: 2 }),
       rect('ergo', { width: 1.25 }),
       rect('alt', { x: 1 }),
-      text('⌫', 'ansi'),
-      text('⌫', 'ergo'),
-      text('⌫', 'alt', { translateX: 1 }),
+      use('backspace', 'ansi'),
+      use('backspace', 'alt', { translateX: 1 }),
     ]),
   ]);
 
@@ -260,10 +271,8 @@ const letterRow1 =
     gKey('specialKey', 'l5', 0, 'Tab', [
       rect('', { width: 1.5 }),
       rect('ol40', { width: 1.25 }),
-      rect('ol60', { width: 1, x: 0.25 }),
-      text('↹'),
-      text('↹', 'ol40'),
-      text('↹', 'ol60', { translateX: 0.25 }),
+      rect('ol60', { width: 1 }),
+      use('tab'),
     ]),
     gKey('letterKey', 'l5', 1.5, 'KeyQ'),
     gKey('letterKey', 'l4', 2.5, 'KeyW'),
@@ -290,8 +299,8 @@ const letterRow2 =
   g('left', [
     gKey('specialKey', 'l5', 0, 'CapsLock', [
       rect('', { width: 1.75 }),
-      text('⇪', 'ansi'),
       text('英数', 'jis', { x: 0.45 }), // alphanumeric (eisū)
+      use('caps'),
     ]),
     gKey('letterKey homeKey', 'l5', 1.75, 'KeyA'),
     gKey('letterKey homeKey', 'l4', 2.75, 'KeyS'),
@@ -311,8 +320,8 @@ const letterRow2 =
       path('iso', isoEnterPath),
       rect('ansi', { width: 2.25 }),
       rect('ergo', { width: 1.25 }),
-      text('⏎', 'ansi alt ergo'),
-      text('⏎', 'iso', { translateX: 1 }),
+      use('enter', 'iso', { translateX: 1 }),
+      use('enter', 'ansi alt'),
     ]),
   ]);
 
@@ -322,8 +331,7 @@ const letterRow3 =
       rect('ansi alt', { width: 2.25 }),
       rect('iso', { width: 1.25 }),
       rect('ergo', { width: 1.5 }),
-      text('⇧'),
-      text('⇧', 'ergo'),
+      use('shift'),
     ]),
     gKey('pinkyKey', 'l5', 1.25, 'IntlBackslash'),
     gKey('letterKey', 'l5', 2.25, 'KeyZ'),
@@ -342,8 +350,8 @@ const letterRow3 =
     gKey('specialKey', 'r5', 12.25, 'ShiftRight', [
       rect('ansi', { width: 2.75 }),
       rect('abnt', { width: 1.75, x: 1 }),
-      text('⇧', 'ansi'),
-      text('⇧', 'abnt', { translateX: 1 }),
+      use('shift', 'ansi'),
+      use('shift', 'abnt', { translateX: 1 }),
     ]),
   ]);
 
@@ -433,8 +441,7 @@ const gradient = (id, start, stop) => `
     <linearGradient id="${id}" x1="0%" x2="100%" y1="0%" y2="0%">
       <stop offset="0%"   stop-color="${start}" />
       <stop offset="100%" stop-color="${stop}" />
-    </linearGradient>
-`;
+    </linearGradient>`;
 
 export const svgContent = `<svg xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 ${KEY_WIDTH * 15} ${KEY_HEIGHT * 5}">
@@ -466,13 +473,13 @@ export const svgContent = `<svg xmlns="http://www.w3.org/2000/svg"
     .ergo {
       ${translate('#ShiftLeft', 4, 1)}
       ${translate('#AltRight ', 9.25)}
-      ${translate('#Tab      ', 0.25, 0.5)}
     }
     .ol60 {
       ${translate('.row_AE', 1.5, 0, true)}
       ${translate('.row_AD', 1.0, 1, true)}
       ${translate('.row_AC', 0.75, 2, true)}
       ${translate('.row_AB', 0.25, 3, true)}
+      ${translate('#Tab   ', 0.5, 0.5)}
       ${translate('#Space ', 4.5)}
       ${translate('.left', -1.25)}
       ${translate('.right', 0.25)}
@@ -493,6 +500,7 @@ export const svgContent = `<svg xmlns="http://www.w3.org/2000/svg"
       ${translate('.row_AC', 0.625, 1.5, true)}
       ${translate('.row_AB', 0.125, 2.5, true)}
       ${translate('.row_AA', -0.125, 3.5, true)}
+      ${translate('#Tab   ', 0.25, 0.5)}
       ${translate('#Space ', 5.5)}
       ${translate('.left', -0.25)}
       ${translate('.right', 0.25)}
@@ -503,15 +511,29 @@ export const svgContent = `<svg xmlns="http://www.w3.org/2000/svg"
 
     ${stylesheet}
   </style>
+
   <defs>
     ${gradient('outerLeft', 'var(--col0-bg)', 'var(--col1-bg)')}
     ${gradient('innerLeft', 'var(--col4-bg)', 'var(--col0-bg)')}
     ${gradient('innerRight', 'var(--col0-bg)', 'var(--col4-bg)')}
     ${gradient('outerRight', 'var(--col1-bg)', 'var(--col0-bg)')}
+
+    <path class="glyph" id="glyph_escape"    d="M24,24l-18-18 m0,10v-10h10 M24,6A18,18,0,1,1,6,24"/>
+    <path class="glyph" id="glyph_backspace" d="M22,19l10,10 M22,29l10-10 M6,24l10,13h26v-26h-26z"/>
+    <path class="glyph" id="glyph_tab"       d="M6,24h27 m-6-8l8,8l-8,8 M42,12V36"/>
+    <path class="glyph" id="glyph_enter"     d="M42,13V27H6 m8-8l-8,8l8,8"/>
+    <path class="glyph" id="glyph_caps"      d="M24,7l14,20h-7v6h-14v-6h-7l14,-20 M31,38v5h-14v-5z"/>
+    <path class="glyph" id="glyph_shift"     d="M23,7l14,20h-7v16h-14v-16h-7l14,-20"/>
+    <path class="glyph" id="glyph_space"     d="M42,24V32H6V24"/>
   </defs>
-  <g class="row_AE" text-anchor="middle"> ${numberRow}  </g>
-  <g class="row_AD" text-anchor="middle"> ${letterRow1} </g>
-  <g class="row_AC" text-anchor="middle"> ${letterRow2} </g>
-  <g class="row_AB" text-anchor="middle"> ${letterRow3} </g>
-  <g class="row_AA" text-anchor="middle"> ${baseRow}    </g>
+
+  <g class="row_AE" text-anchor="middle">${numberRow}</g>
+
+  <g class="row_AD" text-anchor="middle">${letterRow1}</g>
+
+  <g class="row_AC" text-anchor="middle">${letterRow2}</g>
+
+  <g class="row_AB" text-anchor="middle">${letterRow3}</g>
+
+  <g class="row_AA" text-anchor="middle">${baseRow}</g>
 </svg>`;
